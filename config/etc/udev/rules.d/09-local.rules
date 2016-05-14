@@ -1,0 +1,2 @@
+SUBSYSTEMS=="usb", ATTRS{product}=="FT232R USB UART", ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", SYMLINK+="arduino arduino_$attr{serial}"
+SUBSYSTEMS=="usb", ATTRS{product}=="USB-Serial Controller D", ATTRS{idProduct}=="2303", ATTRS{idVendor}=="067b", SYMLINK="celestron"
