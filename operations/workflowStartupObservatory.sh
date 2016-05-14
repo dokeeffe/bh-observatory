@@ -1,13 +1,20 @@
 #!/bin/bash
 
 #
-# Start indi services if not started, use weather station as test connection
+# Start indi services if not started, use weather station as test connection. If not started then we need to also power on all equipment first.
 #
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo $DIR
+
+echo 'Powering on equipment'
+$DIR/python/firmataSwitcher.py /dev/arduino_AL01C9VU 2
+sleep 10
+
 CONNECTED=$((indi_eval -f '"Indi Cloud Rain Monitor.CONNECTION.CONNECT"==1') 2>&1)
 if [[ $CONNECTED == "connect: Connection refused" ]]
 then
     echo 'starting indi services'
-    nohup sh startIndiServer.sh &
+    nohup sh $DIR/startIndiServer.sh &
     sleep 10
     CONNECTED=$((indi_eval -f '"Indi Cloud Rain Monitor.CONNECTION.CONNECT"==1') 2>&1)
 fi
@@ -47,29 +54,34 @@ then
 fi
 
 #
-# Weather status must be ok if we get here. Proceed to power on all equipement
-#
-echo 'Powering on equipment'
-./python/firmataSwitcher.py /dev/arduino_AL01C9VU 2
-
-#
-# Connect to the roof and open. Make a warning beep beep....
+# Weather status must be ok if we get here. Proceed to open roof
+# Connect to the roof and open.
 #
 echo 'Opening Roof'
-CONNECTED=$((indi_eval -f '"Aldi roof.CONNECTION.CONNECT"==1') 2>&1)
+CONNECTED=$((indi_eval -f '"Aldi Roof.CONNECTION.CONNECT"==1') 2>&1)
 echo $CONNECTED
 if [ $CONNECTED -eq 0 ]
 then
-    echo 'Connecting roof driver'
-    indi_setprop 'Aldi roof.CONNECTION.CONNECT=On'
+    echo 'Connecting Roof driver'
+    indi_setprop 'Aldi Roof.CONNECTION.CONNECT=On'
     sleep 10
 fi
-indi_setprop 'Aldi roof.DOME_MOTION.DOME_CCW=Off'
-indi_setprop 'Aldi roof.DOME_MOTION.DOME_CW=On'
+indi_setprop 'Aldi Roof.DOME_MOTION.DOME_CCW=Off'
+indi_setprop 'Aldi Roof.DOME_MOTION.DOME_CW=On'
 
 #
 # Wake the telescope from hibernation
 #
 echo 'waking telescope'
-./nexstarPoweronAndWake.sh 
+$DIR/nexstarPoweronAndWake.sh 
 
+
+#
+# Disconnect any indi drivers used
+#
+indi_setprop 'Aldi Roof.CONNECTION.CONNECT=Off'
+indi_setprop 'Indi Cloud Rain Monitor.CONNECTION.CONNECT=On'
+
+echo 'Waiting for Telescope GPS to lock'
+sleep 120
+echo 'Startup procedure complete'

@@ -1,13 +1,13 @@
 #!/bin/bash
 echo 'Closing Roof'
-CONNECTED=$((indi_eval -f '"Aldi roof.CONNECTION.CONNECT"==1') 2>&1)
+CONNECTED=$((indi_eval -f '"Aldi Roof.CONNECTION.CONNECT"==1') 2>&1)
 echo $CONNECTED
 if [ $CONNECTED -eq 0 ]
 then
     echo 'Connecting roof driver'
-    indi_setprop 'Aldi roof.CONNECTION.CONNECT=On'
+    indi_setprop 'Aldi Roof.CONNECTION.CONNECT=On'
     sleep 10
 fi
-indi_setprop 'Aldi roof.DOME_MOTION.DOME_CW=Off'
-indi_setprop 'Aldi roof.DOME_MOTION.DOME_CCW=On'
+indi_setprop 'Aldi Roof.DOME_MOTION.DOME_CW=On'
+indi_setprop 'Aldi Roof.DOME_MOTION.DOME_CCW=Off'
 
