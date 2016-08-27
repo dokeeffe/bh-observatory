@@ -55,7 +55,7 @@ def generate_darks():
         darks[dark_key].append(bias_corrected)
 
     print 'Dark frames collected and colocated by time,temperature and binning.'
-    print 'Performing median combination subtraction'
+    print 'Performing median combination'
     for k, v in darks.iteritems():
         print 'Processing ' + k
         master_dark = ccdproc.combine(v, method='average')

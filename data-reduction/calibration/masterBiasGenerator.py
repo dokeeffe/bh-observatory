@@ -1,8 +1,6 @@
 import sys
 import os
-import numpy as np
-  
-from astropy.io import fits
+
 from astropy import units as u
 
 import ccdproc 
@@ -12,7 +10,7 @@ from ccdproc import ImageFileCollection
 
 def generate_bias():
     if len(sys.argv)!=3:
-       print('Usage:\npython this_script_name.py [full_path_to_raw_data] [full_path_to_reduced_data]\n')
+       print('Usage:\nmasterBiasGenerator.py [full_path_to_raw_data] [full_path_to_reduced_data]\n')
        exit()
 
     indir = sys.argv[1]
