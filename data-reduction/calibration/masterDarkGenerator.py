@@ -10,7 +10,14 @@ from ccdproc import CCDData
 
 from ccdproc import ImageFileCollection
 
-
+#
+# This script is responsible for generation of master darks. Darks are created by median combination
+# of frames grouped by time,binning and temperature
+# Calibration logic is based on AAVSO guidelines from their CCDPhotometryGuide.pdf
+#     Take 20 or more images, subtract the Master Bias from each,
+#     then median–combine them all together to create a Master Dark.)
+# This is performed for all raw dark frames grouped by time, binning and sensor temperature.
+#
 def generate_darks():
     if len(sys.argv) != 4:
         print(
@@ -35,7 +42,7 @@ def generate_darks():
             master_bias_dict[bias_key] = bias_ccd
     print 'Finished collecting Master Bias frames'
 
-    # collect the raw darks and collate by binning and temp, subtract appropriate Bias while collecting.
+    # collect the raw darks and collate by time, binning and temp, subtract appropriate Bias while collecting.
     darks = {}
     for filename in dark_ic.files_filtered(FRAME='Dark'):
         dark_ccd = CCDData.read(dark_ic.location + filename, unit=u.adu)
@@ -54,7 +61,7 @@ def generate_darks():
         bias_corrected = ccdproc.subtract_bias(dark_ccd, bias)
         darks[dark_key].append(bias_corrected)
 
-    print 'Dark frames collected and colocated by time,temperature and binning.'
+    print 'Dark frames collected and collated by time,temperature and binning.'
     print 'Performing median combination'
     for k, v in darks.iteritems():
         print 'Processing ' + k

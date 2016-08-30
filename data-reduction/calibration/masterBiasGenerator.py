@@ -8,6 +8,10 @@ from ccdproc import CCDData
 
 from ccdproc import ImageFileCollection
 
+#
+# This script is responsible for generation of a master bias image by averaging multiple bias frames.
+# Calibration logic is based on AAVSO guidelines from their CCDPhotometryGuide.pdf
+#
 def generate_bias():
     if len(sys.argv)!=3:
        print('Usage:\nmasterBiasGenerator.py [full_path_to_raw_data] [full_path_to_reduced_data]\n')
@@ -21,11 +25,9 @@ def generate_bias():
 
     ic1 = ImageFileCollection(indir)
 
-    #create the bias frames
+    #create the bias frame
     bias_list = []
     for filename in ic1.files_filtered(FRAME='Bias'):
-        print 'Selecting image - '
-        print  ic1.location + filename
         ccd = CCDData.read(ic1.location + filename, unit = u.adu)
         bias_key = str(int(ccd.header['CCD-TEMP'])) + '_' \
                    + str(ccd.header['XBINNING']) + 'X'

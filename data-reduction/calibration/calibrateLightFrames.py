@@ -12,6 +12,9 @@ from ccdproc import ImageFileCollection
 # It performs bias correction, flat division, and flat correction.
 # It will auto locate the correct bias, dark and flat based on binning, temp, exposure and filter.
 # Assumes all master bias,dark,and flats are already generated and located in one dir.
+#
+# Calibration logic is based on AAVSO guidelines from their CCDPhotometryGuide.pdf
+#
 def calibrate_light():
     if len(sys.argv) != 4:
         print(
