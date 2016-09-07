@@ -20,15 +20,12 @@ from ccdproc import ImageFileCollection
 def generate_darks():
     config = ConfigParser.ConfigParser()
     config.read('calibration.cfg')
-    indir = config.get('Dark_Paths', 'rawdir')
-    bias_dir = config.get('Bias_Paths', 'masterdir')
     outdir = config.get('Dark_Paths', 'masterdir')
-
     if not os.path.isdir(outdir):
         os.mkdir(outdir)
     os.chdir(outdir)
-    dark_ic = ImageFileCollection(indir)
-    bias_ic = ImageFileCollection(bias_dir)
+    dark_ic = ImageFileCollection(config.get('Dark_Paths', 'rawdir'))
+    bias_ic = ImageFileCollection(config.get('Bias_Paths', 'masterdir'))
 
     # collect the raw darks and collate by time, binning and temp, subtract appropriate Bias while collecting.
     darks = {}
