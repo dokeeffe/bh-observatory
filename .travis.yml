@@ -37,4 +37,4 @@ install:
     - source ci-helpers/travis/setup_conda_$TRAVIS_OS_NAME.sh
     - pip install ccdproc
 
-script: py.test
+script: nosetests
