@@ -29,9 +29,7 @@ install:
     - source activate test
 
     - $CONDA_INSTALL numpy=$NUMPY_VERSION pytest astropy ccdproc scipy
-    - pip install coverage coveralls $EXTRA_INSTALLS
-    # need to install scripts because one test ends up invoking a subprocess
-    - python setup.py install_scripts
+    - pip install coverage coveralls $EXTRA_INSTALLS nosetests
 
 install:
 
