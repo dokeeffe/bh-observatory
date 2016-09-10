@@ -21,8 +21,16 @@ before_install:
 
 install:
 
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION pip numpy scipy nose
     - git clone git://github.com/astropy/ci-helpers.git
     - source ci-helpers/travis/setup_conda_$TRAVIS_OS_NAME.sh
-    - pip install ccdproc nosetests
+    - pip install ccdproc
+    - pip install pep8 python-coveralls
+    - pip install .
 
-script: nosetests
+script:
+
+  - THEANO_FLAGS=floatX=float32 nosetests --with-coverage --cover-package=theanets --logging-level=INFO
+
+after_success:
+  - coveralls
