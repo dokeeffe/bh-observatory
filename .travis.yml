@@ -26,7 +26,6 @@ install:
     - source ci-helpers/travis/setup_conda_$TRAVIS_OS_NAME.sh
     - pip install ccdproc
     - pip install pep8 python-coveralls
-    - pip install .
 
 script:
 
