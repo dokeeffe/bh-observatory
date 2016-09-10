@@ -1,5 +1,5 @@
-# bh-observatory
-
+bh-observatory
+==============
 
 .. image:: https://travis-ci.org/dokeeffe/bh-observatory.svg?branch=master
   :target: https://travis-ci.org/dokeeffe/bh-observatory
