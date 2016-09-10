@@ -19,22 +19,10 @@ before_install:
     - export PATH=$MINICONDA_HOME/bin:$PATH
     - conda update --yes conda
 
-    # DOCUMENTATION DEPENDENCIES
-    - if [[ $SETUP_CMD == build_sphinx* ]]; then sudo apt-get install graphviz texlive-latex-extra dvipng; fi
-    - cd data-reduction
-
-install:
-    # CONDA
-    - conda create --yes -n test -c astropy-ci-extras -c astropy python=$TRAVIS_PYTHON_VERSION
-    - source activate test
-
-    - $CONDA_INSTALL numpy=$NUMPY_VERSION pytest astropy ccdproc scipy
-    - pip install coverage coveralls $EXTRA_INSTALLS nosetests
-
 install:
 
     - git clone git://github.com/astropy/ci-helpers.git
     - source ci-helpers/travis/setup_conda_$TRAVIS_OS_NAME.sh
-    - pip install ccdproc
+    - pip install ccdproc nosetests
 
 script: nosetests
