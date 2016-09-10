@@ -4,6 +4,9 @@ python: 2.7
 before_install: cd data-reduction
 
 install:
-  - pip install ccdproc
+
+    - git clone git://github.com/astropy/ci-helpers.git
+    - source ci-helpers/travis/setup_conda_$TRAVIS_OS_NAME.sh
+    - pip install ccdproc
 
 script: nosetests
