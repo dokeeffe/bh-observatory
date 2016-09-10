@@ -1,11 +1,42 @@
 language: python
 python: 2.7
 
-before_install: cd data-reduction
+env:
+    global:
+        - NUMPY_VERSION=1.11
+        - ASTROPY_VERSION=stable
+        - CONDA_INSTALL='conda install -c astropy --yes'
+        - PIP_INSTALL='pip install'
+        - MINICONDA_HOME='/home/travis/miniconda'
+
+before_install:
+    # Use utf8 encoding. Should be default, but this is insurance against
+    # future changes
+    - export PYTHONIOENCODING=UTF8
+    - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+    - chmod +x miniconda.sh
+    - ./miniconda.sh -b -p $MINICONDA_HOME
+    - export PATH=$MINICONDA_HOME/bin:$PATH
+    - conda update --yes conda
+
+    # DOCUMENTATION DEPENDENCIES
+    - if [[ $SETUP_CMD == build_sphinx* ]]; then sudo apt-get install graphviz texlive-latex-extra dvipng; fi
+    - cd data-reduction
+
+install:
+    # CONDA
+    - conda create --yes -n test -c astropy-ci-extras -c astropy python=$TRAVIS_PYTHON_VERSION
+    - source activate test
+
+    - $CONDA_INSTALL numpy=$NUMPY_VERSION pytest astropy ccdproc scipy
+    - pip install coverage coveralls $EXTRA_INSTALLS
+    # need to install scripts because one test ends up invoking a subprocess
+    - python setup.py install_scripts
 
 install:
 
     - git clone git://github.com/astropy/ci-helpers.git
     - source ci-helpers/travis/setup_conda_$TRAVIS_OS_NAME.sh
+    - pip install ccdproc
 
 script: nosetests

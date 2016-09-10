@@ -8,5 +8,5 @@ def test_generate_bias_key():
     ccd.header['CCD-TEMP']=-20
     ccd.header['XBINNING']=2
     result = imageCollectionUtils.generate_bias_key(ccd)
-    assert result == '-20_2Xx'
+    assert result == '-20_2X'
 
