@@ -4,6 +4,6 @@ python: 2.7
 before_install: cd data-reduction
 
 install:
-  - pip install ccdproc numpy pytest
+  - pip install ccdproc
 
 script: nosetests
