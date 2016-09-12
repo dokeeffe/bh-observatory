@@ -1,3 +1,4 @@
+import json
 import os
 import ConfigParser
 import imageCollectionUtils
@@ -20,25 +21,28 @@ from ccdproc import ImageFileCollection
 def generate_darks():
     config = ConfigParser.ConfigParser()
     config.read('calibration.cfg')
+    combine_method = config.get('Flat_Paths', 'combine_method')
     outdir = config.get('Dark_Paths', 'masterdir')
     if not os.path.isdir(outdir):
         os.mkdir(outdir)
     os.chdir(outdir)
-    dark_ic = ImageFileCollection(config.get('Dark_Paths', 'rawdir'))
-    bias_ic = ImageFileCollection(config.get('Bias_Paths', 'masterdir'))
-
-    # collect the raw darks and collate by time, binning and temp, subtract appropriate Bias while collecting.
-    darks = {}
-    for filename in dark_ic.files_filtered(FRAME='Dark'):
-        dark_ccd = CCDData.read(dark_ic.location + filename, unit=u.adu)
-        dark_key = imageCollectionUtils.generate_dark_key(dark_ccd)
-        if dark_key not in darks:
-            darks[dark_key] = []
-        logging.info('Performing Bias subtraction')
-        bias_corrected = imageCollectionUtils.subtract_best_bias_temp_match(bias_ic,dark_ccd)
-        darks[dark_key].append(bias_corrected)
-    logging.info('Dark frames collected and collated by time,temperature and binning. Performing median combination')
-    imageCollectionUtils.combine_values_from_dictionary_and_write(darks, 'master_dark', 'average')
+    master_bias_ic = ImageFileCollection(config.get('Bias_Paths', 'masterdir'))
+    rawdirs_to_process = json.loads(config.get('Dark_Paths', 'rawdirs'))
+    for rawdir_to_process in rawdirs_to_process:
+        logging.info('processing raw dir ' + rawdir_to_process)
+        dark_ic = ImageFileCollection(rawdir_to_process)
+        # collect the raw darks and collate by time, binning and temp, subtract appropriate Bias while collecting.
+        darks = {}
+        for filename in dark_ic.files_filtered(FRAME='Dark'):
+            dark_ccd = CCDData.read(dark_ic.location + filename, unit=u.adu)
+            dark_key = imageCollectionUtils.generate_dark_key(dark_ccd)
+            if dark_key not in darks:
+                darks[dark_key] = []
+            logging.info('Performing Bias subtraction')
+            bias_corrected = imageCollectionUtils.subtract_best_bias_temp_match(master_bias_ic,dark_ccd)
+            darks[dark_key].append(bias_corrected)
+        logging.info('Dark frames collected and collated by time,temperature and binning. Performing median combination')
+        imageCollectionUtils.combine_values_from_dictionary_and_write(darks, 'master_dark', combine_method)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

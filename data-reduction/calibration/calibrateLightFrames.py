@@ -1,3 +1,7 @@
+import ConfigParser
+import json
+import logging
+import imageCollectionUtils
 import sys
 import os
 
@@ -16,64 +20,30 @@ from ccdproc import ImageFileCollection
 # Calibration logic is based on AAVSO guidelines from their CCDPhotometryGuide.pdf
 #
 def calibrate_light():
-    if len(sys.argv) != 4:
-        print(
-        'Usage:\npython calibrateLightframes.py [full_path_to_raw_light_dir] [full_path_to_master_dark_and_bias_dir] [full_path_to_reduced_data]\n')
-        exit()
-    indir = sys.argv[1]
-    master_dir = sys.argv[2]
-    outdir = sys.argv[3]
 
-    if not os.path.isdir(outdir): os.mkdir(outdir)
+
+    config = ConfigParser.ConfigParser()
+    config.read('calibration.cfg')
+    outdir = config.get('Light_Paths', 'masterdir')
+    if not os.path.isdir(outdir):
+        os.mkdir(outdir)
     os.chdir(outdir)
-    light_ic = ImageFileCollection(indir)
-    master_dark_bias_ic = ImageFileCollection(master_dir)
+    master_bias_ic = ImageFileCollection(config.get('Bias_Paths', 'masterdir'))
+    master_dark_ic = ImageFileCollection(config.get('Dark_Paths', 'masterdir'))
+    master_flat_ic = ImageFileCollection(config.get('Flat_Paths', 'masterdir'))
+    rawdirs_to_process = json.loads(config.get('Light_Paths', 'rawdirs'))
+    for rawdir_to_process in rawdirs_to_process:
+        logging.info('processing raw dir ' + rawdir_to_process)
+        light_ic = ImageFileCollection(rawdir_to_process)
 
-    # collect the bias frames into a dictionary keyed by binning.
-    master_bias_dict= {}
-    for filename in master_dark_bias_ic.files_filtered(FRAME='Bias'):
-        bias_ccd = CCDData.read(master_dark_bias_ic.location + filename, unit=u.adu)
-        bias_key = str(bias_ccd.header['XBINNING']) + 'X'
-        print 'Bias image key - ' + bias_key
-        if bias_key not in master_bias_dict:
-            master_bias_dict[bias_key] = bias_ccd
-    print 'Finished collecting Master Bias frames'
+        # collect the raw light frames and collate by time, binning and temp, subtract appropriate Bias while collecting.
+        for filename in light_ic.files_filtered(FRAME='Light'):
+            light_ccd = CCDData.read(light_ic.location + filename, unit=u.adu)
+            bias_corrected = imageCollectionUtils.subtract_best_bias_temp_match(master_bias_ic,light_ccd)
+            dark_corrected = imageCollectionUtils.subtract_best_dark(master_dark_ic,bias_corrected)
+            flat_corrected = imageCollectionUtils.flat_correct(master_flat_ic,dark_corrected)
+            # generate a date based dir and write callibrated data
 
-# collect the dark frames into a dictionary keyed by time, binning and temp.
-    master_dark_dict= {}
-    for filename in master_dark_bias_ic.files_filtered(FRAME='Dark'):
-        dark_ccd = CCDData.read(master_dark_bias_ic.location + filename, unit=u.adu)
-        dark_key = str(int(dark_ccd.header['DARKTIME'])) + '_' \
-                   + str(int(dark_ccd.header['CCD-TEMP'])) + '_' \
-                   + str(dark_ccd.header['XBINNING']) + 'X'
-        print 'Dark image key - ' + dark_key
-        if dark_key not in master_dark_dict:
-            master_dark_dict[dark_key] = dark_ccd
-    print 'Finished collecting Master Dark frames'
-
-    # collect the raw light frames and collate by time, binning and temp, subtract appropriate Bias while collecting.
-    for filename in light_ic.files_filtered(FRAME='Light'):
-        light_ccd = CCDData.read(light_ic.location + filename, unit=u.adu)
-        dark_key = str(int(dark_ccd.header['EXPTIME'])) + '_' \
-                   + str(int(dark_ccd.header['CCD-TEMP'])) + '_' \
-                   + str(dark_ccd.header['XBINNING']) + 'X'
-        bias_key = str(dark_ccd.header['XBINNING']) + 'X'
-        print 'Dark image key - ' + dark_key
-        print 'Bias image key - ' + bias_key
-        print 'Performing Bias subtraction'
-        if bias_key not in master_bias_dict:
-            raise ValueError('No Master Bias was found for bias key (temp_binning) ' + bias_key)
-        bias = master_bias_dict[bias_key]
-        bias_corrected = ccdproc.subtract_bias(light_ccd, bias)
-        print 'Performing Dark subtraction'
-        if dark_key not in master_dark_dict:
-            raise ValueError('No Master Dark was found for bias key (temp_binning) ' + dark_key)
-        dark = master_dark_dict[dark_key]
-        dark_corrected = ccdproc.subtract_dark(bias_corrected, dark)
-        # flat_corrected = ccdproc.flat_correct(dark_corrected, flat)
-        print 'Writing'
-        dark_corrected.write('calibrated_'+filename+'.fits', clobber=True)
-        print 'Callibrated ' + filename
 
 
 if __name__ == '__main__':
