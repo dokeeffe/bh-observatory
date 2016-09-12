@@ -1,3 +1,4 @@
+import astropy
 import numpy as np
 import scipy
 from astropy import units as u
@@ -21,11 +22,12 @@ def generate_bias_dict_keyedby_temp_binning(image_file_collection):
 def generate_flat_dict_keyedby_filter_binning(image_file_collection):
     raw_frames = {}
     for filename in image_file_collection.files_filtered(FRAME='Flat Field'):
-        logging.info('processing raw flat')
+        logging.info('processing raw flat ' +filename)
         ccd = CCDData.read(image_file_collection.location + filename, unit = u.adu)
         flat_key = generate_flat_key(ccd)
         if flat_key not in raw_frames:
             raw_frames[flat_key] = []
+        logging.info('collating by ' + flat_key)
         raw_frames[flat_key].append(ccd)
     return raw_frames
 
@@ -86,16 +88,18 @@ def subtract_best_dark(dark_imagefilecollection,ccd):
         #FIXME: throw an exception here, there should be no excuse for missing data!!!
         return ccd
     else:
-        corrected = ccdproc.subtract_dark(ccd, result)
+        corrected = ccdproc.subtract_dark(ccd, result, exposure_time='EXPTIME', exposure_unit=u.second)
         logging.warn('Temperature difference between dark and image = ' + str(temp_diff))
         return corrected
 
 def flat_correct(flat_imagefilecollection,ccd):
     flats = generate_flat_dict_keyedby_filter_binning(flat_imagefilecollection)
     key = generate_flat_key(ccd)
-    flat = flats[key]
-    if flat is None:
+    candidate_flats = flats[key]
+    #TODO: find the best candidate flat based on closest in time relative to the ccd being corrected (instead of the first one in the collection)
+    if candidate_flats is None:
         logging.error('Could not find flat for key ' + key)
+    flat = candidate_flats[0]
     return ccdproc.flat_correct(ccd,flat)
 
 

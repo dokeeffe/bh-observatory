@@ -43,6 +43,11 @@ def calibrate_light():
             dark_corrected = imageCollectionUtils.subtract_best_dark(master_dark_ic,bias_corrected)
             flat_corrected = imageCollectionUtils.flat_correct(master_flat_ic,dark_corrected)
             # generate a date based dir and write callibrated data
+            date_dir = imageCollectionUtils.extract_timestamp_from(flat_corrected)
+            if not os.path.isdir(outdir+date_dir):
+                os.mkdir(outdir+date_dir)
+            os.chdir(outdir+date_dir)
+            flat_corrected.write(filename, clobber=True)
 
 
 
