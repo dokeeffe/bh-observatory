@@ -16,4 +16,4 @@ def test_extract_timestamp_from():
     ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
     ccd.header['DATE-OBS']='2016-09-01T00:35:51'
     result = imageCollectionUtils.extract_timestamp_from(ccd)
-    assert result == '2016'
+    assert result == '2016-09-01'
