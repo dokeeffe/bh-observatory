@@ -40,7 +40,7 @@ echo 'Cloud = '${CLOUD_ALERT}
 if [ $CLOUD_ALERT -eq 1 ]
 then
     echo 'Weather cloud param in alert state, exiting'
-    exit 1
+#    exit 1
 fi
 if [ $RAIN_ALERT -eq 1 ]
 then
@@ -55,8 +55,11 @@ fi
 
 #
 # Weather status must be ok if we get here. Proceed to open roof
-# Connect to the roof and open.
-#
+# Connect to the roof and open. REAL DATA (16deg outside and -1.5 from the sky. Actually about 80/90% clear) Needs a recalculation
+# -2.4 +13deg was 100% clear
+# -0.7 +16deg was 85/95% clear
+# -2 +14 totally clear I think (remote)
+# -1 +16 totally clear I think (remote)
 echo 'Opening Roof'
 CONNECTED=$((indi_eval -f '"Aldi Roof.CONNECTION.CONNECT"==1') 2>&1)
 echo $CONNECTED
