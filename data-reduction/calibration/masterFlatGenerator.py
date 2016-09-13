@@ -38,7 +38,7 @@ def generate_flats():
             logging.info('Bias subtracting')
             bias_subtracted_master_flat = imageCollectionUtils.subtract_best_bias_temp_match(master_bias_ic,master_flat)
             # TODO: Subtract a scaled dark frame here.
-            date_file_prefix  = imageCollectionUtils.extract_timestamp_from(bias_subtracted_master_flat)
+            date_file_prefix  = imageCollectionUtils.extract_date_from(bias_subtracted_master_flat)
             bias_subtracted_master_flat.write('master_flat_' + date_file_prefix + k + '.fits', clobber=True)
             if bias_subtracted_master_flat.header['XBINNING'] == 1:
                 logging.info('Generating scaled flat for 2xBIN from 1xBIN image')

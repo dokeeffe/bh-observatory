@@ -1,11 +1,12 @@
-import json
-import os
 import ConfigParser
+import json
 import logging
-import imageCollectionUtils
-import ccdproc
+import os
 
 from ccdproc import ImageFileCollection
+
+import imageCollectionUtils
+
 
 #
 # This script is responsible for generation of a master bias images by averaging multiple bias frames.

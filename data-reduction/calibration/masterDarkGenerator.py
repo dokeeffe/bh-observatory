@@ -1,14 +1,14 @@
-import json
-import os
 import ConfigParser
-import imageCollectionUtils
+import json
 import logging
-
+import os
 from astropy import units as u
 
-import ccdproc
 from ccdproc import CCDData
 from ccdproc import ImageFileCollection
+
+import imageCollectionUtils
+
 
 #
 # This script is responsible for generation of master darks. Darks are created by median combination
