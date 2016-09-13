@@ -30,8 +30,9 @@ def generate_flats():
         flat_ic = ImageFileCollection(rawdir_to_process)
         # collect the raw flats in a dictionary and collate by filter and binning
         logging.info('flat image file collection info: '+ str(flat_ic.summary_info))
-        flats = imageCollectionUtils.generate_flat_dict_keyedby_filter_binning(flat_ic)
-        logging.info('Flat frames collected and collated.Performing average combination and bias subtraction')
+        flats = imageCollectionUtils.generate_flat_dict_keyedby_filter_binning_date(flat_ic)
+        logging.info('Flat frames collected and collated by filter, binning and date. All flats for the same filter,binning on the same day will be combined'
+                     '.Performing average combination and bias subtraction')
         for k, v in flats.iteritems():
             logging.info('Combining images')
             master_flat = ccdproc.combine(v, method=combine_method)

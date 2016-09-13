@@ -3,6 +3,7 @@ import logging
 import numpy as np
 import scipy
 from astropy import units as u
+import sys
 
 import ccdproc
 from ccdproc import CCDData
@@ -23,6 +24,23 @@ def generate_bias_dict_keyedby_temp_binning(image_file_collection):
         raw_bias_frames[bias_key].append(ccd)
     return raw_bias_frames
 
+def generate_flat_dict_keyedby_filter_binning_date(image_file_collection):
+    """
+
+    :param image_file_collection:
+    :return:
+    """
+    raw_frames = {}
+    for filename in image_file_collection.files_filtered(FRAME='Flat Field'):
+        logging.debug('Collecting flat ' +filename)
+        ccd = CCDData.read(image_file_collection.location + filename, unit = u.adu)
+        flat_key = generate_key_filter_binning_date(ccd)
+        if flat_key not in raw_frames:
+            raw_frames[flat_key] = []
+        logging.debug('collating flat by ' + flat_key)
+        raw_frames[flat_key].append(ccd)
+    return raw_frames
+
 def generate_flat_dict_keyedby_filter_binning(image_file_collection):
     """
 
@@ -33,7 +51,7 @@ def generate_flat_dict_keyedby_filter_binning(image_file_collection):
     for filename in image_file_collection.files_filtered(FRAME='Flat Field'):
         logging.debug('Collecting flat ' +filename)
         ccd = CCDData.read(image_file_collection.location + filename, unit = u.adu)
-        flat_key = generate_flat_key(ccd)
+        flat_key = generate_key_filter_binning(ccd)
         if flat_key not in raw_frames:
             raw_frames[flat_key] = []
         logging.debug('collating flat by ' + flat_key)
@@ -76,15 +94,25 @@ def generate_dark_key(ccd):
                + str(ccd.header['XBINNING']) + 'X'
     return dark_key
 
-def generate_flat_key(ccd):
+def generate_key_filter_binning(ccd):
     """
-    FIXME: Date also needs to be part of the flat key. Need to group flats together that were taken on the same day
     :param ccd:
     :return:
     """
-    flat_key = str(ccd.header['FILTER']) + '_' \
+    key = str(ccd.header['FILTER']) + '_' \
                + str(ccd.header['XBINNING']) + 'X'
-    return flat_key
+    return key
+
+def generate_key_filter_binning_date(ccd):
+    """
+    :param ccd:
+    :return:
+    """
+    date_obs = datetime.datetime.strptime(ccd.header['DATE-OBS'], '%Y-%m-%dT%H:%M:%S')
+    key = str(ccd.header['FILTER']) + '_' \
+          + str(ccd.header['XBINNING']) + 'X' \
+          + "%04d-%02d-%02d" % (date_obs.year, date_obs.month, date_obs.day)
+    return key
 
 def subtract_best_bias_temp_match(bias_imagefilecollection,ccd):
     """
@@ -103,7 +131,7 @@ def subtract_best_bias_temp_match(bias_imagefilecollection,ccd):
             temp_diff = abs(bias_candidate.header['CCD-TEMP'] - ccd.header['CCD-TEMP'])
     if result is None:
         logging.error('Could not find bias for, binning:' + str(ccd.header['XBINNING']) + ' temp:'+str(ccd.header['CCD-TEMP']))
-        #FIXME: throw an exception here, there should be no excuse for missing bias data!!!
+        # FIXME: throw an exception here, there should be no excuse for missing bias data!!!
         return ccd
     else:
         corrected = ccdproc.subtract_bias(ccd, result)
@@ -143,11 +171,22 @@ def flat_correct(flat_imagefilecollection,ccd):
     :return: the corrected image
     """
     flats = generate_flat_dict_keyedby_filter_binning(flat_imagefilecollection)
-    key = generate_flat_key(ccd)
+    key = generate_key_filter_binning(ccd)
     candidate_flats = flats[key]
     #TODO: find the best candidate flat based on closest in time relative to the ccd being corrected (instead of the first one in the collection)
     if candidate_flats is None:
         logging.error('Could not find flat for key ' + key)
+    flat = None
+    # Now locate the best flat based on date
+    last_date_diff = sys.maxsize
+    date_obs = datetime.datetime.strptime(ccd.header['DATE-OBS'], '%Y-%m-%dT%H:%M:%S')
+    for flat_candidate in candidate_flats:
+        date_flat = datetime.datetime.strptime(flat_candidate.header['DATE-OBS'], '%Y-%m-%dT%H:%M:%S')
+        candidate_date_difference = abs((date_obs - date_flat).seconds)
+        if candidate_date_difference < last_date_diff:
+            last_date_diff = candidate_date_difference
+            flat = flat_candidate
+    logging.warn('Seconds time difference between flat and image = ' + str(last_date_diff))
     flat = candidate_flats[0]
     return ccdproc.flat_correct(ccd,flat)
 
