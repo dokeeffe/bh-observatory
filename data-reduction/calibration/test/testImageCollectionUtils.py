@@ -22,13 +22,29 @@ class ImageCollectionUtilsTester(TestCase):
         assert True
 
     def test_generate_dark_key(self):
-        assert True
+        ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
+        ccd.header['CCD-TEMP']=-20
+        ccd.header['XBINNING']=2
+        ccd.header['DARKTIME']=180
+        result = imageCollectionUtils.generate_dark_key(ccd)
+        self.assertEqual('180_-20_2X',result)
 
     def test_generate_key_filter_binning(self):
-        assert True
+        ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
+        ccd.header['CCD-TEMP']=-20
+        ccd.header['XBINNING']=2
+        ccd.header['DARKTIME']=180
+        ccd.header['FILTER']='G'
+        result = imageCollectionUtils.generate_key_filter_binning(ccd)
+        self.assertEqual('G_2X',result)
 
     def test_generate_key_filter_binning_date(self):
-        assert True
+        ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
+        ccd.header['FILTER']='HA'
+        ccd.header['XBINNING']=2
+        ccd.header['DATE-OBS']='2016-02-14T23:15:03'
+        result = imageCollectionUtils.generate_key_filter_binning_date(ccd)
+        self.assertEqual('HA_2X2016-02-14',result)
 
     def test_subtract_best_bias_temp_match(self):
         assert True
@@ -39,8 +55,28 @@ class ImageCollectionUtilsTester(TestCase):
     def test_flat_correct(self):
         assert True
 
+    def test_resample_to_BIN2_from_bin2_returns_same(self):
+        """
+        Test error scenario cant convert from bin1
+        :return:
+        """
+        ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
+        ccd.header['CCD-TEMP']=-20
+        ccd.header['XBINNING']=2
+        result = imageCollectionUtils.resample_to_BIN2(ccd)
+        assert result == ccd
+
     def test_resample_to_BIN2(self):
-        assert True
+        ccd = CCDData(np.arange(100).reshape(10,10), unit=u.adu)
+        ccd.header['CCD-TEMP']=-20
+        ccd.header['XBINNING']=1
+        ccd.header['NAXIS1'] = 10
+        ccd.header['NAXIS2'] = 10
+        result = imageCollectionUtils.resample_to_BIN2(ccd)
+        print result
+        assert result.data[0][2] == 4
+        assert result.data[2][3] == 52
+        assert result.data[4][4] == 99
 
     def test_generate_bias_key(self):
         ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
