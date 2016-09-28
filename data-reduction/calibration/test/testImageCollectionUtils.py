@@ -4,7 +4,7 @@ import astropy.units as u
 
 from ccdproc import CCDData
 
-from .. import imageCollectionUtils
+from .. import calibrationUtils
 
 
 class ImageCollectionUtilsTester(TestCase):
@@ -26,7 +26,7 @@ class ImageCollectionUtilsTester(TestCase):
         ccd.header['CCD-TEMP']=-20
         ccd.header['XBINNING']=2
         ccd.header['DARKTIME']=180
-        result = imageCollectionUtils.generate_dark_key(ccd)
+        result = calibrationUtils.generate_dark_key(ccd)
         self.assertEqual('180_-20_2X',result)
 
     def test_generate_key_filter_binning(self):
@@ -35,7 +35,7 @@ class ImageCollectionUtilsTester(TestCase):
         ccd.header['XBINNING']=2
         ccd.header['DARKTIME']=180
         ccd.header['FILTER']='G'
-        result = imageCollectionUtils.generate_key_filter_binning(ccd)
+        result = calibrationUtils.generate_key_filter_binning(ccd)
         self.assertEqual('G_2X',result)
 
     def test_generate_key_filter_binning_date(self):
@@ -43,7 +43,7 @@ class ImageCollectionUtilsTester(TestCase):
         ccd.header['FILTER']='HA'
         ccd.header['XBINNING']=2
         ccd.header['DATE-OBS']='2016-02-14T23:15:03'
-        result = imageCollectionUtils.generate_key_filter_binning_date(ccd)
+        result = calibrationUtils.generate_key_filter_binning_date(ccd)
         self.assertEqual('HA_2X2016-02-14',result)
 
     def test_subtract_best_bias_temp_match(self):
@@ -63,7 +63,7 @@ class ImageCollectionUtilsTester(TestCase):
         ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
         ccd.header['CCD-TEMP']=-20
         ccd.header['XBINNING']=2
-        result = imageCollectionUtils.resample_to_BIN2(ccd)
+        result = calibrationUtils.resample_to_BIN2(ccd)
         assert result == ccd
 
     def test_resample_to_BIN2(self):
@@ -72,7 +72,7 @@ class ImageCollectionUtilsTester(TestCase):
         ccd.header['XBINNING']=1
         ccd.header['NAXIS1'] = 10
         ccd.header['NAXIS2'] = 10
-        result = imageCollectionUtils.resample_to_BIN2(ccd)
+        result = calibrationUtils.resample_to_BIN2(ccd)
         print result
         assert result.data[0][2] == 4
         assert result.data[2][3] == 52
@@ -82,19 +82,19 @@ class ImageCollectionUtilsTester(TestCase):
         ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
         ccd.header['CCD-TEMP']=-20
         ccd.header['XBINNING']=2
-        result = imageCollectionUtils.generate_bias_key(ccd)
+        result = calibrationUtils.generate_bias_key(ccd)
         assert result == '-20_2X'
 
     def test_extract_date_timestamp_from(self):
         ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
         ccd.header['DATE-OBS']='2016-09-01T00:35:51'
-        result = imageCollectionUtils.extract_date_from(ccd)
+        result = calibrationUtils.extract_date_from(ccd)
         assert result == '2016-09-01'
 
     def test_extract_datetime_timestamp_from(self):
         ccd = CCDData(np.zeros((10, 10)), unit=u.adu)
         ccd.header['DATE-OBS']='2016-09-01T00:35:51'
-        result = imageCollectionUtils.extract_datetime_from(ccd)
+        result = calibrationUtils.extract_datetime_from(ccd)
         assert result == '2016-09-01-00-35-51'
 
 

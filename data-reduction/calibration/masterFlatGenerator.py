@@ -6,7 +6,7 @@ import os
 import ccdproc
 from ccdproc import ImageFileCollection
 
-import imageCollectionUtils
+import calibrationUtils
 
 
 #
@@ -30,21 +30,23 @@ def generate_flats():
         flat_ic = ImageFileCollection(rawdir_to_process)
         # collect the raw flats in a dictionary and collate by filter and binning
         logging.info('flat image file collection info: '+ str(flat_ic.summary_info))
-        flats = imageCollectionUtils.generate_flat_dict_keyedby_filter_binning_date(flat_ic)
-        logging.info('Flat frames collected and collated by filter, binning and date. All flats for the same filter,binning on the same day will be combined'
+        flats = calibrationUtils.generate_flat_dict_keyedby_filter_binning_date(flat_ic)
+        logging.info('Flat frames collected and collated by filter, binning and date. All flats for the same filter,binning on the same-day will be combined'
                      '.Performing average combination and bias subtraction')
         for k, v in flats.iteritems():
             logging.info('Combining images')
             master_flat = ccdproc.combine(v, method=combine_method)
             logging.info('Bias subtracting')
-            bias_subtracted_master_flat = imageCollectionUtils.subtract_best_bias_temp_match(master_bias_ic,master_flat)
+            bias_subtracted_master_flat = calibrationUtils.subtract_best_bias_temp_match(master_bias_ic, master_flat)
             # TODO: Subtract a scaled dark frame here.
-            date_file_prefix  = imageCollectionUtils.extract_date_from(bias_subtracted_master_flat)
+            date_file_prefix  = calibrationUtils.extract_date_from(bias_subtracted_master_flat)
             bias_subtracted_master_flat.write('master_flat_' + date_file_prefix + k + '.fits', clobber=True)
             if bias_subtracted_master_flat.header['XBINNING'] == 1:
                 logging.info('Generating scaled flat for 2xBIN from 1xBIN image')
-                scaled = imageCollectionUtils.resample_to_BIN2(bias_subtracted_master_flat)
+                scaled = calibrationUtils.resample_to_BIN2(bias_subtracted_master_flat)
                 scaled.write('master_flat_' + date_file_prefix + k +'_rescaled2X.fits', clobber=True)
+        logging.info('Completed generation of master flats from ' + rawdir_to_process + ' proceeding to archive raw data')
+        calibrationUtils.move_to_archive(rawdir_to_process,flat_ic.files_filtered(FRAME='Flat Field'), prefix='raw_flat_data_')
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

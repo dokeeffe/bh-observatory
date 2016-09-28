@@ -5,7 +5,7 @@ import os
 
 from ccdproc import ImageFileCollection
 
-import imageCollectionUtils
+import calibrationUtils
 
 
 #
@@ -25,9 +25,11 @@ def generate_master_bias_frames():
     for rawdir_to_process in rawdirs_to_process:
         logging.info('processing raw dir ' + rawdir_to_process)
         ic1 = ImageFileCollection(rawdir_to_process)
-        raw_bias_frames = imageCollectionUtils.generate_bias_dict_keyedby_temp_binning(ic1)
-        imageCollectionUtils.combine_values_from_dictionary_and_write(raw_bias_frames, 'master_bias', combine_method)
-        logging.info('Complete')
+        raw_bias_frames = calibrationUtils.generate_bias_dict_keyedby_temp_binning(ic1)
+        calibrationUtils.combine_values_from_dictionary_and_write(raw_bias_frames, 'master_bias', combine_method)
+        logging.info('Completed generation of master bias, archiving raw data')
+        calibrationUtils.move_to_archive(rawdir_to_process, ic1.files_filtered(FRAME='Bias'),prefix='raw_bias_data_')
+        logging.info('Completed archival of raw bias data')
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

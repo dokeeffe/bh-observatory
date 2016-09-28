@@ -7,7 +7,9 @@ import sys
 
 import ccdproc
 from ccdproc import CCDData
-
+import zipfile
+import time
+import os
 
 def generate_bias_dict_keyedby_temp_binning(image_file_collection):
     """
@@ -226,3 +228,30 @@ def extract_datetime_from(ccd):
     """
     date_obs = datetime.datetime.strptime(ccd.header['DATE-OBS'], '%Y-%m-%dT%H:%M:%S')
     return "%04d-%02d-%02d-%02d-%02d-%02d" % (date_obs.year, date_obs.month, date_obs.day, date_obs.hour, date_obs.minute, date_obs.second)
+
+def move_to_archive(directory,files, prefix='uncalibrated_archive_'):
+    """
+    Move a collection of files into an archive. Basically write all to a zip then delete all.
+    The zip file will have a prefix defaulted to uncalibrated_archive_ then a timestamp
+    :param directory:
+    :param files:
+    :param prefix:
+    :return:
+    """
+    try:
+        import zlib
+        compression = zipfile.ZIP_DEFLATED
+    except:
+        compression = zipfile.ZIP_STORED
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    zf = zipfile.ZipFile(directory + prefix + timestr + '.zip', mode='w')
+    logging.info('Generating archive of raw files which have been calibrated (moving to zip file)')
+    try:
+        for file_to_archive in files:
+            zf.write(directory + file_to_archive, compress_type=compression, arcname=file_to_archive)
+        for file_to_archive in files:
+            os.remove(directory + file_to_archive)
+    finally:
+        zf.close()
+        logging.info('Processed files moved to archive ' + zf.filename);
+

@@ -7,7 +7,7 @@ from astropy import units as u
 from ccdproc import CCDData
 from ccdproc import ImageFileCollection
 
-import imageCollectionUtils
+import calibrationUtils
 
 
 #
@@ -35,14 +35,17 @@ def generate_darks():
         darks = {}
         for filename in dark_ic.files_filtered(FRAME='Dark'):
             dark_ccd = CCDData.read(dark_ic.location + filename, unit=u.adu)
-            dark_key = imageCollectionUtils.generate_dark_key(dark_ccd)
+            dark_key = calibrationUtils.generate_dark_key(dark_ccd)
             if dark_key not in darks:
                 darks[dark_key] = []
             logging.info('Performing Bias subtraction')
-            bias_corrected = imageCollectionUtils.subtract_best_bias_temp_match(master_bias_ic,dark_ccd)
+            bias_corrected = calibrationUtils.subtract_best_bias_temp_match(master_bias_ic, dark_ccd)
             darks[dark_key].append(bias_corrected)
-        logging.info('Dark frames collected and collated by time,temperature and binning. Performing median combination')
-        imageCollectionUtils.combine_values_from_dictionary_and_write(darks, 'master_dark', combine_method)
+        logging.info('Dark frames collected and collated by time,temperature and binning. Performing median combination and save')
+        calibrationUtils.combine_values_from_dictionary_and_write(darks, 'master_dark', combine_method)
+        logging.info('Master Dark generated, proceeding to archive the raw files')
+        calibrationUtils.move_to_archive(rawdir_to_process, dark_ic.files_filtered(FRAME='Dark'),prefix='raw_dark_data_')
+        logging.info('Completed archival of raw dark data')
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

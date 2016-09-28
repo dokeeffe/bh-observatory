@@ -8,7 +8,7 @@ from astropy import units as u
 from ccdproc import CCDData
 from ccdproc import ImageFileCollection
 
-import imageCollectionUtils
+import calibrationUtils
 
 
 # This script is used to calibrate 'Light' frames containing astronomical data.
@@ -35,22 +35,27 @@ def calibrate_light():
         logging.info('processing raw dir ' + rawdir_to_process)
         light_ic = ImageFileCollection(rawdir_to_process)
 
+        files_to_archive = []
         # collect the raw light frames and collate by time, binning and temp, subtract appropriate Bias while collecting.
         for filename in light_ic.files_filtered(FRAME='Light'):
             light_ccd = CCDData.read(light_ic.location + filename, unit=u.adu)
             logging.info('Bias correcting ' + filename)
-            bias_corrected = imageCollectionUtils.subtract_best_bias_temp_match(master_bias_ic,light_ccd)
+            bias_corrected = calibrationUtils.subtract_best_bias_temp_match(master_bias_ic, light_ccd)
             logging.info('Dark correcting ' + filename)
-            dark_corrected = imageCollectionUtils.subtract_best_dark(master_dark_ic,bias_corrected)
+            dark_corrected = calibrationUtils.subtract_best_dark(master_dark_ic, bias_corrected)
             logging.info('Flat correcting ' + filename)
-            flat_corrected = imageCollectionUtils.flat_correct(master_flat_ic,dark_corrected)
-            # generate a date based dir and write callibrated data
-            date_dir = imageCollectionUtils.extract_date_from(flat_corrected)
+            flat_corrected = calibrationUtils.flat_correct(master_flat_ic, dark_corrected)
+            # generate a date based dir and write callibrated data into the configured masterdir
+            date_dir = calibrationUtils.extract_date_from(flat_corrected)
             if not os.path.isdir(outdir+date_dir):
                 os.mkdir(outdir+date_dir)
             os.chdir(outdir+date_dir)
-            date_file_prefix  = imageCollectionUtils.extract_datetime_from(flat_corrected)
+            date_file_prefix  = calibrationUtils.extract_datetime_from(flat_corrected)
             flat_corrected.write(date_file_prefix + filename, clobber=True)
+            logging.info('Written calibrated LIGHT ' + date_file_prefix + filename)
+            files_to_archive.append(filename)
+        calibrationUtils.move_to_archive(rawdir_to_process, files_to_archive)
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
