@@ -28,7 +28,7 @@ def generate_bias_dict_keyedby_temp_binning(image_file_collection):
 
 def generate_flat_dict_keyedby_filter_binning_date(image_file_collection):
     """
-
+    return a dictionary keyed by filter,binning and date. The value will be an array of fits files
     :param image_file_collection:
     :return:
     """
