@@ -70,7 +70,7 @@ def combine_values_from_dictionary_and_write(image_dict, prefix, combination_met
     """
     for k, v in image_dict.iteritems():
         logging.info('Combining: Processing ' + k)
-        master = ccdproc.combine(v, method=combination_method)
+        master = ccdproc.combine(v, method=combination_method, mem_limit=128e6)
         master.write(prefix + k + '.fits', clobber=True)
 
 
