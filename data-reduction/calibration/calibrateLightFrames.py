@@ -32,29 +32,31 @@ def calibrate_light():
     master_flat_ic = ImageFileCollection(config.get('Flat_Paths', 'masterdir'))
     rawdirs_to_process = json.loads(config.get('Light_Paths', 'rawdirs'))
     for rawdir_to_process in rawdirs_to_process:
-        logging.info('processing raw dir ' + rawdir_to_process)
         light_ic = ImageFileCollection(rawdir_to_process)
-
-        files_to_archive = []
-        # collect the raw light frames and collate by time, binning and temp, subtract appropriate Bias while collecting.
-        for filename in light_ic.files_filtered(FRAME='Light'):
-            light_ccd = CCDData.read(light_ic.location + filename, unit=u.adu)
-            logging.info('Bias correcting ' + filename)
-            bias_corrected = calibrationUtils.subtract_best_bias_temp_match(master_bias_ic, light_ccd)
-            logging.info('Dark correcting ' + filename)
-            dark_corrected = calibrationUtils.subtract_best_dark(master_dark_ic, bias_corrected)
-            logging.info('Flat correcting ' + filename)
-            flat_corrected = calibrationUtils.flat_correct(master_flat_ic, dark_corrected)
-            # generate a date based dir and write callibrated data into the configured masterdir
-            date_dir = calibrationUtils.extract_date_from(flat_corrected)
-            if not os.path.isdir(outdir+date_dir):
-                os.mkdir(outdir+date_dir)
-            os.chdir(outdir+date_dir)
-            date_file_prefix  = calibrationUtils.extract_datetime_from(flat_corrected)
-            flat_corrected.write(date_file_prefix + filename, clobber=True)
-            logging.info('Written calibrated LIGHT ' + date_file_prefix + filename)
-            files_to_archive.append(filename)
-        calibrationUtils.move_to_archive(rawdir_to_process, files_to_archive)
+        if not light_ic.files:
+            logging.warn('no data in ' + rawdir_to_process)
+        else:
+            logging.info('processing raw dir ' + rawdir_to_process)
+            files_to_archive = []
+            # collect the raw light frames and collate by time, binning and temp, subtract appropriate Bias while collecting.
+            for filename in light_ic.files_filtered(FRAME='Light'):
+                light_ccd = CCDData.read(light_ic.location + filename, unit=u.adu)
+                logging.info('Bias correcting ' + filename)
+                bias_corrected = calibrationUtils.subtract_best_bias_temp_match(master_bias_ic, light_ccd)
+                logging.info('Dark correcting ' + filename)
+                dark_corrected = calibrationUtils.subtract_best_dark(master_dark_ic, bias_corrected)
+                logging.info('Flat correcting ' + filename)
+                flat_corrected = calibrationUtils.flat_correct(master_flat_ic, dark_corrected)
+                # generate a date based dir and write callibrated data into the configured masterdir
+                date_dir = calibrationUtils.extract_date_from(flat_corrected)
+                if not os.path.isdir(outdir+date_dir):
+                    os.mkdir(outdir+date_dir)
+                os.chdir(outdir+date_dir)
+                date_file_prefix  = calibrationUtils.extract_datetime_from(flat_corrected)
+                flat_corrected.write(date_file_prefix + filename, clobber=True)
+                logging.info('Written calibrated LIGHT ' + date_file_prefix + filename)
+                files_to_archive.append(filename)
+            calibrationUtils.move_to_archive(rawdir_to_process, files_to_archive)
 
 
 if __name__ == '__main__':
