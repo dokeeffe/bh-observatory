@@ -29,13 +29,16 @@ for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLigh
             print 'solve-field --no-plots --no-fits2fits --resort --skip-solved -O -L' + str(
                 arcSecPerPixel * .95) + '-H' + str(arcSecPerPixel * 1.05) + '-u app -3 ' + str(ra) + '-4' + str(
                 dec) + '-5 30' + temp_file
-            retcode = subprocess.call(['solve-field', '--no-plots', '--no-fits2fits', '--resort', '--skip-solved', '-O', '-L',
-                         str(arcSecPerPixel * .95), '-H', str(arcSecPerPixel * 1.05), '-u', 'app', '-3', str(ra),
+            try:
+                retcode = subprocess.call(['solve-field', '--no-plots', '--no-fits2fits', '--resort', '--skip-solved', '-O', '-L',
+                         str(arcSecPerPixel * .85), '-H', str(arcSecPerPixel * 1.15), '-u', 'app', '-3', str(ra),
                          '-4', str(dec), '-5', '30', temp_file])
-            if retcode==0:
-                copyfile(os.path.join('/tmp/solver', filename.replace('fits', 'new')), os.path.join(root, filename))
-            else:
-                print 'could not solve'
+                if retcode == 0:
+                    copyfile(os.path.join('/tmp/solver', filename.replace('fits', 'new')), os.path.join(root, filename))
+                else:
+                    print 'could not solve'
+            except IOError:
+                print 'cpuls not solve'
             # params = ['solve-field', '--no-verify', '--no-plots', '--no-fits2fits', '--resort', '--skip-solved', '-O', '-L', str(arcSecPerPixel*.95), '-H', str(arcSecPerPixel*1.05),'-u','app', temp_file]
             # print params
             # copy solved file back to overwrite original
