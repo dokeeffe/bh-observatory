@@ -50,7 +50,7 @@ fi
 if [ $WEATHER_STATION_ALERT -eq 1 ]
 then
     echo 'Weather station is offline or malfunctioning, exiting'
-    exit 1
+#    exit 1
 fi
 
 #

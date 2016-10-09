@@ -1,14 +1,13 @@
 #!/bin/bash
-echo 'Aborting equipment motion'
-CONNECTED=$((indi_eval -f '"Aldi roof.CONNECTION.CONNECT"==1') 2>&1)
+echo 'Aborting roof motion'
+CONNECTED=$((indi_eval -f '"Aldi Roof.CONNECTION.CONNECT"==1') 2>&1)
 echo $CONNECTED
 if [ $CONNECTED -eq 0 ]
 then
-    echo 'Connecting roof driver'
-    indi_setprop 'Aldi roof.CONNECTION.CONNECT=On'
+    echo 'Connecting Roof driver'
+    indi_setprop 'Aldi Roof.CONNECTION.CONNECT=On'
     sleep 10
 fi
-indi_setprop 'Aldi roof.DOME_MOTION.DOME_CW=Off'
-indi_setprop 'Aldi roof.DOME_MOTION.DOME_CCW=Off'
-indi_setprop 'Aldi roof.DOME_ABORT_MOTION.ABORT=On'
+indi_setprop 'Aldi Roof.DOME_MOTION.DOME_CCW=Off'
+indi_setprop 'Aldi Roof.DOME_MOTION.DOME_CW=Off'
 
