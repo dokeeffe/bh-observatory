@@ -38,6 +38,16 @@ def wake_pc():
     else:
         return {'pc':'OFF'}
 
+@route('/pc')
+def pc_state():
+    res = call(['ping', '-c', '3', '192.168.1.226'])
+    if res == 0:
+        return {'pc':'ON'}
+    elif res == 2:
+        return {'pc':'OFF'}
+    else:
+        return {'pc':'OFF'}
+
 @route('/')
 def index():
     return template('index_template')

@@ -83,15 +83,20 @@
 
       $.get( 'power', function( data ) {
           set_switch_states(data);
-      })
-      .fail(function() {
+      }).fail(function() {
           alert('failed')
       });
+     $.get( 'pc', function( data ) {
+         if( data.pc == 'OFF') {
+            $('#wakeonlan').prop('disabled', true)
+         }
+     });
+
 
       $('#wakeonlan').on('click', function () {
           var $btn = $(this).button('loading')
-          $.get( 'pc/wake', function( data ) {
-            console.log(data);
+          $.get( 'pc/wake', function( wakeresp ) {
+            console.log(wakeresp);
             $btn.button('reset')
           });
 
