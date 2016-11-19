@@ -30,8 +30,13 @@ def power_query():
 @route('/pc/wake')
 def wake_pc():
     call(['wakeonlan','b4:b5:2f:cd:bd:05'])
-    time.sleep(10);
-    return {'pc':'ON'}
+    res = call(['ping', '-c', '30', '192.168.1.226'])
+    if res == 0:
+        return {'pc':'ON'}
+    elif res == 2:
+        return {'pc':'OFF'}
+    else:
+        return {'pc':'OFF'}
 
 @route('/')
 def index():
