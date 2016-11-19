@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bootstrap 3 Template</title>
+    <title>Observatory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Bootstrap core CSS -->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"
           media="screen">
@@ -15,50 +14,62 @@
     <![endif]-->
 </head>
 <body>
-<div id='switches'>
-    <div class="checkbox">
-        <label>
-            <input id="mount" type="checkbox" data-toggle="toggle">
-            Mount
-        </label>
+   <ul class="nav nav-tabs" role="tablist">
+     <li role="presentation" class="active"><a href="#switches" aria-controls="switches" role="tab" data-toggle="tab">Switches</a></li>
+     <li role="presentation"><a href="#indi" aria-controls="indi" role="tab" data-toggle="tab">INDI</a></li>
+   </ul>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id='switches'>
+            <div class="checkbox">
+                <label>
+                    <input id="mount" type="checkbox" data-toggle="toggle">
+                    Mount
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="ccd" type="checkbox" data-toggle="toggle">
+                    CCD
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="filterwheel" type="checkbox" data-toggle="toggle">
+                    FilterWheel
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="heaters" type="checkbox" data-toggle="toggle">
+                    Heaters
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="aux" type="checkbox" data-toggle="toggle">
+                    Light Panel
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="focuser" type="checkbox" data-toggle="toggle">
+                    Focuser
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="weatherstation" type="checkbox" data-toggle="toggle">
+                    WeatherStation
+                </label>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id='indi'>
+            <button type="button" id="wakeonlan" data-loading-text="Waking PC..." class="btn btn-primary" autocomplete="off">
+              Wake PC
+            </button>
+        </div>
     </div>
-    <div class="checkbox">
-        <label>
-            <input id="ccd" type="checkbox" data-toggle="toggle">
-            CCD
-        </label>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input id="filterwheel" type="checkbox" data-toggle="toggle">
-            FilterWheel
-        </label>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input id="heaters" type="checkbox" data-toggle="toggle">
-            Heaters
-        </label>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input id="aux" type="checkbox" data-toggle="toggle">
-            Light Panel
-        </label>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input id="focuser" type="checkbox" data-toggle="toggle">
-            Focuser
-        </label>
-    </div>
-    <div class="checkbox">
-        <label>
-            <input id="weatherstation" type="checkbox" data-toggle="toggle">
-            WeatherStation
-        </label>
-    </div>
-</div>
 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -76,6 +87,15 @@
       .fail(function() {
           alert('failed')
       });
+
+      $('#wakeonlan').on('click', function () {
+          var $btn = $(this).button('loading')
+          $.get( 'pc/wake', function( data ) {
+            console.log(data);
+            $btn.button('reset')
+          });
+
+        })
 
       $('#switches input[type=checkbox]').change(
         function() {
