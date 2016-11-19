@@ -49,8 +49,7 @@
         function() {
             if($(this).is(":checked")) {
                 $.get( 'http://192.168.1.225:8080/power/'+$(this).attr('id')+'/on', function( data ) {
-                }).done(function() {
-                    alert('ok');
+                    alert(data);
                 })
                 .fail(function() {
                     alert('failed')
