@@ -14,10 +14,15 @@
     <![endif]-->
 </head>
 <body>
-   <ul class="nav nav-tabs" role="tablist">
-     <li role="presentation" class="active"><a href="#switches" aria-controls="switches" role="tab" data-toggle="tab">Switches</a></li>
-     <li role="presentation"><a href="#indi" aria-controls="indi" role="tab" data-toggle="tab">INDI</a></li>
-   </ul>
+<div class="container">
+<h1>Observatory Control</h1>
+
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#switches" aria-controls="switches" role="tab" data-toggle="tab">Switches</a>
+        </li>
+        <li role="presentation"><a href="#indi" aria-controls="indi" role="tab" data-toggle="tab">INDI</a></li>
+    </ul>
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id='switches'>
@@ -65,11 +70,13 @@
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id='indi'>
-            <button type="button" id="wakeonlan" data-loading-text="Waking PC..." class="btn btn-primary" autocomplete="off">
-              Wake PC
+            <button type="button" id="wakeonlan" data-loading-text="Waking PC..." class="btn btn-primary"
+                    autocomplete="off">
+                Wake PC
             </button>
         </div>
     </div>
+</div>
 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -127,6 +134,8 @@
             }
         })
     }
+
+
 
 </script>
 </body>
