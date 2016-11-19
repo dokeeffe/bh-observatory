@@ -14,9 +14,11 @@ valid_states = ['on','off']
 def power_change_state(socket,state):
     if(state not in valid_states):
         abort(400, "Bad request. You need to specify the correct device and power state")
-    if(socket == 'weatherstation'):
-        state = flip_state(state)
     command = state.upper() + str(socket_to_relay_map[socket])
+    if(socket == 'weatherstation'):
+        # We need to flip the on/off states for the weather station as its wired to a normally closed relay (off=on and on=off for that relay)
+        state = flip_state(state)
+        command = state.upper() + str(socket_to_relay_map[socket])
     send_arduino_command(board, command)
     socket_state_map[socket] = state.upper()
     return socket_state_map
