@@ -19,7 +19,7 @@ def power_change_state(socket,state):
     if(socket == 'weatherstation'):
         # We need to flip the on/off states for the weather station as its wired to a normally closed relay (off=on and on=off for that relay)
         command = flip_state(state).upper() + str(socket_to_relay_map[socket])
-    # send_arduino_command(board, command)
+    send_arduino_command(board, command)
     socket_state_map[socket] = state.upper()
     return socket_state_map
 
@@ -47,5 +47,5 @@ def send_arduino_command(board, cmd=[]):
     data = util.str_to_two_byte_iter(cmd+"\0")
     board.send_sysex(pyfirmata.pyfirmata.STRING_DATA, data)
 
-# board = Arduino('/dev/ttyUSB0')
+board = Arduino('/dev/ttyUSB0')
 run(host='0.0.0.0', port=8080)
