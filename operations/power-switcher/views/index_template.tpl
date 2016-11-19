@@ -86,12 +86,6 @@
       }).fail(function() {
           alert('failed')
       });
-     $.get( 'pc', function( data ) {
-         if( data.pc == 'OFF') {
-            $('#wakeonlan').prop('disabled', true)
-         }
-     });
-
 
       $('#wakeonlan').on('click', function () {
           var $btn = $(this).button('loading')
