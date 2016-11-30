@@ -95,9 +95,9 @@ class ObservatoryShutdownIndiClient(PyIndi.BaseClient):
         roof_motion[0].s = PyIndi.ISS_OFF  # the "CONNECT" switch
         roof_motion[1].s = PyIndi.ISS_ON  # the "DISCONNECT" switch
         indiclient.sendNewSwitch(roof_motion)  # send this new value to the device
-        while roof_motion[1].s == PyIndi.ISS_ON:
-            print 'waiting to close \n'
-            time.sleep(1)
+        # while roof_motion[1].s == PyIndi.ISS_ON:
+        #     print 'waiting to close \n'
+        #     time.sleep(1)
         print 'closing\n'
 
 
