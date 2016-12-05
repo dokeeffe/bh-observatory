@@ -42,32 +42,15 @@ class RoofSwitchInspector(object):
         time.sleep(self.MESSAGE_DELAY) #necessary to wait a short time for the message to come back over usb.
         return self.state
 
-    def wait_until(self, required_state):
-        '''
-        Waits until the required state has been reached (OPEN/CLOSE)
-        :param required_state:
-        :return:
-        '''
-        retry = 0
-        while retry < 30:
-            if self.query() == required_state:
-                return
-            retry += 1
-        raise RollOffTimeoutException()
-
-    def disconnect(self):
-        '''
-        Disconnect firmata from the device.
-        :return:
-        '''
+    def dispose(self):
+        super(Collector, self).dispose()
         try:
             self.board.exit()
         except AttributeError:
-            print("exit() raised an AttributeError unexpectedly!" + self.toString())
+            print "exit() raised an AttributeError unexpectedly!" + self.toString()
+
 
 if __name__ == '__main__':
     inspector = RoofSwitchInspector('/dev/ttyACM0')
-    print(inspector.query())
-    inspector.disconnect()
 
 
