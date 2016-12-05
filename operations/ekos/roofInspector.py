@@ -3,12 +3,6 @@ import pyfirmata
 import time
 
 class RoofSwitchInspector:
-    """
-    Handles the communication to arduino SensorReader
-    The arduino firmware publishes messages using firmata once per second with sensor readings.
-    This class is responsible for collection and persistance of readings.
-    AttachTo: ""
-    """
 
     NAME = "RoofSwitchInspector"
 
@@ -34,23 +28,22 @@ class RoofSwitchInspector:
         Send QUERY message to the roof device
         :return:
         '''
-        self.board.send_sysex(pyfirmata.pyfirmata.STRING_DATA, 'QUERY')
+        self.board.send_sysex(pyfirmata.pyfirmata.STRING_DATA, util.str_to_two_byte_iter('QUERY'))
 
     def getstate(self):
+        self.query()
+        time.sleep(0.5) 
         return self.state
 
-    def dispose(self):
-        super(RoofSwitchInspector, self).dispose()
+    def disconnect(self):
         try:
             self.board.exit()
         except AttributeError:
             print("exit() raised an AttributeError unexpectedly!" + self.toString())
 
 if __name__ == '__main__':
-    inspector = RoofSwitchInspector('/dev/tty/ACMA001')
+    inspector = RoofSwitchInspector('/dev/ttyACM0')
     print(inspector.getstate())
-    inspector.query()
-    time.sleep(1)
-    print(inspector.getstate())
+    inspector.disconnect()
 
 
