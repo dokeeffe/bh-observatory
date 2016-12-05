@@ -7,20 +7,27 @@ import time
 
 import sms
 from bhobs_indi_client import BhObservatoryIndiClient
+from roofInspector import RoofSwitchInspector
 
-def close_roof(roof_name, telescope_name, indiclient):
+
+def close_roof(roof_name, telescope_name, roof_inspector, indiclient):
     '''
     Safely close the roof. Send an SMS on close or on error
     :param roof_name:
     :param telescope_name:
+    :param roof_inspector
+    :param indiclient:
     :return:
     '''
     try:
         if indiclient.telescope_parked(telescope_name):
-            print('Telescope reports parked but this could also mean its parking so waiting 15sec before closing roof\n')
-            time.sleep(15)
+            print('Telescope reports parked but this could also mean its parking so wait before closing roof\n')
+            time.sleep(10)
             indiclient.close_roof(roof_name)
-            send_sms('Roof Closed http://52-8.xyz/images/snapshot.jpg')
+            if roof_inspector.query() == RoofSwitchInspector.CLOSED:
+                send_sms('Roof Closed http://52-8.xyz/images/snapshot.jpg')
+            else:
+                send_sms('Exception: Roof Did not Close http://52-8.xyz/images/snapshot.jpg')
         else:
             print('Sending exception SMS. Scope not parked\n')
             send_sms('Exception: cannot close roof as the telescope is not parked')
@@ -59,9 +66,12 @@ def poweroff():
     poweroff the pc with dbus-send --system --print-reply --dest="org.freedesktop.login1" /org/freedesktop/login1 org.freedesktop.login1.Manager.PowerOff boolean:true
     :return:
     '''
+    subprocess.call(['curl','http://192.168.2.225:8080/power/ccd/off'])
+    subprocess.call(['curl','http://192.168.2.225:8080/power/filterwheel/off'])
+    subprocess.call(['curl','http://192.168.2.225:8080/power/heaters/off'])
+    subprocess.call(['curl','http://192.168.2.225:8080/power/focuser/off'])
+    subprocess.call(['curl','http://192.168.2.225:8080/power/aux/off'])
     subprocess.call(['dbus-send --system --print-reply --dest="org.freedesktop.login1" /org/freedesktop/login1 org.freedesktop.login1.Manager.PowerOff boolean:true'], shell=True)
-
-
 
 print 'Sending shutting down SMS\n'
 config = ConfigParser.ConfigParser()
@@ -73,6 +83,7 @@ indiclient.setServer("localhost", 7624)
 if not indiclient.connectServer():
     send_sms('Aborting shutdown procedure, indi not running')
     raise Exception('Exception: No indiserver running')
-close_roof(config.get('INDI_DEVICES', 'roof') ,config.get('INDI_DEVICES', 'telescope'),indiclient)
+roof_inspector = RoofSwitchInspector(config.get('ROOF_CONTROLLER', 'usbaddress'))
+close_roof(config.get('INDI_DEVICES', 'roof') ,config.get('INDI_DEVICES', 'telescope'),roof_inspector,indiclient)
 warm_ccd(config.get('INDI_DEVICES', 'ccd'), indiclient)
 poweroff()

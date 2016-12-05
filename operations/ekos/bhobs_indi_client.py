@@ -159,8 +159,15 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         roof_motion[0].s = PyIndi.ISS_OFF
         roof_motion[1].s = PyIndi.ISS_ON
         self.sendNewSwitch(roof_motion)  # send this new value to the device
+        time.sleep(25)
 
     def set_ccd_temp(self, ccd_name, temp):
+        '''
+        Set the cooler temp on the ccd passed
+        :param ccd_name:
+        :param temp:
+        :return:
+        '''
         print('setting ccd temp for ' + ccd_name)
         device_ccd = self.safe_retry(self.getDevice, ccd_name)
         ccd_connect = self.safe_retry(device_ccd.getSwitch, 'CONNECTION')
@@ -169,11 +176,16 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
             ccd_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
             self.sendNewSwitch(ccd_connect)  # send this new value to the device
         ccd_temp = device_ccd.getNumber('CCD_TEMPERATURE')
-        ccd_temp[0].value=0
+        ccd_temp[0].value=temp
         self.sendNewNumber(ccd_temp)
         time.sleep(5) # need to wait for the cooler to kick in
 
     def get_ccd_temp(self, ccd_name):
+        '''
+        Get the current ccd cooler temp
+        :param ccd_name:
+        :return:
+        '''
         print('getting ccd temp for ' + ccd_name)
         device_ccd = self.safe_retry(self.getDevice, ccd_name)
         ccd_connect = self.safe_retry(device_ccd.getSwitch, 'CONNECTION')
