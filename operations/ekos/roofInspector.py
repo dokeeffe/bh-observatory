@@ -43,7 +43,7 @@ class RoofSwitchInspector(object):
         return self.state
 
     def dispose(self):
-        super(Collector, self).dispose()
+        super(RoofSwitchInspector, self).dispose()
         try:
             self.board.exit()
         except AttributeError:
