@@ -27,7 +27,7 @@ def send_sms(username, hash, number, message):
         response = urllib2.urlopen(req)
         response_url = response.geturl()
         if response_url==url:
-            print 'SMS sent!'
+            print 'SMS sent! ' + message
     except urllib2.URLError, e:
         print 'SMS Send failed!'
         print e.reason
