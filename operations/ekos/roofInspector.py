@@ -67,7 +67,7 @@ class RoofSwitchInspector(object):
 
 if __name__ == '__main__':
     inspector = RoofSwitchInspector('/dev/ttyACM0')
-    print(inspector.getstate())
+    print(inspector.query())
     inspector.disconnect()
 
 
