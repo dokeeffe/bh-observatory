@@ -6,7 +6,7 @@ import subprocess
 import time
 
 import sms
-from operations.ekos.bhobs_indi_client import BhObservatoryIndiClient
+from bhobs_indi_client import BhObservatoryIndiClient
 
 def close_roof(roof_name, telescope_name, indiclient):
     '''
@@ -75,4 +75,4 @@ if not indiclient.connectServer():
     raise Exception('Exception: No indiserver running')
 close_roof(config.get('INDI_DEVICES', 'roof') ,config.get('INDI_DEVICES', 'telescope'),indiclient)
 warm_ccd(config.get('INDI_DEVICES', 'ccd'), indiclient)
-# poweroff()
+poweroff()

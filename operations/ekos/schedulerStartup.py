@@ -4,7 +4,7 @@ import ConfigParser
 import os
 
 import sms
-from operations.ekos.bhobs_indi_client import BhObservatoryIndiClient
+from bhobs_indi_client import BhObservatoryIndiClient
 
 
 def startup_procedure(roof_name, telescope_name, ccd_name):
