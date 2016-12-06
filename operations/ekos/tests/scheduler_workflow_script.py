@@ -3,10 +3,10 @@
 import ConfigParser
 import os, sys
 
-from operations.ekos.bhobs_indi_client import BhObservatoryIndiClient
+from ... bhobs_indi_client import BhObservatoryIndiClient
 from fakes import FakeRoofSwitchInspector, FakePowerController
-from operations.ekos.message_senders import SmsMessageSender
-from operations.ekos.workflows import StartupWorkflow, ShutdownWorkflow
+from message_senders import SmsMessageSender
+from workflows import StartupWorkflow, ShutdownWorkflow
 
 '''
 This TEST script is intended to be called from EKOS scheduler running simulators.

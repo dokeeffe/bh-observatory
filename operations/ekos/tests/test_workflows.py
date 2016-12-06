@@ -106,7 +106,7 @@ class TestShutdownWorkflow(TestCase):
         config = configparser.ConfigParser()
         config.read('ops.cfg')
         indi_client = Mock()
-        indi_client_attrs = {'telescope_parked.return_value': False}
+        indi_client_attrs = {'telescope_parked.return_value': False, 'get_ccd_temp.return_value': 5}
         indi_client.configure_mock(**indi_client_attrs)
         roof_inspector = Mock()
         roof_inspector_attrs = {'query.return_value': 'OPEN'}
