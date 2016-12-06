@@ -1,7 +1,9 @@
 import time
 import subprocess
 
+
 class BaseWorkflow(object):
+
     '''
     These workflows are intended to be triggered by ekos scheduler on startup and shutdown
     '''
