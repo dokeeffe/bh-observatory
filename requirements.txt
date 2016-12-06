@@ -1,2 +1,1 @@
 pyfirmata>=1.0.3
-pyindi-client=0.1.0a1
