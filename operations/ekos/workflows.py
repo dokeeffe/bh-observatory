@@ -79,7 +79,7 @@ class ShutdownWorkflow(BaseWorkflow):
                     raise Exception('Roof did not close')
             else:
                 print('Sending exception SMS. Scope not parked ')
-                self.message_sender.send_message('Exception: cannot close roof as the telescope is not parked')
+                raise Exception('Cannot close roof as the telescope is not parked')
         except Exception as e:
             print('Sending exception SMS. Cause: ' + str(e))
             self.message_sender.send_message('ERROR: closing roof: ' + str(e))

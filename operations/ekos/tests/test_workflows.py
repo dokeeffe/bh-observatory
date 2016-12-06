@@ -106,7 +106,7 @@ class TestShutdownWorkflow(TestCase):
         config = configparser.ConfigParser()
         config.read('ops.cfg')
         indi_client = Mock()
-        indi_client_attrs = {'get_ccd_temp.return_value': 5, 'telescope_parked': False}
+        indi_client_attrs = {'telescope_parked.return_value': False}
         indi_client.configure_mock(**indi_client_attrs)
         roof_inspector = Mock()
         roof_inspector_attrs = {'query.return_value': 'OPEN'}
@@ -122,6 +122,6 @@ class TestShutdownWorkflow(TestCase):
         # Assert
         indi_client.close_roof.assert_not_called()
         indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -0.0)
-        message_sender.send_message.assert_called_with('Exception: Roof Did not Close http://52-8.xyz/images/snapshot.jpg')
+        message_sender.send_message.assert_called_with('ERROR: closing roof: Cannot close roof as the telescope is not parked')
         power_controller.poweroff_equipment.assert_called()
-        power_controller.poweroff_pc.assert_called()
+        power_controller.poweroff_pc.assert_not_called()
