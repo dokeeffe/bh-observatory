@@ -77,7 +77,7 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         roof_motion[1].s = PyIndi.ISS_OFF
         self.sendNewSwitch(roof_motion)  # send this new value to the device
         # TODO: Check here if the switch state changes before returning true
-        time.sleep(15)
+        time.sleep(20)
         print('roof open ')
         return True
 
