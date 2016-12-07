@@ -10,18 +10,14 @@ class TestStartupWorkflow(TestCase):
         config = configparser.ConfigParser()
         config.read('ops.cfg')
         indi_client = Mock()
-        roof_inspector = Mock()
-        attrs = {'query.return_value': 'OPEN'}
-        roof_inspector.configure_mock(**attrs)
         message_sender = Mock()
         power_controller = Mock()
-        wf = StartupWorkflow(indi_client, roof_inspector, message_sender, power_controller, config)
+        wf = StartupWorkflow(indi_client, message_sender, power_controller, config)
 
         # Test
         wf.start()
 
         # Assert
-        roof_inspector.query.assert_any_call()
         indi_client.open_roof.assert_called_with('RollOff Simulator')
         message_sender.send_message.assert_called_with('Roof Open http://52-8.xyz/images/snapshot.jpg')
         indi_client.unpark_scope.assert_called_with('Telescope Simulator')
@@ -32,19 +28,15 @@ class TestStartupWorkflow(TestCase):
         config = configparser.ConfigParser()
         config.read('ops.cfg')
         indi_client = Mock()
-        roof_inspector = Mock()
-        attrs = {'query.return_value': 'CLOSED'}
-        roof_inspector.configure_mock(**attrs)
         message_sender = Mock()
         power_controller = Mock()
-        wf = StartupWorkflow(indi_client, roof_inspector, message_sender, power_controller, config)
+        wf = StartupWorkflow(indi_client, message_sender, power_controller, config)
 
         # Test
         with self.assertRaises(Exception):
             wf.start()
 
         # Assert
-        roof_inspector.query.assert_any_call()
         indi_client.open_roof.assert_called_with('RollOff Simulator')
         indi_client.unpark_scope.assert_called_with('Telescope Simulator')
         indi_client.send_guide_pulse_to_mount.assert_called_with('Telescope Simulator')
@@ -59,19 +51,15 @@ class TestShutdownWorkflow(TestCase):
         indi_client = Mock()
         indi_client_attrs = {'get_ccd_temp.return_value': 5}
         indi_client.configure_mock(**indi_client_attrs)
-        roof_inspector = Mock()
-        roof_inspector_attrs = {'query.return_value': 'CLOSED'}
-        roof_inspector.configure_mock(**roof_inspector_attrs)
         message_sender = Mock()
         power_controller = Mock()
-        wf = ShutdownWorkflow(indi_client, roof_inspector, message_sender, power_controller, config)
+        wf = ShutdownWorkflow(indi_client, message_sender, power_controller, config)
 
         # Test
         wf.start()
 
         # Assert
         indi_client.close_roof.assert_called_with('RollOff Simulator')
-        roof_inspector.query.assert_any_call()
         indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -0.0)
         message_sender.send_message.assert_called_with('Roof Closed http://52-8.xyz/images/snapshot.jpg')
         power_controller.poweroff_equipment.assert_any_call()
@@ -83,12 +71,9 @@ class TestShutdownWorkflow(TestCase):
         indi_client = Mock()
         indi_client_attrs = {'get_ccd_temp.return_value': 5}
         indi_client.configure_mock(**indi_client_attrs)
-        roof_inspector = Mock()
-        roof_inspector_attrs = {'query.return_value': 'OPEN'}
-        roof_inspector.configure_mock(**roof_inspector_attrs)
         message_sender = Mock()
         power_controller = Mock()
-        wf = ShutdownWorkflow(indi_client, roof_inspector, message_sender, power_controller, config)
+        wf = ShutdownWorkflow(indi_client, message_sender, power_controller, config)
 
         # Test
         with self.assertRaises(Exception):
@@ -96,7 +81,6 @@ class TestShutdownWorkflow(TestCase):
 
         # Assert
         indi_client.close_roof.assert_called_with('RollOff Simulator')
-        roof_inspector.query.assert_any_call()
         indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -0.0)
         message_sender.send_message.assert_called_with('ERROR: closing roof: Roof did not close')
         power_controller.poweroff_equipment.assert_any_call()
@@ -108,12 +92,9 @@ class TestShutdownWorkflow(TestCase):
         indi_client = Mock()
         indi_client_attrs = {'telescope_parked.return_value': False, 'get_ccd_temp.return_value': 5}
         indi_client.configure_mock(**indi_client_attrs)
-        roof_inspector = Mock()
-        roof_inspector_attrs = {'query.return_value': 'OPEN'}
-        roof_inspector.configure_mock(**roof_inspector_attrs)
         message_sender = Mock()
         power_controller = Mock()
-        wf = ShutdownWorkflow(indi_client, roof_inspector, message_sender, power_controller, config)
+        wf = ShutdownWorkflow(indi_client, message_sender, power_controller, config)
 
         # Test
         with self.assertRaises(Exception):

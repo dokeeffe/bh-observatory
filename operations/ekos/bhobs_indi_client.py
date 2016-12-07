@@ -76,11 +76,21 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         roof_motion[0].s = PyIndi.ISS_ON
         roof_motion[1].s = PyIndi.ISS_OFF
         self.sendNewSwitch(roof_motion)  # send this new value to the device
-        # TODO: Check here if the switch state changes before returning true
-        time.sleep(20)
+        # self.wait_for_roof(roof_name, 'OPEN')
         print('roof open ')
         return True
 
+    def wait_for_roof(self, roof_name, required_state):
+        device_roof = self.safe_retry(self.getDevice, roof_name)
+        roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
+        if not (device_roof.isConnected()):
+            roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
+            roof_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
+            self.sendNewSwitch(roof_connect)  # send this new value to the device
+        roof_motion = self.safe_retry(device_roof.getSwitch, 'DOME_MOTION')
+        roof_state = device_roof.getNumber('STATE')
+        print(dir(roof_state))
+        print('roof_state='+str(roof_state[0].value))
 
     def unpark_scope(self, telescope_name):
         '''
@@ -159,7 +169,7 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         roof_motion[0].s = PyIndi.ISS_OFF
         roof_motion[1].s = PyIndi.ISS_ON
         self.sendNewSwitch(roof_motion)  # send this new value to the device
-        time.sleep(25)
+        # self.wait_for_roof(roof_name, 'CLOSED')
 
     def set_ccd_temp(self, ccd_name, temp):
         '''
@@ -198,3 +208,6 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         return ccd_temp[0].value
 
 
+if __name__ == '__main__':
+    ic = BhObservatoryIndiClient()
+    ic.wait_for_roof('AldiRoof')

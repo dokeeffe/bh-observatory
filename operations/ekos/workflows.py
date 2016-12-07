@@ -7,9 +7,8 @@ class BaseWorkflow(object):
     '''
     These workflows are intended to be triggered by ekos scheduler on startup and shutdown
     '''
-    def __init__(self, indi_client, roof_inspector, message_sender, power_controller, config):
+    def __init__(self, indi_client, message_sender, power_controller, config):
         self.indi_client = indi_client
-        self.roof_inspector = roof_inspector
         self.message_sender = message_sender
         self.power_controller = power_controller
         self.roof_name = config.get('INDI_DEVICES', 'roof')
@@ -37,13 +36,10 @@ class StartupWorkflow(BaseWorkflow):
                 print('indi not running ')
                 raise Exception('Exception: No indiserver running')
             self.indi_client.open_roof(self.roof_name)
+            self.message_sender.send_message('Roof Open http://52-8.xyz/images/snapshot.jpg')
             self.indi_client.unpark_scope(self.telescope_name)
             self.indi_client.send_guide_pulse_to_mount(self.telescope_name)
             self.indi_client.set_ccd_temp(self.ccd_name, -20)
-            if self.roof_inspector.query() != 'OPEN':
-                raise Exception('Roof did not open')
-            else:
-                self.message_sender.send_message('Roof Open http://52-8.xyz/images/snapshot.jpg')
         except Exception as e:
             self.message_sender.send_message('ERROR: in startup procedure ' + str(e))
             print('Sending exception SMS. Cause: ' + e.message)
@@ -75,10 +71,7 @@ class ShutdownWorkflow(BaseWorkflow):
         try:
             if self.indi_client.telescope_parked(self.telescope_name):
                 self.indi_client.close_roof(self.roof_name)
-                if self.roof_inspector.query() == 'CLOSED':
-                    self.message_sender.send_message('Roof Closed http://52-8.xyz/images/snapshot.jpg')
-                else:
-                    raise Exception('Roof did not close')
+                self.message_sender.send_message('Roof Closed http://52-8.xyz/images/snapshot.jpg')
             else:
                 print('Sending exception SMS. Scope not parked ')
                 raise Exception('Cannot close roof as the telescope is not parked')
