@@ -8,8 +8,12 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
     Simple Indi client used to communicate with telescope, roof and ccd drivers for a startup and shutdown procedure.
     '''
 
-    def __init__(self):
+    def __init__(self, host, port, roof_name, telescope_name, ccd_name):
         super(BhObservatoryIndiClient, self).__init__()
+        ic.setServer(host,port)
+        self.roof_name = roof_name
+        self.telescope_name = telescope_name
+        self.ccd_name = ccd_name
 
     def newDevice(self, d):
         pass
@@ -59,14 +63,14 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
             retry += 1
         return result
 
-    def open_roof(self, roof_name):
+    def open_roof(self):
         '''
         Tries to open the roof, returns true if the roof is opened
         :param roof_name:
         :return:
         '''
         print('opening roof ')
-        device_roof = self.safe_retry(self.getDevice, roof_name)
+        device_roof = self.safe_retry(self.getDevice, self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -80,26 +84,40 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         print('roof open ')
         return True
 
-    def wait_for_roof(self, roof_name, required_state):
-        device_roof = self.safe_retry(self.getDevice, roof_name)
+    def wait_for_roof(self, required_state):
+        '''
+        Wait for the roof to reach a required state, raise a RuntimeError if it fails to reach the state within 30sec
+        :param roof_name:
+        :param required_state:
+        :return:
+        '''
+        print('checking ' + self.roof_name)
+        device_roof = self.safe_retry(self.getDevice, self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             roof_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
             self.sendNewSwitch(roof_connect)  # send this new value to the device
-        roof_motion = self.safe_retry(device_roof.getSwitch, 'DOME_MOTION')
-        roof_state = device_roof.getNumber('STATE')
-        print(dir(roof_state))
-        print('roof_state='+str(roof_state[0].value))
+        actual_state = 'UNKNOWN'
+        retry = 0
+        while retry < 30:
+            roof_state = device_roof.getText('STATE')
+            actual_state = str(roof_state[0].text)
+            if actual_state == required_state:
+                return
+            print('actual roof state:{}' + actual_state)
+            time.sleep(1)
+            retry +=1
+        raise RuntimeError('Roof did not reach ' + required_state + ' within 30sec')
 
-    def unpark_scope(self, telescope_name):
+    def unpark_scope(self):
         '''
         Unpark the telescope
         :param telescope_name:
         :return:
         '''
         print('start unpark')
-        device_telescope = self.safe_retry(self.getDevice, telescope_name)
+        device_telescope = self.safe_retry(self.getDevice, self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -115,7 +133,7 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         else:
             print('scope already unparked')
 
-    def send_guide_pulse_to_mount(self, telescope_name):
+    def send_guide_pulse_to_mount(self):
         '''
         The single guide pulse is needed as the CPC1100 has a weird quirk that the first guide pulse sent through the
         driver after startup causes the mount to move a couple of arcmin.
@@ -125,7 +143,7 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :param telescope_name:
         :return:
         '''
-        device_telescope = self.safe_retry(self.getDevice, telescope_name)
+        device_telescope = self.safe_retry(self.getDevice)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -137,13 +155,13 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         self.sendNewNumber(pulse_guide)
 
 
-    def telescope_parked(self, telescope_name):
+    def telescope_parked(self):
         '''
         Return true if the telescope is parked
         :param telescope_name:
         :return:
         '''
-        device_telescope = self.safe_retry(self.getDevice, telescope_name)
+        device_telescope = self.safe_retry(self.getDevice, self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -153,13 +171,13 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         telescope_park = self.safe_retry(device_telescope.getSwitch, 'TELESCOPE_PARK')
         return telescope_park[0].s == PyIndi.ISS_ON
 
-    def close_roof(self, roof_name):
+    def close_roof(self):
         '''
         Press the 'close' button on the roof passed. Works with indi rolloff simulator and custom roll off roofs only
         :param roof_name:
         :return:
         '''
-        device_roof = self.safe_retry(self.getDevice, roof_name)
+        device_roof = self.safe_retry(self.getDevice, self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -171,15 +189,15 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         self.sendNewSwitch(roof_motion)  # send this new value to the device
         # self.wait_for_roof(roof_name, 'CLOSED')
 
-    def set_ccd_temp(self, ccd_name, temp):
+    def set_ccd_temp(self, temp):
         '''
         Set the cooler temp on the ccd passed
         :param ccd_name:
         :param temp:
         :return:
         '''
-        print('setting ccd temp for ' + ccd_name)
-        device_ccd = self.safe_retry(self.getDevice, ccd_name)
+        print('setting ccd temp for ' + self.ccd_name)
+        device_ccd = self.safe_retry(self.getDevice, self.ccd_name)
         ccd_connect = self.safe_retry(device_ccd.getSwitch, 'CONNECTION')
         if not (device_ccd.isConnected()):
             ccd_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -190,14 +208,14 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         self.sendNewNumber(ccd_temp)
         time.sleep(5) # need to wait for the cooler to kick in
 
-    def get_ccd_temp(self, ccd_name):
+    def get_ccd_temp(self):
         '''
         Get the current ccd cooler temp
         :param ccd_name:
         :return:
         '''
-        print('getting ccd temp for ' + ccd_name)
-        device_ccd = self.safe_retry(self.getDevice, ccd_name)
+        print('getting ccd temp for ' + self.ccd_name)
+        device_ccd = self.safe_retry(self.getDevice, self.ccd_name)
         ccd_connect = self.safe_retry(device_ccd.getSwitch, 'CONNECTION')
         if not (device_ccd.isConnected()):
             ccd_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -209,5 +227,6 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
 
 
 if __name__ == '__main__':
-    ic = BhObservatoryIndiClient()
-    ic.wait_for_roof('AldiRoof')
+    ic = BhObservatoryIndiClient("localhost", 7624,'Aldi Roof','CCD Simulator')
+    ic.connectServer()
+    ic.wait_for_roof('OPEN')
