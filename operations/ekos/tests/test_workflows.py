@@ -28,6 +28,8 @@ class TestStartupWorkflow(TestCase):
         config = configparser.ConfigParser()
         config.read('ops.cfg')
         indi_client = Mock()
+        indi_client_attrs = {'open_roof.side_effect': RuntimeError('Roof did not open')}
+        indi_client.configure_mock(**indi_client_attrs)
         message_sender = Mock()
         power_controller = Mock()
         wf = StartupWorkflow(indi_client, message_sender, power_controller, config)
@@ -38,9 +40,8 @@ class TestStartupWorkflow(TestCase):
 
         # Assert
         indi_client.open_roof.assert_called_with('RollOff Simulator')
-        indi_client.unpark_scope.assert_called_with('Telescope Simulator')
-        indi_client.send_guide_pulse_to_mount.assert_called_with('Telescope Simulator')
-        indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -20)
+        indi_client.unpark_scope.assert_not_called()
+        indi_client.send_guide_pulse_to_mount.assert_not_called()
         message_sender.send_message.assert_called_with('ERROR: in startup procedure Roof did not open')
 
 class TestShutdownWorkflow(TestCase):
@@ -69,7 +70,7 @@ class TestShutdownWorkflow(TestCase):
         config = configparser.ConfigParser()
         config.read('ops.cfg')
         indi_client = Mock()
-        indi_client_attrs = {'get_ccd_temp.return_value': 5}
+        indi_client_attrs = {'get_ccd_temp.return_value': 5, 'close_roof.side_effect': RuntimeError('Roof did not close')}
         indi_client.configure_mock(**indi_client_attrs)
         message_sender = Mock()
         power_controller = Mock()

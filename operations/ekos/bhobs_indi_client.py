@@ -10,7 +10,7 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
 
     def __init__(self, host, port, roof_name, telescope_name, ccd_name):
         super(BhObservatoryIndiClient, self).__init__()
-        ic.setServer(host,port)
+        self.setServer(host,port)
         self.roof_name = roof_name
         self.telescope_name = telescope_name
         self.ccd_name = ccd_name
