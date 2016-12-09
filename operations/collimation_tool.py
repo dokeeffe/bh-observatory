@@ -42,8 +42,8 @@ class IndiClient(PyIndi.BaseClient):
 # Constants
 normalise_upper = 20000
 normalise = False
-exposure_time = 1
-ccd="ATIK CCD"
+exposure_time = 3
+ccd="Atik 383L+ CCD"
 section_size = 200
 
 # connect the server
@@ -72,15 +72,6 @@ ccd_exposure=device_ccd.getNumber("CCD_EXPOSURE")
 while not(ccd_exposure):
     time.sleep(0.5)
     ccd_exposure=device_ccd.getNumber("CCD_EXPOSURE")
-
-# Ensure the CCD simulator snoops the telescope simulator
-# otherwise you may not have a picture of vega
-ccd_active_devices=device_ccd.getText("ACTIVE_DEVICES")
-while not(ccd_active_devices):
-    time.sleep(0.5)
-    ccd_active_devices=device_ccd.getText("ACTIVE_DEVICES")
-ccd_active_devices[0].text="Telescope Simulator"
-indiclient.sendNewText(ccd_active_devices)
 
 # we should inform the indi server that we want to receive the
 # "CCD1" blob from this device
