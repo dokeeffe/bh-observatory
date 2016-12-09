@@ -1,2 +1,3 @@
 pyfirmata>=1.0.3
 configparser>=3.5.0
+pyindi-client>=0.1.0a1
