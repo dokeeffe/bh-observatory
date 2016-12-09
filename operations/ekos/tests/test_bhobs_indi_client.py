@@ -2,7 +2,6 @@ from unittest import TestCase
 from ..bhobs_indi_client import BhObservatoryIndiClient, BhObservatoryIndiAdapter
 from unittest.mock import Mock
 from unittest.mock import call
-import PyIndi
 
 class TestBhObservatoryIndiAdapter(TestCase):
 
@@ -36,8 +35,8 @@ class TestBhObservatoryIndiAdapter(TestCase):
         sut.open_roof()
 
         # Assert
-        assert self.mock_connect_switch.s == PyIndi.ISS_ON
-        assert self.mock_disconnect_switch.s == PyIndi.ISS_OFF
+        assert self.mock_connect_switch.s == 1
+        assert self.mock_disconnect_switch.s == 0
         self.mock_indi_client.sendNewSwitch.assert_called_with([self.mock_connect_switch,self.mock_disconnect_switch])
         self.mock_roof_device.getSwitch.assert_has_calls([call('CONNECTION'),call('DOME_MOTION')])
 
