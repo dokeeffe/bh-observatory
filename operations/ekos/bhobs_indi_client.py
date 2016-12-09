@@ -4,16 +4,9 @@ import PyIndi
 import time
 
 class BhObservatoryIndiClient(PyIndi.BaseClient):
-    '''
-    Simple Indi client used to communicate with telescope, roof and ccd drivers for a startup and shutdown procedure.
-    '''
-
-    def __init__(self, host, port, roof_name, telescope_name, ccd_name):
+    def __init__(self, host, port):
         super(BhObservatoryIndiClient, self).__init__()
         self.setServer(host,port)
-        self.roof_name = roof_name
-        self.telescope_name = telescope_name
-        self.ccd_name = ccd_name
 
     def newDevice(self, d):
         pass
@@ -48,6 +41,21 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
     def serverDisconnected(self, code):
         pass
 
+
+class BhObservatoryIndiAdapter():
+    '''
+    Simple Indi client used to communicate with telescope, roof and ccd drivers for a startup and shutdown procedure.
+    The adapter pattern is used to make this code easier to unit test.
+    '''
+
+    def __init__(self, indi_client, roof_name, telescope_name, ccd_name):
+        self.indi_client =indi_client
+        self.roof_name = roof_name
+        self.telescope_name = telescope_name
+        self.ccd_name = ccd_name
+        self.indi_client.connectServer()
+        self.retry_limit=30
+
     def safe_retry(self, func, arg):
         '''
         Utility function to safely retry indi functions. Indi functions dont always return the object on the first call as the device may not be ready
@@ -70,19 +78,18 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :return:
         '''
         print('opening roof ')
-        device_roof = self.safe_retry(self.getDevice, self.roof_name)
+        device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             roof_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(roof_connect)  # send this new value to the device
+            self.indi_client.sendNewSwitch(roof_connect)  # send this new value to the device
         roof_motion = self.safe_retry(device_roof.getSwitch, 'DOME_MOTION')
         roof_motion[0].s = PyIndi.ISS_ON
         roof_motion[1].s = PyIndi.ISS_OFF
-        self.sendNewSwitch(roof_motion)  # send this new value to the device
-        # self.wait_for_roof(roof_name, 'OPEN')
+        self.indi_client.sendNewSwitch(roof_motion)  # send this new value to the device
+        self.wait_for_roof('OPEN')
         print('roof open ')
-        return True
 
     def wait_for_roof(self, required_state):
         '''
@@ -92,20 +99,19 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :return:
         '''
         print('checking ' + self.roof_name)
-        device_roof = self.safe_retry(self.getDevice, self.roof_name)
+        device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             roof_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(roof_connect)  # send this new value to the device
-        actual_state = 'UNKNOWN'
+            self.indi_client.sendNewSwitch(roof_connect)  # send this new value to the device
         retry = 0
-        while retry < 30:
+        while retry < self.retry_limit:
             roof_state = device_roof.getText('STATE')
-            actual_state = str(roof_state[0].text)
+            actual_state = str(roof_state[0].text) if roof_state else 'UNKNOWN'
             if actual_state == required_state:
                 return
-            print('actual roof state:{}' + actual_state)
+            print('actual roof state:' + actual_state)
             time.sleep(1)
             retry +=1
         raise RuntimeError('Roof did not reach ' + required_state + ' within 30sec')
@@ -117,19 +123,19 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :return:
         '''
         print('start unpark')
-        device_telescope = self.safe_retry(self.getDevice, self.telescope_name)
+        device_telescope = self.safe_retry(self.indi_client.getDevice, self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             telescope_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(telescope_connect)  # send this new value to the device
+            self.indi_client.sendNewSwitch(telescope_connect)  # send this new value to the device
         telescope_park = self.safe_retry(device_telescope.getSwitch, 'TELESCOPE_PARK')
         parked = telescope_park[0].s == PyIndi.ISS_ON
         if parked:
             telescope_park[0].s = PyIndi.ISS_OFF
             telescope_park[1].s = PyIndi.ISS_ON
             print('unparking scope')
-            self.sendNewSwitch(telescope_park)  # send this new value to the device
+            self.indi_client.sendNewSwitch(telescope_park)  # send this new value to the device
         else:
             print('scope already unparked')
 
@@ -143,12 +149,12 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :param telescope_name:
         :return:
         '''
-        device_telescope = self.safe_retry(self.getDevice)
+        device_telescope = self.safe_retry(self.indi_client.getDevice)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             telescope_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(telescope_connect)  # send this new value to the device
+            self.indi_client.sendNewSwitch(telescope_connect)  # send this new value to the device
         pulse_guide = self.safe_retry(device_telescope.getNumber, 'TELESCOPE_TIMED_GUIDE_NS')
         pulse_guide[0].value = 20
         print('sending pulse guide ')
@@ -161,12 +167,12 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :param telescope_name:
         :return:
         '''
-        device_telescope = self.safe_retry(self.getDevice, self.telescope_name)
+        device_telescope = self.safe_retry(self.indi_client.getDevice, self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             telescope_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(telescope_connect)  # send this new value to the device
+            self.indi_client.sendNewSwitch(telescope_connect)  # send this new value to the device
 
         telescope_park = self.safe_retry(device_telescope.getSwitch, 'TELESCOPE_PARK')
         return telescope_park[0].s == PyIndi.ISS_ON
@@ -177,17 +183,17 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :param roof_name:
         :return:
         '''
-        device_roof = self.safe_retry(self.getDevice, self.roof_name)
+        device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             roof_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(roof_connect)  # send this new value to the device
+            self.indi_client.sendNewSwitch(roof_connect)  # send this new value to the device
         roof_motion = self.safe_retry(device_roof.getSwitch, 'DOME_MOTION')
         roof_motion[0].s = PyIndi.ISS_OFF
         roof_motion[1].s = PyIndi.ISS_ON
-        self.sendNewSwitch(roof_motion)  # send this new value to the device
-        # self.wait_for_roof(roof_name, 'CLOSED')
+        self.indi_client.sendNewSwitch(roof_motion)  # send this new value to the device
+        self.wait_for_roof('CLOSED')
 
     def set_ccd_temp(self, temp):
         '''
@@ -197,15 +203,15 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :return:
         '''
         print('setting ccd temp for ' + self.ccd_name)
-        device_ccd = self.safe_retry(self.getDevice, self.ccd_name)
+        device_ccd = self.safe_retry(self.indi_client.getDevice, self.ccd_name)
         ccd_connect = self.safe_retry(device_ccd.getSwitch, 'CONNECTION')
         if not (device_ccd.isConnected()):
             ccd_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             ccd_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(ccd_connect)  # send this new value to the device
+            self.indi_client.sendNewSwitch(ccd_connect)  # send this new value to the device
         ccd_temp = device_ccd.getNumber('CCD_TEMPERATURE')
         ccd_temp[0].value=temp
-        self.sendNewNumber(ccd_temp)
+        self.indi_client.sendNewNumber(ccd_temp)
         time.sleep(5) # need to wait for the cooler to kick in
 
     def get_ccd_temp(self):
@@ -215,18 +221,18 @@ class BhObservatoryIndiClient(PyIndi.BaseClient):
         :return:
         '''
         print('getting ccd temp for ' + self.ccd_name)
-        device_ccd = self.safe_retry(self.getDevice, self.ccd_name)
+        device_ccd = self.safe_retry(self.indi_client.getDevice, self.ccd_name)
         ccd_connect = self.safe_retry(device_ccd.getSwitch, 'CONNECTION')
         if not (device_ccd.isConnected()):
             ccd_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             ccd_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.sendNewSwitch(ccd_connect)  # send this new value to the device
+            self.indi_client.sendNewSwitch(ccd_connect)  # send this new value to the device
         ccd_temp = device_ccd.getNumber('CCD_TEMPERATURE')
         print('temp='+str(ccd_temp[0].value))
         return ccd_temp[0].value
 
 
 if __name__ == '__main__':
-    ic = BhObservatoryIndiClient("localhost", 7624,'Aldi Roof','CCD Simulator')
-    ic.connectServer()
-    ic.wait_for_roof('OPEN')
+    ic = BhObservatoryIndiClient("localhost", 7624)
+    indi = BhObservatoryIndiAdapter(ic,'RollOff Simulator','Telescope Simulator','CCD Simulator')
+    indi.wait_for_roof('OPEN')

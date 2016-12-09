@@ -3,17 +3,13 @@ import subprocess
 
 
 class BaseWorkflow(object):
-
     '''
     These workflows are intended to be triggered by ekos scheduler on startup and shutdown
     '''
-    def __init__(self, indi_client, message_sender, power_controller, config):
-        self.indi_client = indi_client
+    def __init__(self, indi, message_sender, power_controller, config):
+        self.indi = indi
         self.message_sender = message_sender
         self.power_controller = power_controller
-        self.roof_name = config.get('INDI_DEVICES', 'roof')
-        self.telescope_name = config.get('INDI_DEVICES', 'telescope')
-        self.ccd_name = config.get('INDI_DEVICES', 'ccd')
         self.powerswitcher_api = config.get('DEVICES', 'powerswitcher_api')
 
 
@@ -32,14 +28,14 @@ class StartupWorkflow(BaseWorkflow):
         :return:
         '''
         try:
-            if not self.indi_client.connectServer():
+            if not self.indi.connectServer():
                 print('indi not running ')
                 raise Exception('Exception: No indiserver running')
-            self.indi_client.open_roof(self.roof_name)
+            self.indi.open_roof()
             self.message_sender.send_message('Roof Open http://52-8.xyz/images/snapshot.jpg')
-            self.indi_client.unpark_scope(self.telescope_name)
-            self.indi_client.send_guide_pulse_to_mount(self.telescope_name)
-            self.indi_client.set_ccd_temp(self.ccd_name, -20)
+            self.indi.unpark_scope()
+            self.indi.send_guide_pulse_to_mount()
+            self.indi.set_ccd_temp(-20)
         except Exception as e:
             self.message_sender.send_message('ERROR: in startup procedure ' + str(e))
             print('Sending exception SMS. Cause: ' + e.message)
@@ -58,6 +54,9 @@ class ShutdownWorkflow(BaseWorkflow):
             poweroff pc
         :return:
         '''
+        if not self.indi.connectServer():
+            print('indi not running ')
+            raise Exception('Exception: No indiserver running')
         self._warm_ccd()
         self.power_controller.poweroff_equipment()
         self._close_roof()
@@ -69,8 +68,8 @@ class ShutdownWorkflow(BaseWorkflow):
         :return:
         '''
         try:
-            if self.indi_client.telescope_parked(self.telescope_name):
-                self.indi_client.close_roof(self.roof_name)
+            if self.indi.telescope_parked():
+                self.indi.close_roof()
                 self.message_sender.send_message('Roof Closed http://52-8.xyz/images/snapshot.jpg')
             else:
                 print('Sending exception SMS. Scope not parked ')
@@ -85,9 +84,9 @@ class ShutdownWorkflow(BaseWorkflow):
         Warm the CCD
         :return:
         '''
-        self.indi_client.set_ccd_temp(self.ccd_name, 0.0)
+        self.indi.set_ccd_temp(0.0)
         retry = 0
-        while self.indi_client.get_ccd_temp(self.ccd_name) < -5 and retry < 300:
+        while self.indi.get_ccd_temp() < -5 and retry < 300:
             time.sleep(1)
             retry += 1
 

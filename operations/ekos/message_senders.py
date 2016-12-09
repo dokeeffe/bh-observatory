@@ -8,7 +8,7 @@ class SmsMessageSender(object):
     Message sender that uses txtlocal.com gateway to send SMS
     This message sender is only compatable with python 3 because of the way they changed urllib in python3...
     '''
-    def __init__(self, user, apikey, phonenumber, test_flag=0):
+    def __init__(self, user, apikey, phonenumber, test_flag=1):
         '''
 
         :param user: user

@@ -18,11 +18,11 @@ class TestStartupWorkflow(TestCase):
         wf.start()
 
         # Assert
-        indi_client.open_roof.assert_called_with('RollOff Simulator')
+        indi_client.open_roof.assert_called_with()
         message_sender.send_message.assert_called_with('Roof Open http://52-8.xyz/images/snapshot.jpg')
-        indi_client.unpark_scope.assert_called_with('Telescope Simulator')
-        indi_client.send_guide_pulse_to_mount.assert_called_with('Telescope Simulator')
-        indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -20)
+        indi_client.unpark_scope.assert_called_with()
+        indi_client.send_guide_pulse_to_mount.assert_called_with()
+        indi_client.set_ccd_temp.assert_called_with(-20)
 
     def test_start_when_roof_does_not_open_then_exception_raised_and_message_sent(self):
         config = configparser.ConfigParser()
@@ -39,7 +39,7 @@ class TestStartupWorkflow(TestCase):
             wf.start()
 
         # Assert
-        indi_client.open_roof.assert_called_with('RollOff Simulator')
+        indi_client.open_roof.assert_called_with()
         indi_client.unpark_scope.assert_not_called()
         indi_client.send_guide_pulse_to_mount.assert_not_called()
         message_sender.send_message.assert_called_with('ERROR: in startup procedure Roof did not open')
@@ -60,8 +60,8 @@ class TestShutdownWorkflow(TestCase):
         wf.start()
 
         # Assert
-        indi_client.close_roof.assert_called_with('RollOff Simulator')
-        indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -0.0)
+        indi_client.close_roof.assert_called_with()
+        indi_client.set_ccd_temp.assert_called_with(-0.0)
         message_sender.send_message.assert_called_with('Roof Closed http://52-8.xyz/images/snapshot.jpg')
         power_controller.poweroff_equipment.assert_any_call()
         power_controller.poweroff_pc.assert_any_call()
@@ -81,8 +81,8 @@ class TestShutdownWorkflow(TestCase):
             wf.start()
 
         # Assert
-        indi_client.close_roof.assert_called_with('RollOff Simulator')
-        indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -0.0)
+        indi_client.close_roof.assert_called_with()
+        indi_client.set_ccd_temp.assert_called_with(-0.0)
         message_sender.send_message.assert_called_with('ERROR: closing roof: Roof did not close')
         power_controller.poweroff_equipment.assert_any_call()
         power_controller.poweroff_pc.assert_not_called()
@@ -103,7 +103,7 @@ class TestShutdownWorkflow(TestCase):
 
         # Assert
         indi_client.close_roof.assert_not_called()
-        indi_client.set_ccd_temp.assert_called_with('CCD Simulator', -0.0)
+        indi_client.set_ccd_temp.assert_called_with(-0.0)
         message_sender.send_message.assert_called_with('ERROR: closing roof: Cannot close roof as the telescope is not parked')
         power_controller.poweroff_equipment.assert_any_call()
         power_controller.poweroff_pc.assert_not_called()
