@@ -6,7 +6,7 @@ notifications:
 
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y libindi-dev
+  - sudo apt-get install -y libindi1 indi-bin
   - sudo apt-get install -y swig
 
 # command to install dependencies
