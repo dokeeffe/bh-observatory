@@ -7,11 +7,11 @@ notifications:
   email: false
 
 before_install:
-  - sudo add-apt-repository ppa:mutlaqja/ppa -y
+  - sudo add-apt-repository universe
   - apt-cache policy
   - sudo apt-get update
   - sudo apt-cache search indi
-  - sudo apt-get install -y indi-bin
+  - sudo apt-get install -y indi-full
   - sudo apt-get install -y swig
 
 # command to install dependencies
