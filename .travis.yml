@@ -8,7 +8,7 @@ before_install:
   - sudo add-apt-repository ppa:mutlaqja/ppa -y
   - sudo apt-get update -qq
   - sudo apt-cache search indi
-  - sudo apt-get install -y indi-full
+  - sudo apt-get install -y indi-bin
   - sudo apt-get install -y swig
 
 # command to install dependencies
