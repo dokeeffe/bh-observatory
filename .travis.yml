@@ -7,9 +7,10 @@ notifications:
   email: false
 
 before_install:
-  - wget https://launchpad.net/~mutlaqja/+archive/ubuntu/ppa/+files/indi-full_1.3~201612071941~ubuntu15.10.1_amd64.deb
-  - sudo dpkg -i indi-full_1.3~201612071941~ubuntu15.10.1_amd64.deb
-  - sudo apt-get update -qq
+  - sudo add-apt-repository ppa:mutlaqja/ppa -y
+  - apt-cache policy
+  - sudo apt-get update
+  - sudo apt-cache search indi
   - sudo apt-get install -y indi-bin
   - sudo apt-get install -y swig
 
