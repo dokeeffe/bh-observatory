@@ -6,7 +6,7 @@ notifications:
 
 before_install:
   - sudo add-apt-repository ppa:mutlaqja/ppa -y
-  - sudo apt-get -qq update
+  - sudo apt-get update -q
   - sudo apt-get install -y indi-full
   - sudo apt-get install -y swig
 
