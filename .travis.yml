@@ -9,11 +9,15 @@ notifications:
 before_install:
   - sudo add-apt-repository multiverse
   - sudo add-apt-repository restricted
-  - apt-cache policy
-  - sudo apt-get update
-  - sudo apt-cache search indi
-  - sudo apt-get install -y kstars
+  - sudo apt-get install -y libnova-dev libcfitsio3-dev libusb-1.0-0-dev zlib1g-dev libgsl0-dev build-essential cmake git libjpeg-dev libcurl4-gnutls-dev
   - sudo apt-get install -y swig
+  - git clone https://github.com/indilib/indi.git
+  - cd indi
+  - mkdir -p build/libindi
+  - cd build/libindi
+  - cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ../../libindi
+  - make
+  - sudo make install
 
 # command to install dependencies
 install: "pip install -r requirements.txt"
