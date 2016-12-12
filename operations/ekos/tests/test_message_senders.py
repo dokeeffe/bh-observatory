@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock
 from unittest.mock import patch
 
-from ..message_senders import SmsMessageSender
+from message_senders import SmsMessageSender
 
 
 class TestSmsMessageSender(TestCase):
