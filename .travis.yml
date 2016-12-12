@@ -12,7 +12,7 @@ before_install:
   - apt-cache policy
   - sudo apt-get update
   - sudo apt-cache search indi
-  - sudo apt-get install -y indi-full
+  - sudo apt-get install -y kstars
   - sudo apt-get install -y swig
 
 # command to install dependencies
