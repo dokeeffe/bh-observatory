@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SequenceQueue version='1.5'>
+    <GuideDeviation enabled='false'>2</GuideDeviation>
+    <Autofocus enabled='${autofocus_enabled}'>0</Autofocus>
+    <MeridianFlip enabled='false'>0</MeridianFlip>
+    <Job>
+        <Exposure>${exposure}</Exposure>
+        <Binning>
+            <X>${binning}</X>
+            <Y>${binning}</Y>
+        </Binning>
+        <Frame>
+            <X>0</X>
+            <Y>0</Y>
+            <W>3326</W>
+            <H>2504</H>
+        </Frame>
+        <Temperature force='true'>${temperature}</Temperature>
+        <Filter>${filter}</Filter>
+        <Type>${type}</Type>
+        <Prefix>
+            <RawPrefix></RawPrefix>
+            <FilterEnabled>0</FilterEnabled>
+            <ExpEnabled>0</ExpEnabled>
+            <TimeStampEnabled>0</TimeStampEnabled>
+        </Prefix>
+        <Count>${count}</Count>
+        <Delay>${delay}</Delay>
+        <FITSDirectory>${fits_dir}</FITSDirectory>
+        <UploadMode>0</UploadMode>
+        <Calibration>
+            <FlatSource>
+                <Type>Manual</Type>
+            </FlatSource>
+            <FlatDuration>
+                <Type>Manual</Type>
+            </FlatDuration>
+            <PreMountPark>False</PreMountPark>
+            <PreDomePark>False</PreDomePark>
+        </Calibration>
+    </Job>
+</SequenceQueue>

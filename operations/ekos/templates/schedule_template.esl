@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SchedulerList version='1.2'>
+    % for job in jobs:
+    <Job>
+        <Name>${job['name']}</Name>
+        <Priority>${job['priority']}</Priority>
+        <Coordinates>
+            <J2000RA>${job['ra']}</J2000RA>
+            <J2000DE>${job['dec']}</J2000DE>
+        </Coordinates>
+        <Sequence>${job['sequence']}</Sequence>
+        <StartupCondition>
+            <Condition>ASAP</Condition>
+        </StartupCondition>
+        <Constraints>
+            <Constraint value='30'>MinimumAltitude</Constraint>
+            <Constraint>EnforceWeather</Constraint>
+            <Constraint>EnforceTwilight</Constraint>
+        </Constraints>
+        <CompletionCondition>
+            <Condition>Sequence</Condition>
+        </CompletionCondition>
+        <Profile>Default</Profile>
+        <Steps>
+            <Step>Track</Step>
+            <Step>Focus</Step>
+            <Step>Align</Step>
+            <Step>Guide</Step>
+        </Steps>
+    </Job>
+    % endfor
+    <StartupProcedure>
+    </StartupProcedure>
+    <ShutdownProcedure>
+        <Procedure>WarmCCD</Procedure>
+        <Procedure>ParkMount</Procedure>
+        <Procedure value='/home/dokeeffe/code/github/bh-observatory/operations/ekos/schedulerShutdown.sh'>ShutdownScript</Procedure>
+    </ShutdownProcedure>
+</SchedulerList>

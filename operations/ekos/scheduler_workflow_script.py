@@ -3,7 +3,7 @@
 import configparser
 import os, sys
 
-from bhobs_indi_client import BhObservatoryIndiClient
+from bhobs_indi_client import BhObservatoryIndiClient, BhObservatoryIndiAdapter
 from workflows import StartupWorkflow, ShutdownWorkflow, PowerController
 from message_senders import SmsMessageSender
 
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     message_sender.send_message('Starting observatory startup procedure')
     try:
         indiclient = BhObservatoryIndiClient("localhost", 7624)
-        indi_wrapper = BhObservatoryIndiClient(indiclient, config.get('INDI_DEVICES', 'roof'),
+        indi_wrapper = BhObservatoryIndiAdapter(indiclient, config.get('INDI_DEVICES', 'roof'),
                                              config.get('INDI_DEVICES', 'telescope'), config.get('INDI_DEVICES', 'ccd'))
         power_controller = PowerController(config.get('DEVICES', 'powerswitcher_api'))
         if sys.argv[1] == 'startup':
