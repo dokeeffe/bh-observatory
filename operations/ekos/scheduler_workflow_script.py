@@ -20,7 +20,7 @@ if __name__ == '__main__':
     basedir = os.path.dirname(os.path.realpath(__file__))
     config.read(basedir + '/ops.cfg')
     message_sender = SmsMessageSender(config_to_str('TEXTLOCAL_SMS', 'user'), config_to_str('TEXTLOCAL_SMS', 'apikey'),
-                                      config_to_str('TEXTLOCAL_SMS', 'phonenumber'))
+                                      config_to_str('TEXTLOCAL_SMS', 'phonenumber'), test_flag=0)
     message_sender.send_message('Starting observatory '+sys.argv[1]+' procedure')
     try:
         indiclient = BhObservatoryIndiClient("localhost", 7624)
