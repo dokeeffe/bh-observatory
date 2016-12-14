@@ -1,5 +1,7 @@
 import urllib
-import urllib2
+from urllib.request import urlopen
+from urllib.parse import urlencode
+
 
 class SmsMessageSender(object):
     '''
@@ -19,7 +21,6 @@ class SmsMessageSender(object):
         self.phonenumber = phonenumber
         self.test_flag = test_flag
 
-
     def send_message(self, message):
         '''
         Simple SMS sender based on textlocal.com
@@ -28,21 +29,24 @@ class SmsMessageSender(object):
         '''
         sender = 'OBSERVATORY'
         numbers = (self.phonenumber)
-        values = {'test'    : self.test_flag,
-                  'uname'   : self.user,
-                  'hash'    : self.apikey,
-                  'message' : message,
-                  'from'    : sender,
-                  'selectednums' : numbers }
+        values = {'test': self.test_flag,
+                  'uname': self.user,
+                  'hash': self.apikey,
+                  'message': message,
+                  'from': sender,
+                  'selectednums': numbers}
 
         url = 'http://www.txtlocal.com/sendsmspost.php'
-        postdata = urllib.urlencode(values)
-        req = urllib2.Request(url, postdata)
+        postdata = urlencode(values)
         try:
-            response = urllib2.urlopen(req)
+            response = self.send_request(url, postdata)
             response_url = response.geturl()
-            if response_url==url:
+            print(dir(response))
+            if response_url == url:
                 print('SMS sent! ' + message)
-        except urllib2.URLError, e:
+        except urllib.error.URLError as e:
             print('SMS Send failed!')
             print(e.reason)
+
+    def send_request(self, url, postdata):
+        return urlopen(url, postdata.encode('UTF-8'))

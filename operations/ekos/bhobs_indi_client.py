@@ -49,7 +49,7 @@ class BhObservatoryIndiAdapter():
     '''
 
     def __init__(self, indi_client, roof_name, telescope_name, ccd_name):
-        self.indi_client =indi_client
+        self.indi_client = indi_client
         self.roof_name = roof_name
         self.telescope_name = telescope_name
         self.ccd_name = ccd_name

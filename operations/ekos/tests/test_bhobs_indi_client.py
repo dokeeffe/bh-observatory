@@ -1,6 +1,6 @@
 from unittest import TestCase
-from bhobs_indi_client import BhObservatoryIndiAdapter
-from unittest.mock import Mock
+from ..bhobs_indi_client import BhObservatoryIndiAdapter
+from unittest import Mock
 from unittest.mock import call
 
 class TestBhObservatoryIndiAdapter(TestCase):
