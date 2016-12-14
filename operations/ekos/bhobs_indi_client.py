@@ -57,7 +57,7 @@ class BhObservatoryIndiAdapter():
         self.indi_client.connectServer()
 
     def connectServer(self):
-        self.indi_client.connectServer()
+        return self.indi_client.connectServer()
 
     def safe_retry(self, func, arg):
         '''
