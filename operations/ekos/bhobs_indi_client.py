@@ -53,8 +53,11 @@ class BhObservatoryIndiAdapter():
         self.roof_name = roof_name
         self.telescope_name = telescope_name
         self.ccd_name = ccd_name
-        self.indi_client.connectServer()
         self.retry_limit=30
+        self.indi_client.connectServer()
+
+    def connectServer(self):
+        self.indi_client.connectServer()
 
     def safe_retry(self, func, arg):
         '''
