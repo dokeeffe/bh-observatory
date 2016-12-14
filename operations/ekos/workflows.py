@@ -7,7 +7,7 @@ class BaseWorkflow(object):
     These workflows are intended to be triggered by ekos scheduler on startup and shutdown
     '''
     def __init__(self, indi_wrapper, message_sender, power_controller, config):
-        self.indi_wrapper_wrapper = indi_wrapper
+        self.indi_wrapper = indi_wrapper
         self.message_sender = message_sender
         self.power_controller = power_controller
         self.powerswitcher_api = config.get('DEVICES', 'powerswitcher_api')
