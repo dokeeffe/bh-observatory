@@ -1,8 +1,8 @@
 from unittest import TestCase
 import configparser
-from unittest.mock import Mock
+from mock import Mock
 
-from workflows import StartupWorkflow, ShutdownWorkflow
+from ..workflows import StartupWorkflow, ShutdownWorkflow
 
 class TestStartupWorkflow(TestCase):
 

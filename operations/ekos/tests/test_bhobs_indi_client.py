@@ -1,11 +1,10 @@
 from unittest import TestCase
 from ..bhobs_indi_client import BhObservatoryIndiAdapter
-from unittest import Mock
-from unittest.mock import call
+from mock import Mock
+from mock import call
 
 class TestBhObservatoryIndiAdapter(TestCase):
 
-    @unittest.skip("Test cannot run in travis-ci because of indi dependencies, only run local")
     def setUp(self):
         self.mock_indi_client = Mock()
         self.mock_roof_device = Mock()
@@ -17,7 +16,6 @@ class TestBhObservatoryIndiAdapter(TestCase):
         mock_roof_device_attrs = {'getSwitch.return_value': self.mock_switches, 'getText.return_value' : [StubText('OPEN')]}
         self.mock_roof_device.configure_mock(**mock_roof_device_attrs)
 
-    @unittest.skip("Test cannot run in travis-ci because of indi dependencies, only run local")
     def test_constructor(self):
         #Test
         sut = BhObservatoryIndiAdapter(self.mock_indi_client,'roof','scope','ccd')
@@ -29,7 +27,6 @@ class TestBhObservatoryIndiAdapter(TestCase):
         assert sut.ccd_name == 'ccd'
         self.mock_indi_client.connect.is_called()
 
-    @unittest.skip("Test cannot run in travis-ci because of indi dependencies, only run local")
     def test_open_roof_and_roof_opens_success(self):
         #Test
         sut = BhObservatoryIndiAdapter(self.mock_indi_client,'roof','scope','ccd')
@@ -41,7 +38,6 @@ class TestBhObservatoryIndiAdapter(TestCase):
         self.mock_indi_client.sendNewSwitch.assert_called_with([self.mock_connect_switch,self.mock_disconnect_switch])
         self.mock_roof_device.getSwitch.assert_has_calls([call('CONNECTION'),call('DOME_MOTION')])
     
-    @unittest.skip("Test cannot run in travis-ci because of indi dependencies, only run local")
     def test_open_roof_and_roof_fails_to_open(self):
         mock_roof_device_attrs = {'getSwitch.return_value': self.mock_switches, 'getText.return_value' : [StubText('CLOSED')]}
         self.mock_roof_device.configure_mock(**mock_roof_device_attrs)
@@ -52,7 +48,6 @@ class TestBhObservatoryIndiAdapter(TestCase):
         with self.assertRaises(Exception):
             sut.open_roof()
             
-    @unittest.skip("Test cannot run in travis-ci because of indi dependencies, only run local")
     def test_unpark_scope(self):
         #Test
         sut = BhObservatoryIndiAdapter(self.mock_indi_client,'roof','scope','ccd')
