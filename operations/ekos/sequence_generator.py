@@ -17,10 +17,12 @@ def generate_schedule_from_aavso_objects():
     config.read(basedir + '/ops.cfg')
     jobs = []
     df = pd.read_csv(config.get('EKOS_SCHEDULING', 'aavso_url'))
+    print(df)
     print('loaded AAVSO list of stars in need of observation')
     for row in df.iterrows():
         coord = SkyCoord(row[1]['RA(J2000)'], row[1]['Dec(J2000)'], unit=(u.hourangle, u.deg))
-        if (coord.dec.deg > int(config.get('EKOS_SCHEDULING', 'declination_limit_filter'))):
+        if (coord.dec.deg > int(config.get('EKOS_SCHEDULING', 'declination_limit_filter')) and '***' not in row[1]['Star name']):
+            print('Adding star {} mag range {}'.format(row[1]['Star name'],row[1]['Range']))
             job = {}
             job['name'] = row[1]['Star name']
             # print(row[1]['Range'])
@@ -32,7 +34,7 @@ def generate_schedule_from_aavso_objects():
     schedule_template = Template(filename='templates/schedule_template.esl')
     contextDict = {'jobs': jobs}
     with open(config.get('EKOS_SCHEDULING', 'target_directory')+"GeneratedSchedule.esl", "w") as text_file:
-        print(schedule_template.render(**contextDict), file=text_file)
+        text_file.write(schedule_template.render(**contextDict))
     print('Generated Schedule File')
 
 

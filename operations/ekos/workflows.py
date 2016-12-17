@@ -57,7 +57,7 @@ class ShutdownWorkflow(BaseWorkflow):
         if not self.indi_wrapper.connectServer():
             print('indi not running ')
             raise Exception('Exception: No indiserver running')
-        self._close_roof()
+        # self._close_roof()
         self._warm_ccd()
         self.power_controller.poweroff_equipment()
 

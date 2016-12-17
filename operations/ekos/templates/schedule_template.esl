@@ -30,6 +30,8 @@
     </Job>
     % endfor
     <StartupProcedure>
+        <Procedure value='/home/dokeeffe/code/github/bh-observatory/operations/ekos/schedulerStartup.sh'>StartupScript</Procedure>
+        <Procedure>UnparkMount</Procedure>
     </StartupProcedure>
     <ShutdownProcedure>
         <Procedure>WarmCCD</Procedure>
