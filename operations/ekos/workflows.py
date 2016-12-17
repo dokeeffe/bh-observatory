@@ -57,9 +57,10 @@ class ShutdownWorkflow(BaseWorkflow):
         if not self.indi_wrapper.connectServer():
             print('indi not running ')
             raise Exception('Exception: No indiserver running')
+        self._close_roof()
         self._warm_ccd()
         self.power_controller.poweroff_equipment()
-        self._close_roof()
+
         self.power_controller.poweroff_pc()
 
     def _close_roof(self):
@@ -102,11 +103,12 @@ class PowerController(object):
         poweroff the pc with dbus-send --system --print-reply --dest="org.freedesktop.login1" /org/freedesktop/login1 org.freedesktop.login1.Manager.PowerOff boolean:true
         :return:
         '''
-        subprocess.call(['curl', self.powerswitcher_api+'/ccd/off'])
-        subprocess.call(['curl', self.powerswitcher_api+'/filterwheel/off'])
-        subprocess.call(['curl', self.powerswitcher_api+'/heaters/off'])
-        subprocess.call(['curl', self.powerswitcher_api+'/focuser/off'])
-        subprocess.call(['curl', self.powerswitcher_api+'/aux/off'])
+        print('Powering off equipment')
+        subprocess.call(['curl', self.powerswitcher_api+'/ccd/off', '--max-time', '5'])
+        subprocess.call(['curl', self.powerswitcher_api+'/filterwheel/off', '--max-time', '5'])
+        subprocess.call(['curl', self.powerswitcher_api+'/heaters/off', '--max-time', '5'])
+        subprocess.call(['curl', self.powerswitcher_api+'/focuser/off', '--max-time', '5'])
+        subprocess.call(['curl', self.powerswitcher_api+'/aux/off', '--max-time', '5'])
 
     def poweroff_pc(self):
         '''
@@ -114,4 +116,3 @@ class PowerController(object):
         :return:
         '''
         subprocess.call(['dbus-send --system --print-reply --dest="org.freedesktop.login1" /org/freedesktop/login1 org.freedesktop.login1.Manager.PowerOff boolean:true'], shell=True)
-
