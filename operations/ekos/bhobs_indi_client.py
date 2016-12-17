@@ -82,6 +82,8 @@ class BhObservatoryIndiAdapter():
         '''
         print('opening roof ')
         device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
+        if not device_roof:
+            raise RuntimeError('Could not get the INDI device for ' + self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -103,6 +105,8 @@ class BhObservatoryIndiAdapter():
         '''
         print('checking ' + self.roof_name)
         device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
+        if not device_roof:
+            raise RuntimeError('Could not get the INDI device for ' + self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -127,6 +131,8 @@ class BhObservatoryIndiAdapter():
         '''
         print('start unpark')
         device_telescope = self.safe_retry(self.indi_client.getDevice, self.telescope_name)
+        if not device_telescope:
+            raise RuntimeError('Could not get the INDI device for ' + self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -152,7 +158,9 @@ class BhObservatoryIndiAdapter():
         :param telescope_name:
         :return:
         '''
-        device_telescope = self.safe_retry(self.indi_client.getDevice)
+        device_telescope = self.safe_retry(self.indi_client.getDevice, self.telescope_name)
+        if not device_telescope:
+            raise RuntimeError('Could not get the INDI device for ' + self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -171,6 +179,8 @@ class BhObservatoryIndiAdapter():
         :return:
         '''
         device_telescope = self.safe_retry(self.indi_client.getDevice, self.telescope_name)
+        if not device_telescope:
+            raise RuntimeError('Could not get the INDI device for ' + self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
         if not (device_telescope.isConnected()):
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
@@ -187,6 +197,8 @@ class BhObservatoryIndiAdapter():
         :return:
         '''
         device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
+        if not device_roof:
+            raise RuntimeError('Could not get the INDI device for ' + self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
