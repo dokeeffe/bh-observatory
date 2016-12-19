@@ -104,6 +104,8 @@ class BhObservatoryIndiAdapter():
         :return:
         '''
         print('checking ' + self.roof_name)
+        if 'Simulator' in self.roof_name:
+            return
         device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
         if not device_roof:
             raise RuntimeError('Could not get the INDI device for ' + self.roof_name)
@@ -169,7 +171,7 @@ class BhObservatoryIndiAdapter():
         pulse_guide = self.safe_retry(device_telescope.getNumber, 'TELESCOPE_TIMED_GUIDE_NS')
         pulse_guide[0].value = 20
         print('sending pulse guide ')
-        self.sendNewNumber(pulse_guide)
+        self.indi_client.sendNewNumber(pulse_guide)
 
 
     def telescope_parked(self):
@@ -219,6 +221,8 @@ class BhObservatoryIndiAdapter():
         '''
         print('setting ccd temp for ' + self.ccd_name)
         device_ccd = self.safe_retry(self.indi_client.getDevice, self.ccd_name)
+        if not device_ccd:
+            raise RuntimeError('Could not get the INDI device for ' + self.ccd_name)
         ccd_connect = self.safe_retry(device_ccd.getSwitch, 'CONNECTION')
         if not (device_ccd.isConnected()):
             ccd_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch

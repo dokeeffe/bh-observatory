@@ -1,5 +1,5 @@
 import configparser
-import os
+import os, subprocess
 
 from mako.template import Template
 import pandas as pd
@@ -40,3 +40,5 @@ def generate_schedule_from_aavso_objects():
 
 if __name__ == '__main__':
     generate_schedule_from_aavso_objects()
+    subprocess.call(['dbus-send --session --print-reply --dest="org.kde.kstars" /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.loadScheduler string:"/home/dokeeffe/Dropbox/EkosSchedules/GeneratedSchedule.esl"'], shell=True)
+    subprocess.call(['dbus-send --session --print-reply --dest="org.kde.kstars" /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.start'], shell=True)

@@ -35,7 +35,7 @@ class StartupWorkflow(BaseWorkflow):
             self.message_sender.send_message('Roof Open http://52-8.xyz/images/snapshot.jpg')
             self.indi_wrapper.unpark_scope()
             self.indi_wrapper.send_guide_pulse_to_mount()
-            self.indi_wrapper.set_ccd_temp(-20)
+            # self.indi_wrapper.set_ccd_temp(-20)
         except Exception as e:
             self.message_sender.send_message('ERROR: in startup procedure ' + str(e))
             print('Sending exception SMS. Cause: ' + e.message)
