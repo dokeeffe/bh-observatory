@@ -150,45 +150,25 @@ class BhObservatoryIndiAdapter():
         else:
             print('scope already unparked')
 
-    def send_guide_pulse_to_mount(self):
-        '''
-        The single guide pulse is needed as the CPC1100 has a weird quirk that the first guide pulse sent through the
-        driver after startup causes the mount to move a couple of arcmin.
-        This causes problems with the very first target being imaged.
-        Sending a single guide pulse before any work starts is a workaround for this Celestron weirdness
-
-        :param telescope_name:
-        :return:
-        '''
-        device_telescope = self.safe_retry(self.indi_client.getDevice, self.telescope_name)
-        if not device_telescope:
-            raise RuntimeError('Could not get the INDI device for ' + self.telescope_name)
-        telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
-        if not (device_telescope.isConnected()):
-            telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
-            telescope_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
-            self.indi_client.sendNewSwitch(telescope_connect)  # send this new value to the device
-        pulse_guide = self.safe_retry(device_telescope.getNumber, 'TELESCOPE_TIMED_GUIDE_NS')
-        pulse_guide[0].value = 20
-        print('sending pulse guide ')
-        self.indi_client.sendNewNumber(pulse_guide)
-
-
     def telescope_parked(self):
         '''
         Return true if the telescope is parked
         :param telescope_name:
         :return:
         '''
+	print('fetting scope',self.telescope_name)
         device_telescope = self.safe_retry(self.indi_client.getDevice, self.telescope_name)
         if not device_telescope:
             raise RuntimeError('Could not get the INDI device for ' + self.telescope_name)
         telescope_connect = self.safe_retry(device_telescope.getSwitch, 'CONNECTION')
+        print(telescope_connect)
         if not (device_telescope.isConnected()):
+            print 'connecting'
             telescope_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             telescope_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
             self.indi_client.sendNewSwitch(telescope_connect)  # send this new value to the device
-
+ 	    print('connected')
+        print 'chcking parked'
         telescope_park = self.safe_retry(device_telescope.getSwitch, 'TELESCOPE_PARK')
         return telescope_park[0].s == PyIndi.ISS_ON
 
@@ -198,14 +178,17 @@ class BhObservatoryIndiAdapter():
         :param roof_name:
         :return:
         '''
+	print('getting roof ',self.roof_name)
         device_roof = self.safe_retry(self.indi_client.getDevice, self.roof_name)
         if not device_roof:
             raise RuntimeError('Could not get the INDI device for ' + self.roof_name)
         roof_connect = self.safe_retry(device_roof.getSwitch, 'CONNECTION')
         if not (device_roof.isConnected()):
+            print('connecting')
             roof_connect[0].s = PyIndi.ISS_ON  # the 'CONNECT' switch
             roof_connect[1].s = PyIndi.ISS_OFF  # the 'DISCONNECT' switch
             self.indi_client.sendNewSwitch(roof_connect)  # send this new value to the device
+        print('setting switch')
         roof_motion = self.safe_retry(device_roof.getSwitch, 'DOME_MOTION')
         roof_motion[0].s = PyIndi.ISS_OFF
         roof_motion[1].s = PyIndi.ISS_ON
