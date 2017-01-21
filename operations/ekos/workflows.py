@@ -22,7 +22,6 @@ class StartupWorkflow(BaseWorkflow):
         Perform the following
             Open the roof
             Unpark the mount
-            Send a guide pulse to the mount (see docs in BhObservatoryIndiClient)
             Set ccd temp to -20
             Perform a check of the roof switches
         :return:
@@ -32,9 +31,8 @@ class StartupWorkflow(BaseWorkflow):
                 print('indi not running ')
                 raise Exception('Exception: No indiserver running')
             self.indi_wrapper.open_roof()
-            self.message_sender.send_message('Roof Open http://52-8.xyz/images/snapshot.jpg')
-            self.indi_wrapper.unpark_scope()
-            self.indi_wrapper.send_guide_pulse_to_mount()
+#            self.message_sender.send_message('Roof Open http://52-8.xyz/images/snapshot.jpg')
+#            self.indi_wrapper.unpark_scope()
             # self.indi_wrapper.set_ccd_temp(-20)
         except Exception as e:
             self.message_sender.send_message('ERROR: in startup procedure ' + str(e))
@@ -47,9 +45,9 @@ class ShutdownWorkflow(BaseWorkflow):
     def start(self):
         '''
         Performs the following
+	    close The Roof
             warm ccd (may be done already but check to be safe)
             poweroff all equipment except mount
-            close the roof
             TODO: take necessary dark frames and calibrate data
             poweroff pc
         :return:
@@ -57,11 +55,10 @@ class ShutdownWorkflow(BaseWorkflow):
         if not self.indi_wrapper.connectServer():
             print('indi not running ')
             raise Exception('Exception: No indiserver running')
-        # self._close_roof()
-        self._warm_ccd()
-        self.power_controller.poweroff_equipment()
-
-        self.power_controller.poweroff_pc()
+        self._close_roof()
+#        self._warm_ccd()
+#        self.power_controller.poweroff_equipment()
+#        self.power_controller.poweroff_pc()
 
     def _close_roof(self):
         '''
@@ -70,6 +67,7 @@ class ShutdownWorkflow(BaseWorkflow):
         '''
         try:
             if self.indi_wrapper.telescope_parked():
+                print('scope parked, closing')
                 self.indi_wrapper.close_roof()
                 self.message_sender.send_message('Roof Closed http://52-8.xyz/images/snapshot.jpg')
             else:
