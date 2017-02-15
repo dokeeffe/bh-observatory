@@ -76,7 +76,7 @@ except:
     pass
 
 print('Capturing a single 8-bit mono image')
-filename = '/tmp/allsky.jpg'
+filename = '/home/dokeeffe/Pictures/allsky/allsky.jpg'
 camera.set_image_type(asi.ASI_IMG_RAW8)
 camera.capture(filename=filename)
 print('Saved to %s' % filename)
