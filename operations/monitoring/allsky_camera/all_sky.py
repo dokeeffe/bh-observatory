@@ -60,10 +60,10 @@ camera.set_control_value(asi.ASI_GAIN, 50)
 camera.set_control_value(asi.ASI_EXPOSURE, 20000000)
 camera.set_control_value(asi.ASI_WB_B, 99)
 camera.set_control_value(asi.ASI_WB_R, 75)
-camera.set_control_value(asi.ASI_GAMMA, 50)
+camera.set_control_value(asi.ASI_GAMMA, 0)
 camera.set_control_value(asi.ASI_BRIGHTNESS, 50)
 camera.set_control_value(asi.ASI_FLIP, 0)
-
+camera.set_roi(bins=2)
 
 print('Enabling stills mode')
 try:
