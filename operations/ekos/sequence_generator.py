@@ -6,7 +6,6 @@ import pandas as pd
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 
-
 def generate_schedule_from_aavso_objects():
     '''
     Generates an EKOS sequence file from AAVSO's list of stars in need of observation.
@@ -26,12 +25,12 @@ def generate_schedule_from_aavso_objects():
             job = {}
             job['name'] = row[1]['Star name']
             # print(row[1]['Range'])
-            job['ra'] = str(coord.ra.deg)
+            job['ra'] = str(coord.ra.hour)
             job['dec'] = str(coord.dec.deg)
             job['sequence'] = config.get('EKOS_SCHEDULING', 'default_sequence_file')
             job['priority'] = 10
             jobs.append(job)
-    schedule_template = Template(filename='templates/schedule_template.esl')
+    schedule_template = Template(filename=config.get('EKOS_SCHEDULING', 'schedule_template'))
     contextDict = {'jobs': jobs}
     with open(config.get('EKOS_SCHEDULING', 'target_directory')+"GeneratedSchedule.esl", "w") as text_file:
         text_file.write(schedule_template.render(**contextDict))
