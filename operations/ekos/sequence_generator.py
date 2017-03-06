@@ -18,6 +18,7 @@ def generate_schedule_from_aavso_objects():
     df = pd.read_csv(config.get('EKOS_SCHEDULING', 'aavso_url'))
     print(df)
     print('loaded AAVSO list of stars in need of observation')
+    
     for row in df.iterrows():
         coord = SkyCoord(row[1]['RA(J2000)'], row[1]['Dec(J2000)'], unit=(u.hourangle, u.deg))
         if (coord.dec.deg > int(config.get('EKOS_SCHEDULING', 'declination_limit_filter')) and '***' not in row[1]['Star name']):
@@ -39,5 +40,3 @@ def generate_schedule_from_aavso_objects():
 
 if __name__ == '__main__':
     generate_schedule_from_aavso_objects()
-#    subprocess.call(['dbus-send --session --print-reply --dest="org.kde.kstars" /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.loadScheduler string:"/home/dokeeffe/Dropbox/EkosSchedules/GeneratedSchedule.esl"'], shell=True)
-#    subprocess.call(['dbus-send --session --print-reply --dest="org.kde.kstars" /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.start'], shell=True)
