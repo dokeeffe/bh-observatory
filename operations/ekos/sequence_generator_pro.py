@@ -20,8 +20,8 @@ sunrise = location.sun_rise_time(time, which='next')
 constraints = [AltitudeConstraint(35*u.deg, 90*u.deg),
                AirmassConstraint(5), AtNightConstraint.twilight_astronomical()]
 targets = []
-program_nmo = pd.read_csv('/home/dokeeffe/Downloads/program_nmo.csv')
-# program_nmo = pd.read_csv('https://www.aavso.org/sites/default/files/legacy/program_nmo.csv')
+# program_nmo = pd.read_csv('/home/dokeeffe/Downloads/program_nmo.csv')
+program_nmo = pd.read_csv('https://www.aavso.org/sites/default/files/legacy/program_nmo.csv')
 for row in program_nmo.iterrows():
     coordinates = SkyCoord(row[1]['RA(J2000)'], row[1]['Dec(J2000)'], unit=(u.hourangle, u.deg))
     ft = FixedTarget(name=row[1]['Star name'], coord=coordinates)
