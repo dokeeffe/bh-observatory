@@ -13,9 +13,8 @@
             <Condition>ASAP</Condition>
         </StartupCondition>
         <Constraints>
-            <Constraint value='30'>MinimumAltitude</Constraint>
+            <Constraint value='40'>MinimumAltitude</Constraint>
             <Constraint>EnforceWeather</Constraint>
-            <Constraint>EnforceTwilight</Constraint>
         </Constraints>
         <CompletionCondition>
             <Condition>Sequence</Condition>
