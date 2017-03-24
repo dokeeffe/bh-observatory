@@ -13,7 +13,7 @@
             <Condition>ASAP</Condition>
         </StartupCondition>
         <Constraints>
-            <Constraint value='30'>MinimumAltitude</Constraint>
+            <Constraint value='40'>MinimumAltitude</Constraint>
             <Constraint>EnforceWeather</Constraint>
         </Constraints>
         <CompletionCondition>
