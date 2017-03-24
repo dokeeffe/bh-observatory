@@ -56,14 +56,15 @@ config.read(basedir + '/ops.cfg')
 jobs = []
 for row in visible_targets:
     coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
-    print('Adding star {} mag range {}'.format(row['target name'],row['range']))
-    job = {}
-    job['name'] = row['target name']
-    job['ra'] = str(coord.ra.hour)
-    job['dec'] = str(coord.dec.deg)
-    job['sequence'] = config.get('EKOS_SCHEDULING', 'default_sequence_file')
-    job['priority'] = 10
-    jobs.append(job)
+    if coord.dec.deg < 80:
+        print('Adding star {} mag range {}'.format(row['target name'],row['range']))
+        job = {}
+        job['name'] = row['target name']
+        job['ra'] = str(coord.ra.hour)
+        job['dec'] = str(coord.dec.deg)
+        job['sequence'] = config.get('EKOS_SCHEDULING', 'default_sequence_file')
+        job['priority'] = 10
+        jobs.append(job)
 schedule_template = Template(filename=config.get('EKOS_SCHEDULING', 'schedule_template'))
 contextDict = {'jobs': jobs}
 with open(config.get('EKOS_SCHEDULING', 'target_directory')+"GeneratedSchedule.esl", "w") as text_file:
