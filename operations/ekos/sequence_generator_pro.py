@@ -45,7 +45,7 @@ table['ra']=program_nmo['RA(J2000)']
 table['dec']=program_nmo['Dec(J2000)']
 observable = table['ever observable'] == True
 visible_targets = table[observable]
-high_fraction = visible_targets['fraction of time observable'] > 0.5
+high_fraction = visible_targets['fraction of time observable'] > 0.2
 visible_targets = visible_targets[high_fraction]
 print(visible_targets)
 

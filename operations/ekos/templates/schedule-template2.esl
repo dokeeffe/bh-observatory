@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SchedulerList version='1.2'>
+<SchedulerList version='1.3'>
     % for job in jobs:
     <Job>
         <Name>${job['name']}</Name>
@@ -15,7 +15,6 @@
         <Constraints>
             <Constraint value='30'>MinimumAltitude</Constraint>
             <Constraint>EnforceWeather</Constraint>
-            <Constraint>EnforceTwilight</Constraint>
         </Constraints>
         <CompletionCondition>
             <Condition>Sequence</Condition>
@@ -30,11 +29,17 @@
     </Job>
     % endfor
     <StartupProcedure>
-        <Procedure value='/home/dokeeffe/code/github/bh-observatory/operations/ekos/schedulerStartup.sh'>StartupScript</Procedure>
+        <Procedure value='/home/dokeeffe/code/github/bh-observatory/operations/ekos/schedulerStartup.sh'>StartupScript
+        </Procedure>
+        <Procedure>UnparkDome</Procedure>
+        <Procedure>UnparkMount</Procedure>
     </StartupProcedure>
     <ShutdownProcedure>
         <Procedure>WarmCCD</Procedure>
         <Procedure>ParkMount</Procedure>
-        <Procedure value='/home/dokeeffe/code/github/bh-observatory/operations/ekos/schedulerShutdown.sh'>ShutdownScript</Procedure>
+        <Procedure>ParkDome</Procedure>
+        <Procedure value='/home/dokeeffe/code/github/bh-observatory/operations/ekos/schedulerShutdown.sh'>
+            ShutdownScript
+        </Procedure>
     </ShutdownProcedure>
 </SchedulerList>
