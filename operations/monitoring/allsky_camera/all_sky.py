@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+import sys, os
 import time
 import zwoasi as asi
 
@@ -18,6 +18,8 @@ def save_control_values(filename, settings):
     print('Camera settings saved to %s' % filename)
 
 
+env_filename = os.getenv('ZWO_ASI_LIB')
+asi.init(env_filename)
 num_cameras = asi.get_num_cameras()
 if num_cameras == 0:
     print('No cameras found')
