@@ -11,5 +11,7 @@ else
     echo 'roof closed taking indoor exp'
     python all_sky.py
 fi
-cp ~/Pictures/allsky/allsky.jpg ~/Pictures/allsky/allsky_$(date +%F_%H-%M).jpg
+timestamp=`date -u "+%F_%H_%M-%S"`
+convert ~/Pictures/allsky/allsky.jpg -fill '#9999' -draw 'rectangle 5,917,203,950' -fill white -pointsize 20 -annotate +10+940 ${timestamp} ~/Pictures/allsky/allsky.jpg
+cp ~/Pictures/allsky/allsky.jpg ~/Pictures/allsky/allsky_$(date -u +%F_%H-%M-%S).jpg
 scp ~/Pictures/allsky/allsky.jpg dokeeffe@52-8.xyz:/var/www/html/images/.
