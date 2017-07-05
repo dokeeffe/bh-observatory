@@ -10,6 +10,7 @@ const int RELAY_4 =  5;
 const int RELAY_5 =  6;
 const int RELAY_6 =  7;
 const int RELAY_7 =  8;
+const int RELAY_8 =  9;
 
 /**
  * Interpret the command string and set the pin state.
@@ -31,6 +32,8 @@ void stringCallback(char *myString)
     digitalWrite(RELAY_6, HIGH);
   } else if (commandString.equals("ON7")) {
     digitalWrite(RELAY_7, HIGH);
+  } else if (commandString.equals("ON8")) {
+    digitalWrite(RELAY_8, HIGH);
   } else if (commandString.equals("OFF1")) {
     digitalWrite(RELAY_1, LOW);
   } else if (commandString.equals("OFF2")) {
@@ -45,7 +48,9 @@ void stringCallback(char *myString)
     digitalWrite(RELAY_6, LOW);
   } else if (commandString.equals("OFF7")) {
     digitalWrite(RELAY_7, LOW);
-  } 
+  } else if (commandString.equals("OFF8")) {
+    digitalWrite(RELAY_8, LOW);
+  }
   Firmata.sendString(myString);
 }
 
@@ -58,6 +63,7 @@ void setup()
   pinMode(RELAY_5, OUTPUT);
   pinMode(RELAY_6, OUTPUT);
   pinMode(RELAY_7, OUTPUT);
+  pinMode(RELAY_8, OUTPUT);
   digitalWrite(RELAY_1, LOW);
   digitalWrite(RELAY_2, LOW);
   digitalWrite(RELAY_3, LOW);
@@ -65,6 +71,7 @@ void setup()
   digitalWrite(RELAY_5, LOW);
   digitalWrite(RELAY_6, LOW);
   digitalWrite(RELAY_7, LOW);
+  digitalWrite(RELAY_8, LOW);
   Firmata.setFirmwareVersion(FIRMATA_MAJOR_VERSION, FIRMATA_MINOR_VERSION);
   Firmata.attach(STRING_DATA, stringCallback);
   Firmata.begin(57600);
