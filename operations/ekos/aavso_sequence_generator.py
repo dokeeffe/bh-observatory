@@ -16,16 +16,20 @@ location = Observer(longitude=-8.2*u.deg, latitude=52.2*u.deg, elevation=100*u.m
 time = Time.now()
 sunset = location.sun_set_time(time, which='nearest')
 sunrise = location.sun_rise_time(time, which='next')
-
+available_filters = ['V', 'All']
 constraints = [AltitudeConstraint(35*u.deg, 90*u.deg),
                AirmassConstraint(5), AtNightConstraint.twilight_nautical()]
 targets = []
 # program_nmo = pd.read_csv('/home/dokeeffe/Downloads/index.csv')
 target_csv_data = pd.read_csv('https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true')
 for row in target_csv_data.iterrows():
-    coordinates = SkyCoord(row[1]['RA (J2000.0)'], row[1]['Dec (J2000.0)'], unit=(u.hourangle, u.deg))
-    ft = FixedTarget(name=row[1]['Star Name'], coord=coordinates)
-    targets.append(ft)
+    target_filter = row[1]['Filter/Mode']
+    if target_filter in available_filters:
+        coordinates = SkyCoord(row[1]['RA (J2000.0)'], row[1]['Dec (J2000.0)'], unit=(u.hourangle, u.deg))
+        ft = FixedTarget(name=row[1]['Star Name'], coord=coordinates)
+        targets.append(ft)
+        print(ft)
+
 
 # target_csv_data = pd.read_csv('https://www.aavso.org/sites/default/files/legacy/program_nmo.csv')
 # for row in target_csv_data.iterrows():
