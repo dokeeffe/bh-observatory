@@ -39,7 +39,7 @@ class AavsoEkosScheduleGenerator():
                             AirmassConstraint(5), AtNightConstraint.twilight_nautical()]
         sunset = self.location.sun_set_time(self.time, which='nearest')
         sunrise = self.location.sun_rise_time(self.time, which='next')
-        self.time_range = Time([self.sunset, self.sunrise])
+        self.time_range = Time([sunset, sunrise])
 
     def load_aavso_data_and_filter(self):
         '''
