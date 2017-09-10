@@ -1,6 +1,7 @@
 import configparser
 
 import os
+import re
 import pandas as pd
 from astroplan import (AltitudeConstraint, AirmassConstraint,
                        AtNightConstraint)
@@ -17,6 +18,7 @@ class AavsoEkosScheduleGenerator():
     '''
     A tool to generate EKOS schedules from AAVSO's target list https://filtergraph.com/aavso
     '''
+    MAX_MAGNITUDE = 9.0
     DEFAULT_LONGITUDE = -8.2
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
@@ -84,20 +86,35 @@ class AavsoEkosScheduleGenerator():
         jobs = []
         for row in visible_targets:
             coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
+            minmag = re.findall("\d+\.\d+", row['minmag'])
+            maxmag = re.findall("\d+\.\d+", row['maxmag'])
+
             if coord.dec.deg < 80:
-                print('Adding star {} mag range {}-{}'.format(row['target name'], row['minmag'], row['maxmag']))
-                job = {}
-                job['name'] = row['target name']
-                job['ra'] = str(coord.ra.hour)
-                job['dec'] = str(coord.dec.deg)
-                job['sequence'] = config.get('EKOS_SCHEDULING', 'default_sequence_file')
-                job['priority'] = 10
-                jobs.append(job)
+                if maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
+                    print('Adding star {} mag range {}-{}'.format(row['target name'], minmag, maxmag))
+                    job = {}
+                    job['name'] = row['target name']
+                    job['ra'] = str(coord.ra.hour)
+                    job['dec'] = str(coord.dec.deg)
+                    job['sequence'] = self.determine_capture_sequence(config, minmag, maxmag)
+                    job['priority'] = 10
+                    jobs.append(job)
         schedule_template = Template(filename=config.get('EKOS_SCHEDULING', 'schedule_template'))
         contextDict = {'jobs': jobs}
         with open(config.get('EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl", "w") as text_file:
             text_file.write(schedule_template.render(**contextDict))
         print('Generated Schedule File of {} jobs'.format(len(jobs)))
+
+    def determine_capture_sequence(self, config, minmag, maxmag):
+        '''
+        Determine the EKOS capture sequence to use based on the brightness of the target.
+        :param config:
+        :param minmag:
+        :param maxmag:
+        :return:
+        '''
+
+        return config.get('EKOS_SCHEDULING', 'default_sequence_file')
 
 
 if __name__ == '__main__':
