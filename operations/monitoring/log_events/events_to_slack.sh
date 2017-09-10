@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+# This script will send slack messages containing interesting events from the INDI/EKOS logs.
+# See the grep below which is filtering these events.
+# You need a file called .slack.conf containing your webhook url. An example is provided below
+# WEBHOOK_URL="https://hooks.slack.com/services/T54HDJ6JD/J6JVFS54GO/GR678r5f764e3WD65rg678"
+#
 source ~/.slack.conf
 LATEST_LOG_FILE=$(find ~/.local/share/kstars/logs/ -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")
 echo 'monitoring' $LATEST_LOG_FILE
