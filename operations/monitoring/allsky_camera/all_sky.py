@@ -29,15 +29,12 @@ camera.set_control_value(asi.ASI_EXPOSURE, 20000000)
 #camera.set_control_value(asi.ASI_BRIGHTNESS, 50)
 #camera.set_control_value(asi.ASI_FLIP, 0)
 
-#print('Enabling stills mode')
-#try:
-    # Force any single exposure to be halted
-    #camera.stop_video_capture()
-    #camera.stop_exposure()
-#except (KeyboardInterrupt, SystemExit):
-#    raise
-#except:
-#    pass
+try:
+    camera.stop_exposure()
+except (KeyboardInterrupt, SystemExit):
+    raise
+except:
+    pass
 
 print('Capturing a single 8-bit mono image')
 filename = '/home/dokeeffe/Pictures/allsky/allsky.jpg'

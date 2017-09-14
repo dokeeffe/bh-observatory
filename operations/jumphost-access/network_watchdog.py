@@ -3,6 +3,7 @@
 from platform import system as system_name
 from os import system as system_call       
 import time
+import datetime
 
 def ping(host):
     parameters = "-n 1" if system_name().lower()=="windows" else "-c 1"
@@ -17,11 +18,11 @@ def internet_connected():
             fail_count+=1
         else:
             connected = True
-            print('net ok')
+            print('{} - net ok'.format(datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")))
     return connected
 
 def power_cycle_net():
-    print('power cycling router and 4G connection devices')
+    print('{} - Power cycling router and 4G connection devices'.format(datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")))
     system_call('curl http://localhost:8080/power/mainsplug/off')
     time.sleep(10)
     system_call('curl http://localhost:8080/power/mainsplug/on')
