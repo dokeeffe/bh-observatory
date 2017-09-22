@@ -2,6 +2,8 @@ import configparser
 import re
 
 import os
+
+import numpy
 import pandas as pd
 from astroplan import (AltitudeConstraint, AirmassConstraint,
                        AtNightConstraint)
@@ -88,11 +90,14 @@ class AavsoEkosScheduleGenerator():
                 coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
                 minmag = re.findall("\d+\.\d+", row['minmag'])
                 maxmag = re.findall("\d+\.\d+", row['maxmag'])
+                minmag = float(minmag[0]) if len(minmag) > 0 else numpy.nan
+                maxmag = float(maxmag[0]) if len(maxmag) > 0 else numpy.nan
                 job = {}
                 job['name'] = row['target name']
                 job['ra'] = str(coord.ra.hour)
                 job['dec'] = str(coord.dec.deg)
                 job['sequence'] = self.determine_capture_sequence(config, minmag, maxmag)
+                print('            Sequence {}'.format(job['sequence']))
                 job['priority'] = 10
                 jobs.append(job)
         schedule_template = Template(filename=config.get('EKOS_SCHEDULING', 'schedule_template'))
@@ -110,9 +115,9 @@ class AavsoEkosScheduleGenerator():
         coord = SkyCoord(aavso_target['ra'], aavso_target['dec'], unit=(u.hourangle, u.deg))
         minmag = re.findall("\d+\.\d+", aavso_target['minmag'])
         maxmag = re.findall("\d+\.\d+", aavso_target['maxmag'])
-        if coord.dec.deg < 85 \
+        if coord.dec.deg < 80 \
                 and aavso_target['filter'] in self.AVAILABLE_FILTERS \
-                and aavso_target['ever observable'] == True \
+                and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.05 \
                 and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
             print('Adding star {} mag range {}-{} filter:{} which is observable {} of night'
                   .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
@@ -128,8 +133,14 @@ class AavsoEkosScheduleGenerator():
         :param maxmag:
         :return:
         '''
-
-        return config.get('EKOS_SCHEDULING', 'default_sequence_file')
+        if numpy.isnan(maxmag) or numpy.isnan(maxmag):
+            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x60PV.esq'
+        if (minmag + maxmag)/2 > 14.5:
+            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x240PV.esq'
+        if (minmag + maxmag)/2 > 12:
+            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x120PV.esq'
+        else:
+            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x60PV.esq'
 
 
 if __name__ == '__main__':
