@@ -22,7 +22,7 @@ camera.set_control_value(asi.ASI_BANDWIDTHOVERLOAD, camera.get_controls()['BandW
 # the sensitivity, lens and lighting conditions used.
 camera.disable_dark_subtract()
 camera.set_control_value(asi.ASI_GAIN, 75)
-camera.set_control_value(asi.ASI_EXPOSURE, 20000000)
+camera.set_control_value(asi.ASI_EXPOSURE, 25000000)
 #camera.set_control_value(asi.ASI_WB_B, 99)
 #camera.set_control_value(asi.ASI_WB_R, 75)
 #camera.set_control_value(asi.ASI_GAMMA, 0)
