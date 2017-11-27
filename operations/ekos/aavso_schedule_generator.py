@@ -100,7 +100,7 @@ class AavsoEkosScheduleGenerator():
                 print('            Sequence {}'.format(job['sequence']))
                 job['priority'] = 10
                 jobs.append(job)
-        schedule_template = Template(filename=config.get('EKOS_SCHEDULING', 'schedule_template'))
+        schedule_template = Template(filename=os.path.join(os.path.dirname(__file__), config.get('EKOS_SCHEDULING', 'schedule_template')))
         contextDict = {'jobs': jobs}
         with open(config.get('EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl", "w") as text_file:
             text_file.write(schedule_template.render(**contextDict))
