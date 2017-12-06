@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from scipy import misc
 import sys, os
 import zwoasi as asi
 
@@ -40,4 +40,8 @@ print('Capturing a single 8-bit mono image')
 filename = '/home/dokeeffe/Pictures/allsky/allsky.jpg'
 camera.set_image_type(asi.ASI_IMG_RAW8)
 camera.capture(filename=filename)
-print('Saved to %s' % filename)
+image_data = misc.imread(filename)
+if image_data.mean() > 200:
+    os.remove(filename)
+else:
+    print('Saved to %s' % filename)
