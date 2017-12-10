@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from scipy import misc
+from scipy import ndimage
 import sys, os
 import zwoasi as asi
 import pickle
@@ -53,16 +54,19 @@ while not captured:
     image_data = misc.imread(filename)
     print('Image average pixel = {}'.format(image_data.mean()))
     if image_data.mean() > 200:
-        print('removing overexposed image')
+        print('Removing overexposed image')
         os.remove(filename)
         exposure_index+=1
         capture(exposures[exposure_index], filename)
     elif image_data.mean() < 100:
-        print('removing underexposed image')
+        print('Removing underexposed image')
         os.remove(filename)
         exposure_index-=1
         capture(exposures[exposure_index], filename)
     else:
+        print('Denoising image')
+        im_med = ndimage.median_filter(image_data, 2)
+        misc.imsave(filename, im_med)
         print('Saved to %s' % filename)
         captured = True
         f = open('all_sky_exposure_index.pckl', 'wb')
