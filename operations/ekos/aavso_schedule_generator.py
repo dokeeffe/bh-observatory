@@ -14,7 +14,7 @@ from astropy.time import Time
 from mako.template import Template
 
 
-class AavsoEkosScheduleGenerator():
+class AavsoEkosScheduleGenerator:
     '''
     A tool to generate EKOS schedules from AAVSO's target list https://filtergraph.com/aavso
     '''
@@ -23,7 +23,7 @@ class AavsoEkosScheduleGenerator():
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
     AVAILABLE_FILTERS = ['V', 'All']
-    MIN_TARGET_ALTITUDE_DEG = 35
+    MIN_TARGET_ALTITUDE_DEG = 30
     AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
 
     def __init__(self, lat=DEFAULT_LATITUDE, lon=DEFAULT_LONGITUDE, elevation=DEFAULT_ELEVATION,
