@@ -1,4 +1,9 @@
+import configparser
 import urllib
+
+import os
+
+import sys
 import urllib2
 
 class SmsMessageSender(object):
@@ -43,6 +48,16 @@ class SmsMessageSender(object):
             response_url = response.geturl()
             if response_url==url:
                 print('SMS sent! ' + message)
-        except urllib2.URLError, e:
+        except Exception:
             print('SMS Send failed!')
-            print(e.reason)
+
+def config_to_str(group, key):
+    return str(config.get(group,key))
+
+if __name__ == '__main__':
+    config = configparser.ConfigParser()
+    basedir = os.path.dirname(os.path.realpath(__file__))
+    config.read(basedir + '/ops.cfg')
+    message_sender = SmsMessageSender(config_to_str('TEXTLOCAL_SMS', 'user'), config_to_str('TEXTLOCAL_SMS', 'apikey'),
+                                      config_to_str('TEXTLOCAL_SMS', 'phonenumber'), test_flag=0)
+    message_sender.send_message('Observatory '+sys.argv[1])

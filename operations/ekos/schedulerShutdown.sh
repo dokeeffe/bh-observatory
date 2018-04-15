@@ -1,7 +1,7 @@
 #!/bin/bash
 BASEDIR=$(dirname "$0")
 echo "$BASEDIR"
-/usr/bin/python "$BASEDIR/scheduler_workflow_script.py" 'shutdown starting'
+/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown starting'
 indi_setprop "Atik 383L+ CCD.CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"=0
 sleep 300
 curl http://192.168.2.225:8080/power/ccd/off > /dev/null 2>&1
@@ -19,7 +19,7 @@ python calibrateLightFrames.py
 cd ~/code/github/bh-observatory-data/data-reduction
 python addFitsObjectToFilename.py
 python solveAll.py
-/usr/bin/python "$BASEDIR/scheduler_workflow_script.py" 'shutdown and calibration complete'
+/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown and calibration complete'
 find ~/Pictures/CalibratedLight/ -cmin -60 -exec cp {} ~/Dropbox  \;
 until dropbox status | grep 'Up to date' -C 9999; do sleep 30; done
 echo 'Powering off PC'

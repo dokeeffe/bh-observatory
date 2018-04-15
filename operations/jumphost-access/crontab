@@ -1,0 +1,7 @@
+*/5 * * * * sh $HOME/.profile; python /home/pi/code/github/bh-observatory/operations/jumphost-access/dweetUpdate.py
+*/5 * * * * ~/code/github/bh-observatory/operations/jumphost-access/create_ssh_tunnel.sh > tunnel.log 2>&1
+10 * * * * ~/code/github/bh-observatory/operations/jumphost-access/getcurrentweather_send_to_linode.py > /dev/null 2>&1
+10 * * * * ~/code/github/bh-observatory/operations/jumphost-access/getweatherchart_send_to_linode.py > /dev/null 2>&1
+*/15 6,7,8,9,10,11,12,13,14,15,16,17 * * * ~/code/github/bh-observatory/operations/jumphost-access/getsnapshot_send_to_linode.py >/dev/null 2>&1
+*/2 0,1,2,3,4,5,18,19,20,21,22,23 * * * ~/code/github/bh-observatory/operations/jumphost-access/getsnapshot_send_to_linode.py >/dev/null 2>&1
+0 * * * * ~/code/github/bh-observatory/operations/jumphost-access/network_watchdog.py > /dev/null 2>&1

@@ -6,3 +6,4 @@ mako>=1.0.7
 pandas>=0.20.3
 scipy>=1.0.0
 pillow>=4.3.0
+mock>=2.0.0
