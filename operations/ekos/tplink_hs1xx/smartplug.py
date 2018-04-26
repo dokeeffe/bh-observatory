@@ -1,5 +1,7 @@
 import socket
 
+import sys
+
 COMMAND = {
     'INFO' : '{"system":{"get_sysinfo":{}}}',
     'ON' : '{"system":{"set_relay_state":{"state":1}}}',
@@ -40,6 +42,6 @@ class SmartPlug(object):
         return result
 
 if __name__ == '__main__':
-    plg = SmartPlug('192.168.2.229')
-    plg.command(COMMAND['ON'])
+    plg = SmartPlug(sys.argv[1])
+    plg.command(COMMAND[sys.argv[2]])
 
