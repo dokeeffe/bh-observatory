@@ -1,4 +1,5 @@
 #!/bin/bash
+DEHUMIDIFIER=192.168.2.229
 BASEDIR=$(dirname "$0")
 echo "$BASEDIR"
 /usr/bin/python "$BASEDIR/message_senders.py" 'shutdown starting'
@@ -12,6 +13,8 @@ curl http://192.168.2.225:8080/power/focuser/off > /dev/null 2>&1
 curl http://192.168.2.225:8080/power/aux/off > /dev/null 2>&1
 echo 'Switching ON IR Lamps'
 curl 'http://192.168.2.220/decoder_control.cgi?command=95' -H 'Authorization: Basic ZG9rZWVmZmU6ZG9rZWVmZmU=' > /dev/null 2>&1
+echo 'Switching ON Dehumidifier'
+/usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" $DEHUMIDIFIER ON
 
 dropbox start
 cd ~/code/github/bh-observatory-data/data-reduction/calibration
