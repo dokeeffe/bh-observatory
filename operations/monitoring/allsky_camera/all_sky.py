@@ -53,6 +53,8 @@ try:
 except:
     pass
 capture(15000000, filename)
+#capture(1000000, filename)
+#capture(100000, filename)
 #captured = False
 #while not captured:
 #    capture(exposures[exposure_index], filename)
