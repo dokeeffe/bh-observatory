@@ -25,12 +25,12 @@ if switch_states['aux'] == 'ON':
     power += 'light-panel '
 
 main_pc = 'offline'
-if os.system("ping -c 1 192.168.2.226") == 0:
+if os.system("ping -c 1 192.168.1.226") == 0:
     main_pc = 'online'
 
 watermark = 'System:' + main_pc + ' ' + power + '\n' + time_string + '                     Ballyhoura Observatory'
-req = urllib2.Request('http://192.168.2.220/snapshot.cgi')
-req.add_header('Authorization', 'Basic ZG9rZWVmZmU6ZG9rZWVmZmU=')
+req = urllib2.Request('http://192.168.1.222/snapshot.cgi')
+req.add_header('Authorization', 'Basic YWRtaW46enhjdmJuMw==')
 resp = urllib2.urlopen(req)
 with open('/tmp/snapshot.jpg','wb') as output:
   output.write(resp.read())
