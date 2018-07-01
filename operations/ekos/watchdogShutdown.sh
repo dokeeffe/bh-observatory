@@ -2,7 +2,7 @@
 DEHUMIDIFIER=192.168.2.229
 BASEDIR=$(dirname "$0")
 echo "$BASEDIR"
-/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown starting'
+/usr/bin/python "$BASEDIR/message_senders.py" 'WATCHDOG starting shutdown'
 indi_setprop "Atik 383L+ CCD.CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"=0
 sleep 300
 curl http://192.168.2.225:8080/power/ccd/off > /dev/null 2>&1
@@ -16,15 +16,6 @@ curl 'http://192.168.2.220/decoder_control.cgi?command=95' -H 'Authorization: Ba
 echo 'Switching ON Dehumidifier'
 /usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" $DEHUMIDIFIER ON
 
-dropbox start
-cd ~/code/github/bh-observatory-data/data-reduction/calibration
-python calibrateLightFrames.py
-cd ~/code/github/bh-observatory-data/data-reduction
-python addFitsObjectToFilename.py
-python solveAll.py
-/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown and calibration complete'
-find ~/Pictures/CalibratedLight/ -cmin -60 -exec cp {} ~/Dropbox  \;
-until dropbox status | grep 'Up to date' -C 9999; do sleep 30; done
-echo 'Powering off PC'
+/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown complete'
 sleep 10
 systemctl poweroff
