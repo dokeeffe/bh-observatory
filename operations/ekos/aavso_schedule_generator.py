@@ -18,7 +18,7 @@ class AavsoEkosScheduleGenerator:
     '''
     A tool to generate EKOS schedules from AAVSO's target list https://filtergraph.com/aavso
     '''
-    MAX_MAGNITUDE = 9.0
+    MAX_MAGNITUDE = 7.0
     DEFAULT_LONGITUDE = -8.2
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
@@ -104,7 +104,7 @@ class AavsoEkosScheduleGenerator:
         contextDict = {'jobs': jobs}
         with open(config.get('EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl", "w") as text_file:
             text_file.write(schedule_template.render(**contextDict))
-        print('Generated Schedule File of {} jobs'.format(len(jobs)))
+        print('Generated Schedule File of {} jobs to {}'.format(len(jobs), config.get('EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl"))
 
     def is_candidate_for_observation(self, aavso_target):
         '''
@@ -118,11 +118,12 @@ class AavsoEkosScheduleGenerator:
         if coord.dec.deg < 80 \
                 and aavso_target['filter'] in self.AVAILABLE_FILTERS \
                 and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.05 \
-                and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
+                and maxmag and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
             print('Adding star {} mag range {}-{} filter:{} which is observable {} of night'
                   .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
             return True
         else:
+            print('Skipping star {}'.format(aavso_target['target name']))
             return False
 
     def determine_capture_sequence(self, config, minmag, maxmag):

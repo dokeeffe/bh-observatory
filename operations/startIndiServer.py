@@ -3,7 +3,7 @@ import subprocess
 
 import requests
 
-url = 'http://192.168.2.225:8080/power'
+url = 'http://192.168.1.225:8080/power'
 power_resp = requests.get(url=url).json()
 print('ccd {} mount {}'.format(power_resp['ccd'], power_resp['mount']))
 if (power_resp['ccd'] == 'ON' and power_resp['mount'] == 'ON'):
