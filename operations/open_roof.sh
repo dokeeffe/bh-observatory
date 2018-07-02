@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [[ $(curl --silent http://192.168.2.227:8080/weather/current | jq -r '.rain') = *true* ]]; then
+if [[ $(curl --silent http://192.168.1.227:8080/weather/current | jq -r '.rain') = *true* ]]; then
   echo "WEATHER: RAINING. Cannot open roof"
   exit 1
 else
   echo "WEATHER: NOT RAINING"
 fi
-SKYTEMP=$(curl --silent http://192.168.2.227:8080/weather/current | jq -r '.skyTemp' | bc) 
+SKYTEMP=$(curl --silent http://192.168.1.227:8080/weather/current | jq -r '.skyTemp' | bc)
 if [ $(echo "$SKYTEMP > -10" | bc) -ne 0 ] 
 then 
   echo "WEATHER: CLOUDY"

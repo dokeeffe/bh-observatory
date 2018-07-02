@@ -7,9 +7,9 @@ import subprocess
 import pickle
 import time
 
-mainControlSystemHost = "192.168.2.226"
-focuserHost = "192.168.2.203"
-weatherHost = "192.168.2.227"
+mainControlSystemHost = "192.168.1.226"
+focuserHost = "192.168.1.203"
+weatherHost = "192.168.1.227"
 mainControlSystemState = 'offline'
 weatherSystemState = 'offline'
 focuserSystemState = 'offline'
@@ -31,7 +31,7 @@ def pingHost(host):
 
 def roofParked():
     getParked = subprocess.Popen(
-        ["indi_eval", "-h", "192.168.2.226", "-f",
+        ["indi_eval", "-h", "192.168.1.226", "-f",
             "\"Aldi Roof.DOME_PARK.PARK\"==1"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
@@ -63,7 +63,7 @@ rain = 'unknown'
 outsideTemp = '0'
 observingConditionsOk = False
 if (weatherSystemState == 'online'):
-    req = urllib2.Request("http://192.168.2.227:8080/weather/current")
+    req = urllib2.Request("http://192.168.1.227:8080/weather/current")
     opener = urllib2.build_opener()
     f = opener.open(req)
     json = json.loads(f.read())
