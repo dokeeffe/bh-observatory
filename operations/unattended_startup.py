@@ -53,8 +53,12 @@ def check_indiserver_running():
 def check_power_on():
     pass
 
+def check_already_running():
+    pass
+
 
 def perform_checks(bus):
+    check_already_running()
     check_schedule_exists()
     check_weather()
     check_nighttime()
@@ -70,7 +74,7 @@ def start_scheduler(bus):
     remote_object = bus.get_object("org.kde.kstars", "/KStars/Ekos/Scheduler")
     logging.debug(remote_object.Introspect())
     iface = dbus.Interface(remote_object, 'org.kde.kstars.Ekos.Scheduler')
-    iface.loadScheduler('/home/okeefd3/Desktop/schedule.esl')
+    iface.loadScheduler('/home/dokeeffe/Dropbox/EkosSchedules/AAVSO-Schedule.esl')
     iface.start()
 
 
