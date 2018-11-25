@@ -16,6 +16,7 @@
             <Constraint value='40'>MinimumAltitude</Constraint>
             <Constraint value='15'>MoonSeparation</Constraint>
             <Constraint>EnforceWeather</Constraint>
+            <Constraint>EnforceTwilight</Constraint>
         </Constraints>
         <CompletionCondition>
             <Condition>Sequence</Condition>
