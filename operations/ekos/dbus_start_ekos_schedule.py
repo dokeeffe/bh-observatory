@@ -43,8 +43,14 @@ if(not subprocess.run(['pgrep', '-x', 'kstars'], stdout=subprocess.PIPE).stdout)
     print('started')
     time.sleep(2)
 
-base_command = ['dbus-send', '--session', '--print-reply', '--dest=org.kde.kstars']
+base_command = ['dbus-send', '--session', '--print-reply', '--dest=org.kde.kstars', '--reply-timeout=20000']
 result = subprocess.run(base_command + ['/kstars/MainWindow_1/actions/ekos', 'org.qtproject.Qt.QAction.trigger'], stdout=subprocess.PIPE)
+time.sleep(5)
 result = subprocess.run(base_command + ['/KStars/Ekos', 'org.kde.kstars.Ekos.start'], stdout=subprocess.PIPE)
+time.sleep(5)
+print('loading scheduler')
+
 result = subprocess.run(base_command + ['/KStars/Ekos/Scheduler', 'org.kde.kstars.Ekos.Scheduler.loadScheduler', 'string:/home/dokeeffe/Dropbox/EkosSchedules/AAVSO-Schedule.esl'], stdout=subprocess.PIPE)
+time.sleep(5)
+print('starting scheduler')
 result = subprocess.run(base_command + ['/KStars/Ekos/Scheduler', 'org.kde.kstars.Ekos.Scheduler.start'], stdout=subprocess.PIPE)

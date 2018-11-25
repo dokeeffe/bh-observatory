@@ -5,7 +5,6 @@ Mako==1.0.7
 MarkupSafe==1.0
 numpy==1.13.3
 pandas==0.21.0
-pkg-resources==0.0.0
 pyFirmata==1.0.3
 pyserial==3.4
 python-dateutil==2.6.1
