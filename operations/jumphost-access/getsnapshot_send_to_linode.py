@@ -36,6 +36,12 @@ with open('/tmp/snapshot.jpg','wb') as output:
   output.write(resp.read())
 
 call(['/usr/bin/convert', '/tmp/snapshot.jpg', '-pointsize', '22', '-fill', 'white', '-annotate', '+5+415', watermark, '/tmp/snapshot.jpg'])
-call(['scp', '/tmp/snapshot.jpg', 'dokeeffe@52-8.xyz:/var/www/html/images/.'])
+call(['scp', '/tmp/snapshot.jpg', 'dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.'])
 
+
+req = urllib2.Request('http://192.168.1.221:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=dokeeffe&pwd=zxcvbn3')
+resp = urllib2.urlopen(req)
+with open('/tmp/cam2-snapshot.jpg','wb') as output:
+  output.write(resp.read())
+call(['scp', '/tmp/cam2-snapshot.jpg', 'dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.'])
 
