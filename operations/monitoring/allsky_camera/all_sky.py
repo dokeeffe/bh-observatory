@@ -43,37 +43,23 @@ if num_cameras == 0:
     print('No cameras found')
     sys.exit(0)
 
-exposures = [20000000, 10000000,5000000,1000000,100000,10000,1000]
 exposure_index = 0
 #loop until a good exposure found
-try:
-    f = open('all_sky_exposure_index.pckl', 'rb')
-    exposure_index = obj = pickle.load(f)
-    f.close()
-except:
-    pass
-capture(15000000, filename)
-#capture(1000000, filename)
-#capture(100000, filename)
-#captured = False
-#while not captured:
-#    capture(exposures[exposure_index], filename)
-#    image_data = misc.imread(filename)
-#    print('Image average pixel = {}'.format(image_data.mean()))
-#    if image_data.mean() > 200:
-#        print('Removing overexposed image')
-#        os.remove(filename)
-#        exposure_index+=1
-#    elif image_data.mean() < 30:
-#        print('Removing underexposed image')
-#        os.remove(filename)
-#        exposure_index-=1
-#    else:
-#        print('Denoising image')
-#        im_med = ndimage.median_filter(image_data, 2)
-#        misc.imsave(filename, im_med)
-#        print('Saved to %s' % filename)
-#        captured = True
-#        f = open('all_sky_exposure_index.pckl', 'wb')
-#        pickle.dump(exposure_index, f)
-#        f.close()
+valid_exposure_times = [15000000,7000000,100000]
+
+captured = False
+
+while not captured:
+    capture(valid_exposure_times[exposure_index], filename)
+    image_data = misc.imread(filename)
+    print('Image average pixel = {}'.format(image_data.mean()))
+    if image_data.mean() > 180:
+        print('Removing overexposed image')
+        os.remove(filename)
+        exposure_index+=1
+    else:
+        print('Denoising image')
+        im_med = ndimage.median_filter(image_data, 2)
+        misc.imsave(filename, im_med)
+        print('Saved to %s' % filename)
+        captured = True
