@@ -45,7 +45,7 @@ if num_cameras == 0:
 
 exposure_index = 0
 #loop until a good exposure found
-valid_exposure_times = [15000000,7000000,100000]
+valid_exposure_times = [15000000,10000000,7000000,2000000]
 
 captured = False
 
@@ -53,7 +53,7 @@ while not captured:
     capture(valid_exposure_times[exposure_index], filename)
     image_data = misc.imread(filename)
     print('Image average pixel = {}'.format(image_data.mean()))
-    if image_data.mean() > 180:
+    if image_data.mean() > 110:
         print('Removing overexposed image')
         os.remove(filename)
         exposure_index+=1
