@@ -20,5 +20,6 @@ def add_props_to_dict(props, dict):
 
 dict = {}
 add_props_to_dict(get_indi_props('Aldi Roof.*.*'), dict)
-add_props_to_dict(get_indi_props('Celestron AuxRemote Gateway.*.*'), dict)
+add_props_to_dict(get_indi_props('iOptronV3.*.*'), dict)
+add_props_to_dict(get_indi_props('SQM.SKY_QUALITY.SKY_BRIGHTNESS'), dict)
 print(json.dumps(dict, sort_keys=True, indent=4, separators=(',', ': ')))
