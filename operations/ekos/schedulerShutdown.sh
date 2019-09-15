@@ -23,9 +23,9 @@ dropbox start
 echo "Clearing all landed WCS headers"
 find ~/Pictures/Landed/ -name *.fits | xargs delwcs
 echo "Performing light frame calibration"
-cd ~/code/github/bh-observatory-data/data-reduction/calibration
+cd ~/code/github/bh-observatory/data-reduction/calibration
 python calibrateLightFrames.py
-cd ~/code/github/bh-observatory-data/data-reduction
+cd ~/code/github/bh-observatory/data-reduction
 echo "updating filenames"
 python addFitsObjectToFilename.py
 echo "plate solving"
