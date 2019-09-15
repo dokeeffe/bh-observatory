@@ -20,12 +20,12 @@ class AavsoEkosScheduleGenerator:
     '''
     A tool to generate EKOS schedules from AAVSO's target list https://filtergraph.com/aavso
     '''
-    MAX_MAGNITUDE = 7.0
+    MAX_MAGNITUDE = 9.0
     DEFAULT_LONGITUDE = -8.2
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
     AVAILABLE_FILTERS = ['V', 'All']
-    MIN_TARGET_ALTITUDE_DEG = 30
+    MIN_TARGET_ALTITUDE_DEG = 50
     AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
 
     def __init__(self, lat=DEFAULT_LATITUDE, lon=DEFAULT_LONGITUDE, elevation=DEFAULT_ELEVATION,
@@ -68,11 +68,11 @@ class AavsoEkosScheduleGenerator:
         table['dec'] = target_csv_data['Dec (J2000.0)']
 
         # filter by observable
-        # observable = table['ever observable'] == True
-        # visible_targets = table[observable]
-        # high_fraction = visible_targets['fraction of time observable'] > 0.2
-        # visible_targets = visible_targets[high_fraction]
-        # print('Filtered a total of {} targets down to {} observable'.format(len(table), len(visible_targets)))
+        observable = table['ever observable'] == True
+        visible_targets = table[observable]
+        high_fraction = visible_targets['fraction of time observable'] > 0.2
+        visible_targets = visible_targets[high_fraction]
+        print('Filtered a total of {} targets down to {} observable'.format(len(table), len(visible_targets)))
         # print(visible_targets)
 
         return table
@@ -119,7 +119,7 @@ class AavsoEkosScheduleGenerator:
         maxmag = re.findall("\d+\.\d+", aavso_target['maxmag'])
         if coord.dec.deg < 80 \
                 and aavso_target['filter'] in self.AVAILABLE_FILTERS \
-                and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.05 \
+                and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.25 \
                 and maxmag and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
             print('Adding star {} mag range {}-{} filter:{} which is observable {} of night'
                   .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
@@ -131,6 +131,16 @@ class AavsoEkosScheduleGenerator:
     def determine_capture_sequence(self, config, minmag, maxmag):
         '''
         Determine the EKOS capture sequence to use based on the brightness of the target.
+        TODO: update this to be better as some are saturated
+               Examples AG Dra mag 9.8 was 56000 adu in 60sec
+               FIPer 16.8 TARGET STAR PEAK FLUX 1612.774070511463 exposure was 240.0 sec
+                RMon 12.2 TARGET STAR PEAK FLUX 14281.233385386071 exposure was 120.0 sec
+                TTAri 10.7-11  TARGET STAR PEAK FLUX 59491.81185169168 exposure was 120.0 sec *
+                SUUMa 14.25 TARGET STAR PEAK FLUX 4178.004539432007 exposure was 120.0 sec
+                V378 Peg 14.0 TARGET STAR PEAK FLUX 3226.335193173021 exposure was 120.0 sec
+                9.6 TARGET STAR PEAK FLUX 63458.85411067805 OUTSIDE LINEAR RANGE exposure was 60.0 sec
+                14.1 ARGET STAR PEAK FLUX 4384.823487265183 exposure was 120.0 sec
+yo
         :param config:
         :param minmag:
         :param maxmag:
