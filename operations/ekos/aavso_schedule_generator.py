@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import configparser
 import re
@@ -15,6 +15,8 @@ from astropy.coordinates import SkyCoord
 from astropy.time import Time
 from mako.template import Template
 
+from astropy.utils.iers import conf
+conf.auto_max_age = None
 
 class AavsoEkosScheduleGenerator:
     '''
@@ -25,7 +27,7 @@ class AavsoEkosScheduleGenerator:
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
     AVAILABLE_FILTERS = ['V', 'All']
-    MIN_TARGET_ALTITUDE_DEG = 50
+    MIN_TARGET_ALTITUDE_DEG = 40
     AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
 
     def __init__(self, lat=DEFAULT_LATITUDE, lon=DEFAULT_LONGITUDE, elevation=DEFAULT_ELEVATION,
@@ -100,7 +102,7 @@ class AavsoEkosScheduleGenerator:
                 job['dec'] = str(coord.dec.deg)
                 job['sequence'] = self.determine_capture_sequence(config, minmag, maxmag)
                 print('            Sequence {}'.format(job['sequence']))
-                job['priority'] = 10
+                job['priority'] = 6
                 jobs.append(job)
         schedule_template = Template(filename=os.path.join(os.path.dirname(__file__), config.get('EKOS_SCHEDULING', 'schedule_template')))
         contextDict = {'jobs': jobs}
@@ -125,7 +127,8 @@ class AavsoEkosScheduleGenerator:
                   .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
             return True
         else:
-            print('Skipping star {}'.format(aavso_target['target name']))
+            print('Skipping star {} mag range {}-{} filter:{} which is observable {} of night'
+                  .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
             return False
 
     def determine_capture_sequence(self, config, minmag, maxmag):

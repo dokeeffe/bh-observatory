@@ -31,10 +31,11 @@ echo "plate solving"
 python solveAll.py
 /usr/bin/python "$BASEDIR/message_senders.py" 'shutdown and calibration complete'
 echo "uploading to pCloud"
-find ~/Pictures/CalibratedLight/ -cmin -60 -exec cp {} ~/pCloudDrive/.  \;
-echo "sleeping 10min to sync pCloud"
-sleep 600
-echo 'Powering off PC'
+#find ~/Pictures/CalibratedLight/ -cmin -60 -exec cp {} ~/pCloudDrive/.  \;
+echo "sleeping 15min to sync pCloud"
+sleep 900
+echo 'Powering off CCD'
 curl http://192.168.1.225:8080/power/ccd/off > /dev/null 2>&1
+echo 'Powering off PC'
 sleep 10
 systemctl poweroff
