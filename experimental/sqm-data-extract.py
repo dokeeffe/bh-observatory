@@ -10,4 +10,4 @@ for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLigh
         if 'MPSAS' in header:
             sqm = header['MPSAS']
             date_obs = header['DATE-OBS']
-            print('{};{};;;;{}'.format(date_obs,date_obs,sqm))
+            print('{}|{}'.format(date_obs,sqm))

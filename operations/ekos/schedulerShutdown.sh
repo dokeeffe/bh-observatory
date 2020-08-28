@@ -7,7 +7,6 @@ echo "$BASEDIR"
 /usr/bin/python "$BASEDIR/message_senders.py" 'shutdown starting'
 ~/code/github/bh-observatory/operations/monitoring/allsky_camera/all_sky.sh > all_sky.log 2>&1
 indi_setprop "Atik 383L+ CCD.CCD_TEMPERATURE.CCD_TEMPERATURE_VALUE"=0 && sleep 300
-curl http://192.168.1.225:8080/power/ccd/off > /dev/null 2>&1
 curl http://192.168.1.225:8080/power/filterwheel/off > /dev/null 2>&1
 curl http://192.168.1.225:8080/power/mount/off > /dev/null 2>&1
 curl http://192.168.1.225:8080/power/heaters/off > /dev/null 2>&1
@@ -31,9 +30,12 @@ python addFitsObjectToFilename.py
 echo "plate solving"
 python solveAll.py
 /usr/bin/python "$BASEDIR/message_senders.py" 'shutdown and calibration complete'
-echo "uploading to dropbox"
-find ~/Pictures/CalibratedLight/ -cmin -60 -exec cp {} ~/Dropbox  \;
-until dropbox status | grep 'Up to date' -C 9999; do sleep 30; done
+echo "uploading to pCloud"
+#find ~/Pictures/CalibratedLight/ -cmin -60 -exec cp {} ~/pCloudDrive/.  \;
+echo "sleeping 15min to sync pCloud"
+sleep 900
+echo 'Powering off CCD'
+curl http://192.168.1.225:8080/power/ccd/off > /dev/null 2>&1
 echo 'Powering off PC'
 sleep 10
 systemctl poweroff
