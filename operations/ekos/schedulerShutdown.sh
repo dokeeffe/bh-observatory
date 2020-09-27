@@ -18,22 +18,16 @@ curl "http://192.168.1.221:88/cgi-bin/CGIProxy.fcgi?cmd=setInfraLedConfig&mode=0
 echo 'Switching ON Dehumidifier'
 /usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" dehumidifier ON
 
-dropbox start
-echo "Clearing all landed WCS headers"
-find ~/Pictures/Landed/ -name *.fits | xargs delwcs
 echo "Performing light frame calibration"
 cd ~/code/github/bh-observatory/data-reduction/calibration
 python calibrateLightFrames.py
 cd ~/code/github/bh-observatory/data-reduction
 echo "updating filenames"
 python addFitsObjectToFilename.py
-echo "plate solving"
-python solveAll.py
-/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown and calibration complete'
-echo "uploading to pCloud"
-#find ~/Pictures/CalibratedLight/ -cmin -60 -exec cp {} ~/pCloudDrive/.  \;
-echo "sleeping 15min to sync pCloud"
-sleep 900
+#echo "plate solving"
+#python solveAll.py
+#/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown and calibration complete'
+sleep 300
 echo 'Powering off CCD'
 curl http://192.168.1.225:8080/power/ccd/off > /dev/null 2>&1
 echo 'Powering off PC'
