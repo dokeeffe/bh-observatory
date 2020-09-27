@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+
+import sys
+
+from astropy.io import fits
+from setuptools import glob
+
+TO_REMOVE = ['WCSAXES', 'CRPIX1', 'CRPIX2', 'PC1_1',
+             'PC1_2', 'PC2_1', 'PC2_2', 'CDELT1',
+             'CDELT2', 'CUNIT1', 'CUNIT2', 'CTYPE1',
+             'CTYPE2', 'CRVAL1','CRVAL2', 'LONPOLE',
+             'LATPOLE', 'RADECSYS', 'EQUINOX', 'CROTA1','CROTA2', 'SECPIX1', 'SECPIX1']
+
+if __name__ == '__main__':
+    for pattern in sys.argv[1:]:
+        for file in glob.glob(pattern):
+            data, header = fits.getdata(file, header=True)
+            print('Processing {}'.format(file))
+            for key in TO_REMOVE:
+                if key in header:
+                    header.remove(key)
+                    print(' - Removed {}'.format(key))
+            fits.writeto(file, data, header, overwrite=True)
+            print('WCS removed')

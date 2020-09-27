@@ -21,8 +21,6 @@ import calibrationUtils
 # Calibration logic is based on AAVSO guidelines from their CCDPhotometryGuide.pdf
 #
 def calibrate_light():
-
-
     config = ConfigParser.ConfigParser()
     config.read('calibration.cfg')
     outdir = config.get('Light_Path', 'masterdir')

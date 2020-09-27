@@ -1,0 +1,29 @@
+
+
+
+#!/usr/bin/python
+
+from astropy.io import fits
+import json
+import os
+import fnmatch
+import subprocess
+from shutil import copyfile
+from shutil import rmtree
+
+result = {}
+rmtree('/tmp/solver', ignore_errors=True)
+os.mkdir('/tmp/solver')
+for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLight'):
+    for filename in fnmatch.filter(filenames, '*.fits'):
+        hdu = fits.open(os.path.join(root, filename))
+        header = hdu[0].header
+	#yprint(header.keys())
+        object = header['OBJECT'] if 'OBJECT' in header else 'Unknown'
+        if object not in result:
+           result[object] = []
+        result[object].append({'filename': filename, 'dir': root})
+        #print('{}, {}, {}'.format(header['OBJECT'] if 'OBJECT' in header else 'Unknown', filename, root))
+
+
+print(json.dumps(result sort_keys=True, indent=4, separators=(',', ': '))

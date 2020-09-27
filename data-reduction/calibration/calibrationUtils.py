@@ -36,9 +36,9 @@ def generate_flat_dict_keyedby_filter_binning_date(image_file_collection):
 
     flats = image_file_collection.files_filtered(FRAME='Flat') 
     for filename in flats:
-        logging.info('Collecting flat ' +filename)
+        logging.debug('Collecting flat ' +filename)
         ccd = CCDData.read(image_file_collection.location + filename, unit = u.adu)
-        print(ccd.header)
+        #print(ccd.header)
         flat_key = generate_key_filter_binning_date(ccd)
         if flat_key not in raw_frames:
             raw_frames[flat_key] = []
@@ -55,7 +55,7 @@ def generate_flat_dict_keyedby_filter_binning(image_file_collection):
     raw_frames = {}
     flats = image_file_collection.files_filtered(FRAME='Flat')
     for filename in flats:
-        logging.info('Collecting flat ' +filename)
+        logging.debug('Collecting flat ' +filename)
         ccd = CCDData.read(image_file_collection.location + filename, unit = u.adu)
         flat_key = generate_key_filter_binning(ccd)
         if flat_key not in raw_frames:
@@ -175,7 +175,7 @@ def subtract_best_dark(dark_imagefilecollection,ccd):
         corrected.header['CALDARK'] = best_dark_filename
         if temp_diff > 2:
             logging.warn('Temperature difference between dark and image = ' + str(temp_diff))
-        logging.info('dark frame subtraction completed')
+        logging.debug('dark frame subtraction completed')
         return corrected
 
 def flat_correct(flat_imagefilecollection,ccd):
