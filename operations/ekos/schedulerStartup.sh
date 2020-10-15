@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo 'Running scheduler startup script'
 source ~/super-secret-password-file
 
 BASEDIR=$(dirname "$0")

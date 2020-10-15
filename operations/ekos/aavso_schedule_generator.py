@@ -132,31 +132,16 @@ class AavsoEkosScheduleGenerator:
             return False
 
     def determine_capture_sequence(self, config, minmag, maxmag):
-        '''
-        Determine the EKOS capture sequence to use based on the brightness of the target.
-        TODO: update this to be better as some are saturated
-               Examples AG Dra mag 9.8 was 56000 adu in 60sec
-               FIPer 16.8 TARGET STAR PEAK FLUX 1612.774070511463 exposure was 240.0 sec
-                RMon 12.2 TARGET STAR PEAK FLUX 14281.233385386071 exposure was 120.0 sec
-                TTAri 10.7-11  TARGET STAR PEAK FLUX 59491.81185169168 exposure was 120.0 sec *
-                SUUMa 14.25 TARGET STAR PEAK FLUX 4178.004539432007 exposure was 120.0 sec
-                V378 Peg 14.0 TARGET STAR PEAK FLUX 3226.335193173021 exposure was 120.0 sec
-                9.6 TARGET STAR PEAK FLUX 63458.85411067805 OUTSIDE LINEAR RANGE exposure was 60.0 sec
-                14.1 ARGET STAR PEAK FLUX 4384.823487265183 exposure was 120.0 sec
-yo
-        :param config:
-        :param minmag:
-        :param maxmag:
-        :return:
-        '''
         if numpy.isnan(maxmag) or numpy.isnan(maxmag):
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x60PV.esq'
         if (minmag + maxmag)/2 > 14.5:
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x240PV.esq'
-        if (minmag + maxmag)/2 > 12:
+        if (minmag + maxmag)/2 > 13.5:
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x120PV.esq'
-        else:
+        if (minmag + maxmag)/2 > 11.5:
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x60PV.esq'
+        else:
+            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x20PV.esq'
 
 
 if __name__ == '__main__':
