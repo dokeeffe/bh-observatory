@@ -5,6 +5,9 @@ import re
 
 import os
 
+import urllib.request
+import lxml.html
+
 import numpy
 import pandas as pd
 from astroplan import (AltitudeConstraint, AirmassConstraint,
@@ -14,9 +17,46 @@ from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
 from mako.template import Template
-
+from datetime import datetime
+from datetime import timedelta
 from astropy.utils.iers import conf
 conf.auto_max_age = None
+
+class WebopsClient:
+
+    def __init__(self):
+        pass
+
+    def _load_page(self, page, star, start, end):
+        params = {'start': start, 'end': end, 'num_results': 100, 'obs_types': 'ccd', 'star': star, 'page': page}
+        url = 'https://aavso.org/apps/webobs/results/?' + urllib.parse.urlencode(params)
+        fp = urllib.request.urlopen(url)
+        tree = lxml.html.fromstring(fp.read())
+        rows = tree.xpath('//table[@class="observations"]/tbody/tr')
+        return rows
+
+    def _find_first_matching_filter(self, rows, filt):
+        for row in rows:
+            values = [col.text_content() for col in row]
+            if len(values) > 6:
+                mag = values[4]
+                photo_filter = values[6]
+                if photo_filter == filt:
+                    return mag
+
+    def get_most_recent_measurement(self, star, filt):
+        page = 1
+        start = datetime.now() - timedelta(days=10)
+        end = datetime.now()
+        start_str = start.strftime("%Y-%m-%d")
+        end_str = end.strftime("%Y-%m-%d")
+        while page < 10:
+            rows = self._load_page(page, star, start_str, end_str)
+            measure = self._find_first_matching_filter(rows, filt)
+            if measure is not None:
+                return float(measure.replace('<',''))
+            else:
+                page+=1
 
 class AavsoEkosScheduleGenerator:
     '''
@@ -47,6 +87,7 @@ class AavsoEkosScheduleGenerator:
         sunset = self.location.sun_set_time(self.time, which='nearest')
         sunrise = self.location.sun_rise_time(self.time, which='next')
         self.time_range = Time([sunset, sunrise])
+        self.webops_client = WebopsClient()
 
     def load_aavso_data_and_filter(self):
         '''
@@ -92,18 +133,18 @@ class AavsoEkosScheduleGenerator:
         for row in visible_targets:
             if self.is_candidate_for_observation(row):
                 coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
-                minmag = re.findall("\d+\.\d+", row['minmag'])
-                maxmag = re.findall("\d+\.\d+", row['maxmag'])
-                minmag = float(minmag[0]) if len(minmag) > 0 else numpy.nan
-                maxmag = float(maxmag[0]) if len(maxmag) > 0 else numpy.nan
                 job = {}
                 job['name'] = row['target name']
                 job['ra'] = str(coord.ra.hour)
                 job['dec'] = str(coord.dec.deg)
-                job['sequence'] = self.determine_capture_sequence(config, minmag, maxmag)
-                print('            Sequence {}'.format(job['sequence']))
-                job['priority'] = 6
-                jobs.append(job)
+                recent_mag = self.webops_client.get_most_recent_measurement(row['target name'], 'V')
+                if recent_mag is not None:
+                    job['sequence'] = self.determine_capture_sequence(recent_mag)
+                    print('            Sequence {}'.format(job['sequence']))
+                    job['priority'] = 6
+                    jobs.append(job)
+                else:
+                    print(f'Skipping as no recent measurments to determine exposure')
         schedule_template = Template(filename=os.path.join(os.path.dirname(__file__), config.get('EKOS_SCHEDULING', 'schedule_template')))
         contextDict = {'jobs': jobs}
         with open(config.get('EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl", "w") as text_file:
@@ -131,14 +172,13 @@ class AavsoEkosScheduleGenerator:
                   .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
             return False
 
-    def determine_capture_sequence(self, config, minmag, maxmag):
-        if numpy.isnan(maxmag) or numpy.isnan(maxmag):
-            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x60PV.esq'
-        if (minmag + maxmag)/2 > 14.5:
+    def determine_capture_sequence(self, mag):
+        print(mag)
+        if mag > 14.5:
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x240PV.esq'
-        if (minmag + maxmag)/2 > 13.5:
+        if mag > 13.5:
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x120PV.esq'
-        if (minmag + maxmag)/2 > 11.5:
+        if mag > 11.5:
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x60PV.esq'
         else:
             return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x20PV.esq'
