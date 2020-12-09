@@ -51,6 +51,8 @@ def calibrate_light():
                 dark_corrected = calibrationUtils.subtract_best_dark(master_dark_ic, bias_corrected)
                 logging.info('    Flat correcting {}'.format(filename))
                 flat_corrected = calibrationUtils.flat_correct(master_flat_ic, dark_corrected)
+                logging.info('    Setting GAIN header')
+                flat_corrected.header['GAIN'] = 0.4
                 # generate a date based dir and write callibrated data into the configured masterdir
                 date_dir = calibrationUtils.extract_date_from(flat_corrected)
                 logging.info('generating a date based dir {} to write callibrated data into {}'.format(date_dir, outdir))

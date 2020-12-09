@@ -9,7 +9,7 @@ TO_REMOVE = ['WCSAXES', 'CRPIX1', 'CRPIX2', 'PC1_1',
              'PC1_2', 'PC2_1', 'PC2_2', 'CDELT1',
              'CDELT2', 'CUNIT1', 'CUNIT2', 'CTYPE1',
              'CTYPE2', 'CRVAL1','CRVAL2', 'LONPOLE',
-             'LATPOLE', 'RADECSYS', 'EQUINOX', 'CROTA1','CROTA2', 'SECPIX1', 'SECPIX1']
+             'LATPOLE', 'RADECSYS', 'CROTA1','CROTA2', 'SECPIX1', 'SECPIX1']
 
 if __name__ == '__main__':
     for pattern in sys.argv[1:]:
