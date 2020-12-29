@@ -115,10 +115,11 @@ class AavsoEkosScheduleGenerator:
         visible_targets = table[observable]
         high_fraction = visible_targets['fraction of time observable'] > 0.2
         visible_targets = visible_targets[high_fraction]
-        print('Filtered a total of {} targets down to {} observable'.format(len(table), len(visible_targets)))
         # print(visible_targets)
 
-        return table
+        filtered = list(filter(self.is_candidate_for_observation, table))
+        print('Filtered a total of {} targets down to {} observable'.format(len(table), len(filtered)))
+        return filtered
 
     def build_ekos_schedule_xml_from_table(self, visible_targets):
         '''
@@ -130,21 +131,20 @@ class AavsoEkosScheduleGenerator:
         basedir = os.path.dirname(os.path.realpath(__file__))
         config.read(basedir + '/ops.cfg')
         jobs = []
+
         for row in visible_targets:
-            if self.is_candidate_for_observation(row):
-                coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
-                job = {}
-                job['name'] = row['target name']
-                job['ra'] = str(coord.ra.hour)
-                job['dec'] = str(coord.dec.deg)
-                recent_mag = self.webops_client.get_most_recent_measurement(row['target name'], 'V')
-                if recent_mag is not None:
-                    job['sequence'] = self.determine_capture_sequence(recent_mag)
-                    print('            Sequence {}'.format(job['sequence']))
-                    job['priority'] = 6
-                    jobs.append(job)
-                else:
-                    print(f'Skipping as no recent measurments to determine exposure')
+            coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
+            job = {}
+            job['name'] = row['target name']
+            job['ra'] = str(coord.ra.hour)
+            job['dec'] = str(coord.dec.deg)
+            recent_mag = self.webops_client.get_most_recent_measurement(row['target name'], 'V')
+            if recent_mag is not None:
+                job['sequence'] = self.determine_capture_sequence(recent_mag)
+                print('Using Sequence {} for {} mag {}'.format(job['sequence'],job['name'], recent_mag))
+                job['priority'] = 1
+                jobs.append(job)
+
         schedule_template = Template(filename=os.path.join(os.path.dirname(__file__), config.get('EKOS_SCHEDULING', 'schedule_template')))
         contextDict = {'jobs': jobs}
         with open(config.get('EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl", "w") as text_file:
@@ -158,30 +158,31 @@ class AavsoEkosScheduleGenerator:
         :return:
         '''
         coord = SkyCoord(aavso_target['ra'], aavso_target['dec'], unit=(u.hourangle, u.deg))
-        minmag = re.findall("\d+\.\d+", aavso_target['minmag'])
         maxmag = re.findall("\d+\.\d+", aavso_target['maxmag'])
-        if coord.dec.deg < 80 \
+        if coord.dec.deg < 90 \
                 and aavso_target['filter'] in self.AVAILABLE_FILTERS \
                 and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.25 \
                 and maxmag and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
-            print('Adding star {} mag range {}-{} filter:{} which is observable {} of night'
-                  .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
+            print('Star {} is candidate for observation. filter:{} Observable {} of night'
+                  .format(aavso_target['target name'],aavso_target['filter'], aavso_target['fraction of time observable']))
             return True
         else:
-            print('Skipping star {} mag range {}-{} filter:{} which is observable {} of night'
-                  .format(aavso_target['target name'], minmag, maxmag,aavso_target['filter'], aavso_target['fraction of time observable']))
+            # print('Star {} filter {} is not a candidate, observable {} of night'
+            #       .format(aavso_target['target name'],aavso_target['filter'], aavso_target['fraction of time observable']))
             return False
 
     def determine_capture_sequence(self, mag):
-        print(mag)
-        if mag > 14.5:
-            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x240PV.esq'
+        print(f'Determining best sequence for mag {mag}')
+        if mag > 15.0:
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x300PV.esq'
         if mag > 13.5:
-            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x120PV.esq'
-        if mag > 11.5:
-            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x60PV.esq'
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x240PV.esq'
+        if mag > 12.5:
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x120PV.esq'
+        if mag > 11.0:
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x60PV.esq'
         else:
-            return '/home/dokeeffe/Dropbox/EkosSequences/imaging/photometry/5x20PV.esq'
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x20PV.esq'
 
 
 if __name__ == '__main__':
