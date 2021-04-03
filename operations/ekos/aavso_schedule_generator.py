@@ -30,6 +30,7 @@ class WebopsClient:
     def _load_page(self, page, star, start, end):
         params = {'start': start, 'end': end, 'num_results': 100, 'obs_types': 'ccd', 'star': star, 'page': page}
         url = 'https://aavso.org/apps/webobs/results/?' + urllib.parse.urlencode(params)
+        print(url)
         fp = urllib.request.urlopen(url)
         tree = lxml.html.fromstring(fp.read())
         rows = tree.xpath('//table[@class="observations"]/tbody/tr')
@@ -51,7 +52,11 @@ class WebopsClient:
         start_str = start.strftime("%Y-%m-%d")
         end_str = end.strftime("%Y-%m-%d")
         while page < 10:
-            rows = self._load_page(page, star, start_str, end_str)
+            try:
+                rows = self._load_page(page, star, start_str, end_str)
+            except:
+                print('ERROR loading page')
+                return
             measure = self._find_first_matching_filter(rows, filt)
             if measure is not None:
                 return float(measure.replace('<',''))
