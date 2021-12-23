@@ -100,6 +100,7 @@ class AavsoEkosScheduleGenerator:
         :return: `~astropy.table.Table` An astropy table of visible targets
         '''
         targets = []
+        print('loading from aavso {}'.format(self.AAVSO_TARGET_URL))
         target_csv_data = pd.read_csv(self.AAVSO_TARGET_URL)
         for row in target_csv_data.iterrows():
             coordinates = SkyCoord(row[1]['RA (J2000.0)'], row[1]['Dec (J2000.0)'], unit=(u.hourangle, u.deg))
