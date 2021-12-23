@@ -15,7 +15,7 @@ for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLigh
             print(filename)
             original_hdu = fits.open(os.path.join(root, filename), ignore_missing_end=True)
             solved = 'CRVAL1' in original_hdu[0].header and 'CD1_1' in original_hdu[0].header
-            if not solved:
+            if not solved: # or 'HAT-P-20' in filename:
                 rmtree('/tmp/solver', ignore_errors=True)
                 os.mkdir('/tmp/solver')
                 print('solving {}'.format(os.path.join(root, filename)))
