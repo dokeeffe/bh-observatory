@@ -14,6 +14,6 @@ curl "http://192.168.1.221:88/cgi-bin/CGIProxy.fcgi?cmd=closeInfraLed&usr=$OUTDO
 
 
 echo 'Switching OFF Dehumidifier'
-/usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" dehumidifier OFF
+/usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" dehumidifier OFF || echo "** FAILED to turn off dehumidifier"
 
 
