@@ -10,6 +10,7 @@ import time
 mainControlSystemHost = "192.168.1.226"
 focuserHost = "192.168.1.203"
 weatherHost = "192.168.1.227"
+roofHost = "192.168.1.228"
 mainControlSystemState = 'Offline'
 weatherSystemState = 'Offline'
 focuserSystemState = 'Offline'
@@ -37,31 +38,22 @@ def sqm():
     except ValueError:
         return 'Offline'
 
-def roofParked():
-    getParked = subprocess.Popen(
-        ["indi_eval", "-h", "192.168.1.226", "-f",
-            "\"Dome Scripting Gateway.DOME_PARK.PARK\"==1"],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-    )
-    out, error = getParked.communicate()
-    # indi_eval outputs to stderr for some reason...
-    if ('0' in error):
-        return False
-    else:
-        return True
+def roofState():
+    try:
+        resp = requests.get(url='http://{}:8080/roof'.format(roofHost))
+        return resp.json().get('state')
+    except: 
+        return 'ROOF ERROR'
 
 if (pingHost(mainControlSystemHost) == True):
-    mainControlSystemState = 'online'
+    mainControlSystemState = 'Online'
     sqm = sqm()
-    if (roofParked() == False):
-        roofState = 'open'
 
 if (pingHost(weatherHost) == True):
-    weatherSystemState = 'online'
+    weatherSystemState = 'Online'
 
 if (pingHost(focuserHost) == True):
-    focuserSystemState = 'online'
+    focuserSystemState = 'Online'
 
 power_req = urllib2.Request("http://localhost:8080/power")
 opener = urllib2.build_opener()
@@ -70,10 +62,10 @@ power_json = json.load(resp)
 print(power_json)
 
 skyTemp = '0'
-rain = 'unknown'
+rain = 'Unknown'
 outsideTemp = '0'
 observingConditionsOk = False
-if (weatherSystemState == 'online'):
+if (weatherSystemState == 'Online'):
     req = urllib2.Request("http://192.168.1.227:8080/weather/current")
     opener = urllib2.build_opener()
     f = opener.open(req)
@@ -108,7 +100,7 @@ if (weatherSystemState == 'online'):
 
 # post to dweet
 payload = {'sqm': sqm, 'mount': power_json['mount'], 'ccd': power_json['ccd'], 'heaters': power_json['heaters'], 'focuser': power_json['focuser'], 'mainControlSystem': mainControlSystemState, 'weatherSystem': weatherSystemState, 'focuserSystem': focuserSystemState,
-           'roof': roofState, 'sky': skyTemp, 'ambientTemp': outsideTemp, 'rain': rain, 'observingConditionsOk': observingConditionsOk}
+           'roof': roofState(), 'sky': skyTemp, 'ambientTemp': outsideTemp, 'rain': rain, 'observingConditionsOk': observingConditionsOk}
 print(payload)
 r = requests.post(
     "http://dweet.io/dweet/for/ballyhouraobservatory?key=1DvBrct97lLdGZel2duY6T", data=payload)

@@ -17,8 +17,6 @@ if switch_states['mount'] == 'ON':
     power += 'mount '
 if switch_states['ccd'] == 'ON':
     power += 'ccd '
-if switch_states['filterwheel'] == 'ON':
-    power += 'efw '
 if switch_states['focuser'] == 'ON':
     power += 'focuser '
 if switch_states['aux'] == 'ON':
