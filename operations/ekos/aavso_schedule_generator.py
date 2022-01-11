@@ -155,7 +155,7 @@ class AavsoEkosScheduleGenerator:
                 maxmag = re.findall("\d+\.\d+", row['maxmag'])
                 minmag = float(minmag[0]) if len(minmag) > 0 else numpy.nan
                 maxmag = float(maxmag[0]) if len(maxmag) > 0 else numpy.nan
-                job['sequence'] = self.determine_capture_sequence(config, (minmag + maxmag)/2)
+                job['sequence'] = self.determine_capture_sequence((minmag + maxmag)/2)
                 job['priority'] = 2
                 jobs.append(job)
 
