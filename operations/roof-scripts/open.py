@@ -9,13 +9,14 @@ def block_until(desired_state: str):
         resp = requests.get('http://192.168.1.228:8080/roof')
         if resp.json().get('state') == desired_state:
             return
-    raise ValueError
+    raise ValueError('Timeout waiting for roof to open')
 
 def main():
-    requests.post(url='http://192.168.1.228:8080/open')    
-    block_until('OPEN')    
+    requests.post(url='http://192.168.1.228:8080/open')
+    block_until('OPEN')
+    requests.post(url='http://192.168.1.228:8080/shutteropen')
     print('OK')
-    
+
 
 if __name__ == "__main__":
     main()

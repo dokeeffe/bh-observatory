@@ -44,12 +44,17 @@ def calibrate_light():
                 filename_full_path = os.path.join(light_ic.location,filename)
                 light_ccd = CCDData.read(filename_full_path, unit=u.adu)
                 logging.info('Calibrating {}'.format(filename_full_path))
-                logging.info('    RES: {} x {} FILTER: {}'.format(light_ccd.header['NAXIS1'], light_ccd.header['NAXIS2'], light_ccd.header['FILTER']))
+                #logging.info('    RES: {} x {} FILTER: {}'.format(light_ccd.header['NAXIS1'], light_ccd.header['NAXIS2'], light_ccd.header['FILTER']))
                 logging.info('    Bias correcting {}'.format(filename))
                 bias_corrected = calibrationUtils.subtract_best_bias_temp_match(master_bias_ic, light_ccd)
                 logging.info('    Dark correcting {}'.format(filename))
                 dark_corrected = calibrationUtils.subtract_best_dark(master_dark_ic, bias_corrected)
                 logging.info('    Flat correcting {}'.format(filename))
+                if 'FILTER' not in dark_corrected.header:
+                    logging.warning('filter missing from fits header {}'.format(filename_full_path))
+                    filter = os.path.basename(os.path.dirname(filename_full_path))
+                    logging.warning('using filter {}'.format(filter))
+                    dark_corrected.header['FILTER'] = filter
                 flat_corrected = calibrationUtils.flat_correct(master_flat_ic, dark_corrected)
                 logging.info('    Setting GAIN header')
                 flat_corrected.header['GAIN'] = 0.4

@@ -11,9 +11,19 @@ def block_until(desired_state: str):
             return
     raise ValueError
 
+def block_until_shutter_closed():
+    for _ in range(40):
+        time.sleep(1)
+        resp = requests.get('http://192.168.1.228:8080/shutter')
+        print(resp.json())
+        if resp.json().get('state') == 'SHUTTERCLOSED':
+            return
+
 def main():
+    requests.post(url='http://192.168.1.228:8080/shutterclose')
+    block_until_shutter_closed()
     requests.post(url='http://192.168.1.228:8080/close')    
-    block_until('CLOSED')    
+    block_until('CLOSED')
     print('OK')
 
 
