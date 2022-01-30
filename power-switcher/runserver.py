@@ -4,13 +4,15 @@
 import pyfirmata
 from bottle import route, run, abort, template
 from pyfirmata import Arduino, util
+import os 
 
-socket_to_relay_map = {'mount': 5, 'ccd': 7, 'filterwheel': 6, 'heaters': 4, 'focuser': 2, 'aux': 3,
+socket_to_relay_map = {'mount': 5, 'ccd': 7, 'spare': 6, 'heaters': 4, 'focuser': 2, 'aux': 3,
                        'weatherstation': 1, 'mainsplug': 8}
-socket_state_map = {'mount': 'OFF', 'ccd': 'OFF', 'filterwheel': 'OFF', 'heaters': 'OFF', 'focuser': 'OFF',
+socket_state_map = {'mount': 'OFF', 'ccd': 'OFF', 'spare': 'OFF', 'heaters': 'OFF', 'focuser': 'OFF',
                     'aux': 'OFF', 'weatherstation': 'ON', 'mainsplug': 'ON'}
 valid_states = ['on', 'off']
 
+observatory_config = {'autoStartEnabled': True, 'lat' : 52.3, 'lon' : -8.2}
 
 @route('/power/<socket>/<state>')
 def power_change_state(socket, state):
@@ -39,6 +41,9 @@ def power_query():
     '''
     return socket_state_map
 
+@route('/obs/config')
+def obs_config():
+    return observatory_config
 
 @route('/')
 def index():
@@ -48,6 +53,10 @@ def index():
     '''
     return template('index_template')
 
+@route('/uptime')
+def uptime():
+    uptime = os.popen('uptime -p').read()
+    return uptime
 
 def flip_state(state):
     '''

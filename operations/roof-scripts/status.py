@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import requests
@@ -7,7 +7,7 @@ OPEN='0 1 0'
 CLOSED='1 0 0'
 UNKNOWN='2 0 0'
 
-def query_firmware():
+def query_roof():
     resp = requests.get(url='http://192.168.1.228:8080/roof')
     return resp.json()['state'] 
     

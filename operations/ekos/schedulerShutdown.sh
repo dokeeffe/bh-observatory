@@ -18,12 +18,12 @@ curl "http://192.168.1.221:88/cgi-bin/CGIProxy.fcgi?cmd=setInfraLedConfig&mode=0
 echo 'Switching ON Dehumidifier'
 /usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" dehumidifier ON
 
-echo "Performing light frame calibration"
-cd ~/code/github/bh-observatory/data-reduction/calibration
-python calibrateLightFrames.py
-cd ~/code/github/bh-observatory/data-reduction
-echo "updating filenames"
-python addFitsObjectToFilename.py
+#echo "Performing light frame calibration"
+#cd ~/code/github/bh-observatory/data-reduction/calibration
+#python calibrateLightFrames.py
+#cd ~/code/github/bh-observatory/data-reduction
+#echo "updating filenames"
+#python addFitsObjectToFilename.py
 #echo "plate solving"
 #python solveAll.py
 #/usr/bin/python "$BASEDIR/message_senders.py" 'shutdown and calibration complete'

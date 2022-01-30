@@ -31,7 +31,7 @@ def calibrate_light():
     master_dark_ic = ImageFileCollection(config.get('Dark_Paths', 'masterdir'))
     master_flat_ic = ImageFileCollection(config.get('Flat_Paths', 'masterdir'))
     rawdirs_to_process = calibrationUtils.find_dirs_containing_fits_files(config.get('Light_Path', 'rawdir'))
-    print(rawdirs_to_process)
+    print('Processing dirs {}'.format(rawdirs_to_process))
     for rawdir_to_process in rawdirs_to_process:
         light_ic = ImageFileCollection(rawdir_to_process)
         if not light_ic.files:

@@ -15,8 +15,8 @@
 </head>
 <body>
 <div class="container">
-<h1>Observatory Control</h1>
-
+<h1>Observatory Power Switcher</h1>
+<h2> Uptime <span id="uptime"></span></h2>
 
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#switches" aria-controls="switches" role="tab" data-toggle="tab">Switches</a>
@@ -35,13 +35,13 @@
             <div class="checkbox">
                 <label>
                     <input id="ccd" type="checkbox" data-toggle="toggle">
-                    CCD
+                    CCD 
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input id="filterwheel" type="checkbox" data-toggle="toggle">
-                    FilterWheel
+                    <input id="spare" type="checkbox" data-toggle="toggle">
+                    Spare 12v 
                 </label>
             </div>
             <div class="checkbox">
@@ -89,7 +89,13 @@
     $(document).ready(function () {
 
       $.get( 'power', function( data ) {
-          set_switch_states(data);
+          set_switch_states(data);          
+      }).fail(function() {
+          alert('failed')
+      });
+  
+      $.get( 'uptime', function( data ) {
+          $('#uptime').text(data);
       }).fail(function() {
           alert('failed')
       });
