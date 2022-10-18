@@ -1,0 +1,43 @@
+#!/usr/bin/python
+
+import sys
+import fnmatch
+import os
+from astropy.io import fits
+from astropy.wcs import WCS
+from astropy.wcs.wcs import NoConvergence
+from astropy.coordinates import SkyCoord
+
+
+def check_file(root, filename, to_find):
+    try:
+        hdulist = fits.open(os.path.join(root, filename))
+        header = hdulist[0].header
+        wcs = WCS(header)
+        x,y = to_find.to_pixel(wcs)
+        if x > 0 and y>0 and x<3000 and y<3000:
+            print('Matched coordinates in file {}'.format(filename))
+    except NoConvergence as e:
+        pass
+    except:
+        print('not platesolved {}'.format(filename))
+
+
+
+def find(arg):
+    to_find = SkyCoord.from_name(arg[0])
+    print('Searching for {} {}'.format(arg[0],to_find))
+
+    for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLight'):
+        for filename in fnmatch.filter(filenames, '*.fits'):
+            check_file(root, filename, to_find)
+    for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLightArchive'):
+        for filename in fnmatch.filter(filenames, '*.fits'):
+            check_file(root, filename, to_find)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print('Usage searchfor <object name> /nExample searchfor NGC7318')
+        sys.exit(2) 
+    find(sys.argv[1:])

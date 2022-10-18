@@ -72,10 +72,10 @@ def combine_values_from_dictionary_and_write(image_dict, prefix, combination_met
     :param combination_method:
     :return:
     """
-    for k, v in image_dict.iteritems():
+    for k, v in image_dict.items():
         logging.info('Combining: Processing ' + k)
         master = ccdproc.combine(v, method=combination_method, mem_limit=128e6)
-        master.write(prefix + k + '.fits', clobber=True)
+        master.write(prefix + k + '.fits')
 
 
 def generate_bias_key(ccd):

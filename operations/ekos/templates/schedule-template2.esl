@@ -13,8 +13,8 @@
             <Condition>ASAP</Condition>
         </StartupCondition>
         <Constraints>
-            <Constraint value='40'>MinimumAltitude</Constraint>
-            <Constraint value='15'>MoonSeparation</Constraint>
+            <Constraint value='35'>MinimumAltitude</Constraint>
+            <Constraint value='5'>MoonSeparation</Constraint>
             <Constraint>EnforceWeather</Constraint>
             <Constraint>EnforceTwilight</Constraint>
         </Constraints>

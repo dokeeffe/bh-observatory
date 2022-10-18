@@ -33,16 +33,18 @@ def calibrate_light():
     rawdirs_to_process = calibrationUtils.find_dirs_containing_fits_files(config.get('Light_Path', 'rawdir'))
     print('Processing dirs {}'.format(rawdirs_to_process))
     for rawdir_to_process in rawdirs_to_process:
+        print('rawdir {}'.format(rawdir_to_process))
         light_ic = ImageFileCollection(rawdir_to_process)
         if not light_ic.files:
             logging.warn('no data in ' + rawdir_to_process)
         else:
-            logging.info('processing raw dir ' + rawdir_to_process)
+            logging.info('processing raw dir {}'.format(rawdir_to_process))
             files_to_archive = []
             # collect the raw light frames and collate by time, binning and temp, subtract appropriate Bias while collecting.
             for filename in light_ic.files_filtered(FRAME='Light'):
                 filename_full_path = os.path.join(light_ic.location,filename)
-                light_ccd = CCDData.read(filename_full_path, unit=u.adu)
+                print('reading {}'.format(filename_full_path))
+                light_ccd = CCDData.read(filename_full_path, unit=u.adu, ignore_missing_end=True)
                 logging.info('Calibrating {}'.format(filename_full_path))
                 #logging.info('    RES: {} x {} FILTER: {}'.format(light_ccd.header['NAXIS1'], light_ccd.header['NAXIS2'], light_ccd.header['FILTER']))
                 logging.info('    Bias correcting {}'.format(filename))

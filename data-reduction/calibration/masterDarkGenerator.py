@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import json
 import logging
 import os
@@ -19,7 +19,7 @@ import calibrationUtils
 # This is performed for all raw dark frames grouped by time, binning and sensor temperature.
 #
 def generate_darks():
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read('calibration.cfg')
     combine_method = config.get('Flat_Paths', 'combine_method')
     outdir = config.get('Dark_Paths', 'masterdir')

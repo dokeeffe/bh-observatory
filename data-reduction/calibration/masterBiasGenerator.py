@@ -1,4 +1,4 @@
-import ConfigParser
+import configparser
 import json
 import logging
 import os
@@ -14,7 +14,7 @@ import calibrationUtils
 #
 def generate_master_bias_frames():
 
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read('calibration.cfg')
     combine_method = config.get('Flat_Paths', 'combine_method')
     outdir = config.get('Bias_Paths', 'masterdir')

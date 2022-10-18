@@ -72,7 +72,7 @@ class AavsoEkosScheduleGenerator:
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
     AVAILABLE_FILTERS = ['V', 'All']
-    MIN_TARGET_ALTITUDE_DEG = 40
+    MIN_TARGET_ALTITUDE_DEG = 35
     AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
 
     def __init__(self, lat=DEFAULT_LATITUDE, lon=DEFAULT_LONGITUDE, elevation=DEFAULT_ELEVATION,
