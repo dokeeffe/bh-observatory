@@ -2,6 +2,7 @@
 
 import configparser
 import re
+import requests
 
 import os
 
@@ -9,7 +10,7 @@ import urllib.request
 import lxml.html
 
 import numpy
-import pandas as pd
+# import pandas as pd
 from astroplan import (AltitudeConstraint, AirmassConstraint,
                        AtNightConstraint)
 from astroplan import Observer, FixedTarget, observability_table
@@ -73,6 +74,7 @@ class AavsoEkosScheduleGenerator:
     A tool to generate EKOS schedules from AAVSO's target list https://filtergraph.com/aavso
     '''
     MAX_MAGNITUDE = 9.0
+    MIN_MAGNITUDE = 17
     DEFAULT_LONGITUDE = -8.2
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
@@ -80,9 +82,10 @@ class AavsoEkosScheduleGenerator:
     MIN_TARGET_ALTITUDE_DEG = 35
     AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
     GUESS_SEQUENCE_FOR_UNKNOWN_MAG = False
+    API_KEY = "a19155821b54054f905bacfc70e65c89"
 
     def __init__(self, lat=DEFAULT_LATITUDE, lon=DEFAULT_LONGITUDE, elevation=DEFAULT_ELEVATION,
-                 min_target_altitude_deg=MIN_TARGET_ALTITUDE_DEG):
+                 min_target_altitude_deg=MIN_TARGET_ALTITUDE_DEG, api_key=API_KEY):
         '''
         Constructor, defaults for location can be overriden. Build conditions and constraints for today and current location.
         :param lat:
@@ -99,47 +102,80 @@ class AavsoEkosScheduleGenerator:
         sunrise = self.location.sun_rise_time(self.time, which='next')
         self.time_range = Time([sunset, sunrise])
         self.webops_client = WebopsClient()
+        self.api_key = api_key
 
-    def load_aavso_data_and_filter(self):
-        '''
-        Load AAVSO data and filter out objects not visible tonight
-        :return: `~astropy.table.Table` An astropy table of visible targets
-        '''
+    
+
+    def load_aavso_data(self, obs_section='Alerts / Campaigns'):
+            resp = requests.get("https://targettool.aavso.org/TargetTool/api/v1/targets",auth=(self.api_key,"api_token"),params={'obs_section':['Alerts / Campaigns']})
+            return resp.json()['targets']
+    
+    def get_observable_stars(self, all_targets):
+        result = []
+       
+        time = Time.now()
+        sunset = self.location.twilight_evening_astronomical(time, which='nearest')
+        sunrise = self.location.twilight_morning_astronomical(time, which='next')
+        time_range = Time([sunset, sunrise])
+        
+        
+        aavso_targets = sorted(all_targets, key=lambda x: x['star_name'])
         targets = []
-        print('loading from aavso {}'.format(self.AAVSO_TARGET_URL))
-        target_csv_data = pd.read_csv(self.AAVSO_TARGET_URL)
-        for row in target_csv_data.iterrows():
-            coordinates = SkyCoord(
-                row[1]['RA (J2000.0)'], row[1]['Dec (J2000.0)'], unit=(u.hourangle, u.deg))
-            ft = FixedTarget(name=row[1]['Star Name'], coord=coordinates)
-            targets.append(ft)
+        for target in aavso_targets:
+            if target["priority"] and target['filter'] == 'V' and target['min_mag'] and target['min_mag'] < self.MIN_MAGNITUDE and target['max_mag'] > self.MAX_MAGNITUDE:
+                coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.hourangle, u.deg))
+                ft = FixedTarget(name=target["star_name"], coord=coordinates)
+                targets.append(ft)
+        
+        table = observability_table(self.constraints, self.location, targets, time_range=time_range)
 
-        table = observability_table(
-            self.constraints, self.location, targets, time_range=self.time_range)
-        # add the targets and range details
-        table['tgt'] = targets
-        table['minmag'] = target_csv_data['Min Mag']
-        table['maxmag'] = target_csv_data['Max Mag']
-        table['filter'] = target_csv_data['Filter/Mode']
-        table['ra'] = target_csv_data['RA (J2000.0)']
-        table['dec'] = target_csv_data['Dec (J2000.0)']
+        for schedule_entry in table[table['fraction of time observable'] > 0.05]:
+            result.append(schedule_entry['target name'])
+        return result
 
-        # filter by observable
-        observable = table['ever observable'] == True
-        visible_targets = table[observable]
-        high_fraction = visible_targets['fraction of time observable'] > 0.2
-        visible_targets = visible_targets[high_fraction]
-        # print(visible_targets)
+    # def load_aavso_data_and_filter(self):
+    #     '''
+    #     Load AAVSO data and filter out objects not visible tonight
+    #     :return: `~astropy.table.Table` An astropy table of visible targets
+    #     '''
+    #     targets = []
+    #     print('loading from aavso {}'.format(self.AAVSO_TARGET_URL))
+    #     target_csv_data = pd.read_csv(self.AAVSO_TARGET_URL)
+    #     for row in target_csv_data.iterrows():
+    #         coordinates = SkyCoord(
+    #             row[1]['RA (J2000.0)'], row[1]['Dec (J2000.0)'], unit=(u.hourangle, u.deg))
+    #         ft = FixedTarget(name=row[1]['Star Name'], coord=coordinates)
+    #         targets.append(ft)
 
-        filtered = list(filter(self.is_candidate_for_observation, table))
-        print('Filtered a total of {} targets down to {} observable'.format(
-            len(table), len(filtered)))
-        return filtered
+    #     table = observability_table(
+    #         self.constraints, self.location, targets, time_range=self.time_range)
+    #     # add the targets and range details
+    #     table['tgt'] = targets
+    #     table['minmag'] = target_csv_data['Min Mag']
+    #     table['maxmag'] = target_csv_data['Max Mag']
+    #     table['filter'] = target_csv_data['Filter/Mode']
+    #     table['ra'] = target_csv_data['RA (J2000.0)']
+    #     table['dec'] = target_csv_data['Dec (J2000.0)']
 
-    def build_ekos_schedule_xml_from_table(self, visible_targets):
+    #     # filter by observable
+    #     observable = table['ever observable'] == True
+    #     visible_targets = table[observable]
+    #     high_fraction = visible_targets['fraction of time observable'] > 0.2
+    #     visible_targets = visible_targets[high_fraction]
+
+    #     filtered = list(filter(self.is_candidate_for_observation, table))
+    #     return filtered
+    
+    def _find(self, star, all_targets):
+        for tgt in all_targets:
+            if tgt['star_name'] == star:
+                return tgt
+
+    def build_ekos_schedule_xml_from_table(self, all_targets, observable):
         '''
         Build an EKOS schedule from an astropy table of targets.
-        :param visible_targets:
+        :param all_targets:
+        :param observable
         :return:
         '''
         config = configparser.ConfigParser()
@@ -147,14 +183,15 @@ class AavsoEkosScheduleGenerator:
         config.read(basedir + '/ops.cfg')
         jobs = []
 
-        for row in visible_targets:
+        for star in observable:
+            row = self._find(star, all_targets)
             coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
             job = {}
-            job['name'] = row['target name']
+            job['name'] = row['star_name']
             job['ra'] = str(coord.ra.hour)
             job['dec'] = str(coord.dec.deg)
             recent_mag = self.webops_client.get_most_recent_measurement(
-                row['target name'], 'V')
+                row['star_name'], 'V')
             if recent_mag is not None:
                 if recent_mag > 18:
                     print(f'Skipping star as too faine. Mag: {recent_mag}')
@@ -165,18 +202,7 @@ class AavsoEkosScheduleGenerator:
                     job['priority'] = 3
                     jobs.append(job)
             else:
-                if False: #GUESS_SEQUENCE_FOR_UNKNOWN_MAG:
-                    print('Unable to estimate recent magnitude, going to guess')
-                    minmag = re.findall("\d+\.\d+", row['minmag'])
-                    maxmag = re.findall("\d+\.\d+", row['maxmag'])
-                    minmag = float(minmag[0]) if len(minmag) > 0 else numpy.nan
-                    maxmag = float(maxmag[0]) if len(maxmag) > 0 else numpy.nan
-                    job['sequence'] = self.determine_capture_sequence(
-                        (minmag + maxmag)/2)
-                    job['priority'] = 3
-                    jobs.append(job)
-                else:
-                    print('Unable to estimate recent mangnitude. Skipping')
+                print('Unable to estimate recent mangnitude. Skipping')
 
         schedule_template = Template(filename=os.path.join(os.path.dirname(
             __file__), config.get('EKOS_SCHEDULING', 'schedule_template')))
@@ -186,26 +212,26 @@ class AavsoEkosScheduleGenerator:
         print('Generated Schedule File of {} jobs to {}'.format(len(jobs), config.get(
             'EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl"))
 
-    def is_candidate_for_observation(self, aavso_target):
-        '''
-        Returns true id the target passed is a candidate for observation. It must be visible from current location and not too close to the pole and the requested filter be one of ours
-        :param aavso_target:
-        :return:
-        '''
-        coord = SkyCoord(
-            aavso_target['ra'], aavso_target['dec'], unit=(u.hourangle, u.deg))
-        maxmag = re.findall("\d+\.\d+", aavso_target['maxmag'])
-        if coord.dec.deg < 90 \
-                and aavso_target['filter'] in self.AVAILABLE_FILTERS \
-                and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.25 \
-                and maxmag and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
-            print('Star {} is candidate for observation. filter:{} Observable {} of night'
-                  .format(aavso_target['target name'], aavso_target['filter'], aavso_target['fraction of time observable']))
-            return True
-        else:
-            # print('Star {} filter {} is not a candidate, observable {} of night'
-            #       .format(aavso_target['target name'],aavso_target['filter'], aavso_target['fraction of time observable']))
-            return False
+    # def is_candidate_for_observation(self, aavso_target):
+    #     '''
+    #     Returns true id the target passed is a candidate for observation. It must be visible from current location and not too close to the pole and the requested filter be one of ours
+    #     :param aavso_target:
+    #     :return:
+    #     '''
+    #     coord = SkyCoord(
+    #         aavso_target['ra'], aavso_target['dec'], unit=(u.hourangle, u.deg))
+    #     maxmag = re.findall("\d+\.\d+", aavso_target['maxmag'])
+    #     if coord.dec.deg < 90 \
+    #             and aavso_target['filter'] in self.AVAILABLE_FILTERS \
+    #             and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.25 \
+    #             and maxmag and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
+    #         print('Star {} is candidate for observation. filter:{} Observable {} of night'
+    #               .format(aavso_target['target name'], aavso_target['filter'], aavso_target['fraction of time observable']))
+    #         return True
+    #     else:
+    #         # print('Star {} filter {} is not a candidate, observable {} of night'
+    #         #       .format(aavso_target['target name'],aavso_target['filter'], aavso_target['fraction of time observable']))
+    #         return False
 
     def determine_capture_sequence(self, mag):
         print(f'Determining best sequence for mag {mag}')
@@ -223,5 +249,9 @@ class AavsoEkosScheduleGenerator:
 
 if __name__ == '__main__':
     generator = AavsoEkosScheduleGenerator()
-    generator.build_ekos_schedule_xml_from_table(
-        generator.load_aavso_data_and_filter())
+    # generator.build_ekos_schedule_xml_from_table(
+    #     generator.load_aavso_data_and_filter())
+    aavso_targets = generator.load_aavso_data()
+    observable = generator.get_observable_stars(aavso_targets)
+    generator.build_ekos_schedule_xml_from_table(aavso_targets, observable)
+
