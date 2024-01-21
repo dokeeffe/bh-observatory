@@ -18,16 +18,20 @@ def get_weather_status():
     sky_temp = current_weather['skyTemp']
     ambient_temp = current_weather['outsideTemp']
     clear = 1
+    sky_temp_delta = current_weather['outsideTemp'] - current_weather['skyTemp']
 
     if rain:
         clear = 0
         msg=f'Raining. sky:{sky_temp} ambient:{ambient_temp}'
-    elif current_weather['outsideTemp'] - current_weather['skyTemp'] > 15 :
+    elif sky_temp_delta > 15 :
         clear = 1
         msg=f'Clear. sky:{sky_temp} ambient:{ambient_temp}'
+    elif sky_temp_delta > 10:
+        clear = 1
+        msg=f'Partial Cloud. sky:{sky_temp} ambient:{ambient_temp}'
     else:
-        clear=0
-        msg=f'Cloudy. sky:{sky_temp} ambient:{ambient_temp}'
+        clear = 0
+        msg=f'Cloudy!!!. sky:{sky_temp} ambient:{ambient_temp}'
     return clear, msg
 
 now=datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S%z")

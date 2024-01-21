@@ -1,15 +1,14 @@
 import configparser
-import urllib
+import urllib.request
+import urllib.parse
 
 import os
 
 import sys
-import urllib2
 
 class SmsMessageSender(object):
     '''
     Message sender that uses txtlocal.com gateway to send SMS
-    This message sender is only compatable with python 3 because of the way they changed urllib in python3...
     '''
     def __init__(self, user, apikey, phonenumber, test_flag=1):
         '''
@@ -33,23 +32,24 @@ class SmsMessageSender(object):
         '''
         sender = 'OBSERVATORY'
         numbers = (self.phonenumber)
-        values = {'test'    : self.test_flag,
-                  'uname'   : self.user,
-                  'hash'    : self.apikey,
+        values = {'apikey' : self.apikey,
                   'message' : message,
-                  'from'    : sender,
-                  'selectednums' : numbers }
+                  'sender' : sender,
+                  'numbers' : numbers }
 
-        url = 'http://www.txtlocal.com/sendsmspost.php'
-        postdata = urllib.urlencode(values)
-        req = urllib2.Request(url, postdata)
+        print(values)
+
+        url = 'https://api.txtlocal.com/send/?'
+        postdata = urllib.parse.urlencode(values)
+        postdata = postdata.encode('utf-8')
+        req = urllib.request.Request(url)
         try:
-            response = urllib2.urlopen(req)
-            response_url = response.geturl()
-            if response_url==url:
-                print('SMS sent! ' + message)
-        except Exception:
+            f = urllib.request.urlopen(req, postdata)
+            fr = f.read()
+            print(fr)
+        except Exception as ex:
             print('SMS Send failed!')
+            print(ex)
 
 def config_to_str(group, key):
     return str(config.get(group,key))

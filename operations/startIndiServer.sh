@@ -9,10 +9,6 @@ printf "\n\nEquipement powered on\n\n"
 
 sleep 5
 
-#DSLR only
-#nohup indiserver -v  -l /home/dokeeffe indi_ioptronv3_telescope indi_script_dome indi_sx_ccd indi_moonlite_focus indi_weather_safety_proxy indi_sqm_weather indi_watchdog indi_canon_ccd &
-
-#ATIK only
-nohup indiserver -v -l /home/dokeeffe indi_ioptronv3_telescope indi_script_dome indi_sx_ccd indi_atik_ccd indi_ipfocuser indi_atik_wheel indi_weather_safety_proxy indi_sqm_weather indi_watchdog &
+nohup indiserver -v -l /home/dokeeffe indi_ioptronv3_telescope indi_script_dome indi_sx_ccd indi_atik_ccd indi_atik_wheel indi_ipfocuser indi_weather_safety_proxy indi_sqm_weather indi_watchdog &
 
 printf "\n\n Started Indi server \n\n"

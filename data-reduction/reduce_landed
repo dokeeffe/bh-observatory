@@ -1,9 +1,9 @@
 #!/bin/bash
 
 cd ~/code/github/bh-observatory/data-reduction/calibration
-python calibrateLightFrames.py
+python3 calibrateLightFrames.py
 cd ~/code/github/bh-observatory/data-reduction
-python addFitsObjectToFilename.py
+python3 addFitsObjectToFilename.py
 #python solveAll.py
 echo 'Reduction Complete'
 

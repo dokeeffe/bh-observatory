@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
-import ConfigParser
+import configparser
 import json
 import logging
 import os
@@ -21,7 +21,7 @@ import calibrationUtils
 # Calibration logic is based on AAVSO guidelines from their CCDPhotometryGuide.pdf
 #
 def calibrate_light():
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read('calibration.cfg')
     outdir = config.get('Light_Path', 'masterdir')
     if not os.path.isdir(outdir):
@@ -67,7 +67,7 @@ def calibrate_light():
                     os.mkdir(outdir+date_dir)
                 os.chdir(outdir+date_dir)
                 date_file_prefix  = calibrationUtils.extract_datetime_from(flat_corrected)
-                flat_corrected.write(date_file_prefix + filename, clobber=True)
+                flat_corrected.write(date_file_prefix + filename)
                 logging.info('Written calibrated LIGHT {}\n\n\n'.format(date_file_prefix + filename))
                 files_to_archive.append(filename)
             calibrationUtils.move_to_archive(rawdir_to_process, files_to_archive)
@@ -75,5 +75,5 @@ def calibrate_light():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    astropylog.setLevel('WARNING')
+    astropylog.setLevel('ERROR')
     calibrate_light()

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from astropy.io import fits
 import os
@@ -12,7 +12,7 @@ os.mkdir('/tmp/solver')
 for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLight'):
     for filename in fnmatch.filter(filenames, '*.fits'):
         try:
-            print(filename)
+            #print(filename)
             original_hdu = fits.open(os.path.join(root, filename), ignore_missing_end=True)
             solved = 'CRVAL1' in original_hdu[0].header and 'CD1_1' in original_hdu[0].header
             if not solved: # or 'HAT-P-20' in filename:
@@ -25,18 +25,19 @@ for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLigh
                 copyfile(os.path.join(root, filename), temp_file)
                 hdulist = fits.open(temp_file, ignore_missing_end=True)
                 header = hdulist[0].header
-                ra = header['OBJCTRA']
-                dec = header['OBJCTDEC']
+                ra = header['OBJCTRA'].strip().replace(' ',':')
+                dec = header['OBJCTDEC'].strip().replace(' ',':')
                 focalLength = header.get('FOCALLEN', 1800)
                 print( 'focalLength ' + str(focalLength))
                 binning = header['XBINNING']
                 pixelSize = header['PIXSIZE1']
                 arcSecPerPixel = (pixelSize / focalLength) * 206.3 * binning
                 print('Arc-sec per pixel = {}'.format(arcSecPerPixel))
+                print(f'ra {ra} dec {dec}')
                 try:
-                    print('solve-field {} {} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format('--cpulimit', '30', '--no-plots', '--no-verify', '--resort', '--skip-solved','--downsample','2', '-O', '-L', '1.25', '-H', '1.27', '-u', 'app', temp_file))
-                    retcode = subprocess.call(['solve-field', '--cpulimit', '30', '--no-plots', '--resort', '--skip-solved','--downsample','2', '-O', '-L',
-                            '1.25', '-H', '1.27', '-u', 'app', temp_file])
+                    #print('solve-field {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {} {}'.format('--cpulimit', '30', '--no-plots', '--no-verify', '--resort', '--skip-solved','--downsample','2', '-O', '-L', '1.25', '-H', '1.27', '-u', 'app', temp_file))
+#                    retcode = subprocess.call(['solve-field', '--ra',ra,'--dec',dec,'--radius','2','--cpulimit', '90', '--no-plots', '--resort', '--skip-solved','--downsample','2', '-O', '-L',
+                    retcode = subprocess.call(['solve-field', '--no-verify', '--no-plots', '--resort', '--downsample', '2', '-O', '-L', '26.586', '-H', '35.259', '-u', 'aw', temp_file])
                     if retcode == 0:
                         copyfile(os.path.join('/tmp/solver', filename.replace('fits', 'new')), os.path.join(root, filename))
                     else:

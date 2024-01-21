@@ -15,8 +15,8 @@ curl http://192.168.1.225:8080/power/aux/off > /dev/null 2>&1
 echo 'Switching ON IR Lamps'
 curl 'http://192.168.1.222/decoder_control.cgi?command=95' -u $INDOOR_FOSCAM_USERNAME:$INDOOR_FOSCAM_PASSWORD > /dev/null 2>&1 || true
 curl "http://192.168.1.221:88/cgi-bin/CGIProxy.fcgi?cmd=setInfraLedConfig&mode=0&usr=$OUTDOOR_FOSCAM_USERNAME&pwd=$OUTDOOR_FOSCAM_PASSWORD" || true
-echo 'Switching ON Dehumidifier'
-/usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" dehumidifier ON
+#echo 'Switching ON Dehumidifier'
+#/usr/bin/python "$BASEDIR/tplink_hs1xx/smartplug.py" dehumidifier ON
 
 #echo "Performing light frame calibration"
 #cd ~/code/github/bh-observatory/data-reduction/calibration
