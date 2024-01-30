@@ -80,7 +80,7 @@ class AavsoEkosScheduleGenerator:
     DEFAULT_ELEVATION = 100
     AVAILABLE_FILTERS = ['V', 'All']
     MIN_TARGET_ALTITUDE_DEG = 35
-    AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
+    # AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
     GUESS_SEQUENCE_FOR_UNKNOWN_MAG = False
     API_KEY = "a19155821b54054f905bacfc70e65c89"
 
@@ -123,7 +123,8 @@ class AavsoEkosScheduleGenerator:
         targets = []
         for target in aavso_targets:
             if target["priority"] and target['filter'] == 'V' and target['min_mag'] and target['min_mag'] < self.MIN_MAGNITUDE and target['max_mag'] > self.MAX_MAGNITUDE:
-                coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.hourangle, u.deg))
+                coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.deg, u.deg))
+                print(f'{target["star_name"]} {coordinates}')
                 ft = FixedTarget(name=target["star_name"], coord=coordinates)
                 targets.append(ft)
         
@@ -185,7 +186,7 @@ class AavsoEkosScheduleGenerator:
 
         for star in observable:
             row = self._find(star, all_targets)
-            coord = SkyCoord(row['ra'], row['dec'], unit=(u.hourangle, u.deg))
+            coord = SkyCoord(row['ra'], row['dec'], unit=(u.deg, u.deg))
             job = {}
             job['name'] = row['star_name']
             job['ra'] = str(coord.ra.hour)
