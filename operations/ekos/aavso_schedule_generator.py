@@ -10,7 +10,6 @@ import urllib.request
 import lxml.html
 
 import numpy
-# import pandas as pd
 from astroplan import (AltitudeConstraint, AirmassConstraint,
                        AtNightConstraint)
 from astroplan import Observer, FixedTarget, observability_table
@@ -133,39 +132,6 @@ class AavsoEkosScheduleGenerator:
         for schedule_entry in table[table['fraction of time observable'] > 0.05]:
             result.append(schedule_entry['target name'])
         return result
-
-    # def load_aavso_data_and_filter(self):
-    #     '''
-    #     Load AAVSO data and filter out objects not visible tonight
-    #     :return: `~astropy.table.Table` An astropy table of visible targets
-    #     '''
-    #     targets = []
-    #     print('loading from aavso {}'.format(self.AAVSO_TARGET_URL))
-    #     target_csv_data = pd.read_csv(self.AAVSO_TARGET_URL)
-    #     for row in target_csv_data.iterrows():
-    #         coordinates = SkyCoord(
-    #             row[1]['RA (J2000.0)'], row[1]['Dec (J2000.0)'], unit=(u.hourangle, u.deg))
-    #         ft = FixedTarget(name=row[1]['Star Name'], coord=coordinates)
-    #         targets.append(ft)
-
-    #     table = observability_table(
-    #         self.constraints, self.location, targets, time_range=self.time_range)
-    #     # add the targets and range details
-    #     table['tgt'] = targets
-    #     table['minmag'] = target_csv_data['Min Mag']
-    #     table['maxmag'] = target_csv_data['Max Mag']
-    #     table['filter'] = target_csv_data['Filter/Mode']
-    #     table['ra'] = target_csv_data['RA (J2000.0)']
-    #     table['dec'] = target_csv_data['Dec (J2000.0)']
-
-    #     # filter by observable
-    #     observable = table['ever observable'] == True
-    #     visible_targets = table[observable]
-    #     high_fraction = visible_targets['fraction of time observable'] > 0.2
-    #     visible_targets = visible_targets[high_fraction]
-
-    #     filtered = list(filter(self.is_candidate_for_observation, table))
-    #     return filtered
     
     def _find(self, star, all_targets):
         for tgt in all_targets:
@@ -213,27 +179,6 @@ class AavsoEkosScheduleGenerator:
         print('Generated Schedule File of {} jobs to {}'.format(len(jobs), config.get(
             'EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl"))
 
-    # def is_candidate_for_observation(self, aavso_target):
-    #     '''
-    #     Returns true id the target passed is a candidate for observation. It must be visible from current location and not too close to the pole and the requested filter be one of ours
-    #     :param aavso_target:
-    #     :return:
-    #     '''
-    #     coord = SkyCoord(
-    #         aavso_target['ra'], aavso_target['dec'], unit=(u.hourangle, u.deg))
-    #     maxmag = re.findall("\d+\.\d+", aavso_target['maxmag'])
-    #     if coord.dec.deg < 90 \
-    #             and aavso_target['filter'] in self.AVAILABLE_FILTERS \
-    #             and aavso_target['ever observable'] == True and aavso_target['fraction of time observable'] > 0.25 \
-    #             and maxmag and maxmag[0] and float(maxmag[0]) > self.MAX_MAGNITUDE:
-    #         print('Star {} is candidate for observation. filter:{} Observable {} of night'
-    #               .format(aavso_target['target name'], aavso_target['filter'], aavso_target['fraction of time observable']))
-    #         return True
-    #     else:
-    #         # print('Star {} filter {} is not a candidate, observable {} of night'
-    #         #       .format(aavso_target['target name'],aavso_target['filter'], aavso_target['fraction of time observable']))
-    #         return False
-
     def determine_capture_sequence(self, mag):
         print(f'Determining best sequence for mag {mag}')
         if mag > 15.0:
@@ -250,8 +195,6 @@ class AavsoEkosScheduleGenerator:
 
 if __name__ == '__main__':
     generator = AavsoEkosScheduleGenerator()
-    # generator.build_ekos_schedule_xml_from_table(
-    #     generator.load_aavso_data_and_filter())
     aavso_targets = generator.load_aavso_data()
     observable = generator.get_observable_stars(aavso_targets)
     generator.build_ekos_schedule_xml_from_table(aavso_targets, observable)
