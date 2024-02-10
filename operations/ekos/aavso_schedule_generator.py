@@ -79,9 +79,8 @@ class AavsoEkosScheduleGenerator:
     DEFAULT_ELEVATION = 100
     AVAILABLE_FILTERS = ['V', 'All']
     MIN_TARGET_ALTITUDE_DEG = 35
-    # AAVSO_TARGET_URL = 'https://filtergraph.com/aavso/default/index.csv?ac=on&settype=true'
     GUESS_SEQUENCE_FOR_UNKNOWN_MAG = False
-    API_KEY = "a19155821b54054f905bacfc70e65c89"
+    API_KEY = os.environ['AAVSO_API_KEY']
 
     def __init__(self, lat=DEFAULT_LATITUDE, lon=DEFAULT_LONGITUDE, elevation=DEFAULT_ELEVATION,
                  min_target_altitude_deg=MIN_TARGET_ALTITUDE_DEG, api_key=API_KEY):
@@ -182,11 +181,11 @@ class AavsoEkosScheduleGenerator:
     def determine_capture_sequence(self, mag):
         print(f'Determining best sequence for mag {mag}')
         if mag > 15.0:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x300PV.esq'
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x300PV.esq'
         if mag > 13.5:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x240PV.esq'
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x240PV.esq'
         if mag > 12.5:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x120PV.esq'
+            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/4x120PV.esq'
         if mag > 11.0:
             return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x60PV.esq'
         else:
