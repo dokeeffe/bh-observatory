@@ -39,7 +39,7 @@ def generate_flats():
             logging.info('Flat frames collected and collated by filter, binning and date. All flats for the same filter,binning on the same-day will be combined'
                          '.Performing average combination and bias subtraction')
             for k, v in flats.items():
-                logging.info('Combining images')
+                logging.info(f'Combining images {k} {v}')
                 master_flat = ccdproc.combine(v, method=combine_method)
                 logging.info('Bias subtracting')
                 bias_subtracted_master_flat = calibrationUtils.subtract_best_bias_temp_match(master_bias_ic, master_flat)

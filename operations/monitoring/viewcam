@@ -1,0 +1,6 @@
+#! /bin/bash
+
+ip_address=`foscam-search-tool | grep Observatory | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"`
+echo "Found camera $ip_address"
+
+ffplay rtsp://dokeeffe:Doohan21*@$ip_address:88/videoSub &

@@ -494,3 +494,2106 @@ Traceback (most recent call last):
     " would require ZIP64 extensions")
 zipfile.LargeZipFile: Zipfile size would require ZIP64 extensions
 Exception zipfile.LargeZipFile: LargeZipFile('Central directory offset would require ZIP64 extensions',) in <bound method ZipFile.__del__ of <zipfile.ZipFile object at 0x7f89a3fe4310>> ignored
+2024-09-17T20:35:37: startup: indiserver -v -l /home/dokeeffe indi_ioptronv3_telescope indi_script_dome indi_sx_ccd indi_atik_ccd indi_atik_wheel indi_moonlite_focus indi_weather_safety_proxy indi_sqm_weather indi_watchdog
+2024-09-17T20:35:37: Driver indi_ioptronv3_telescope: pid=4918 rfd=6 wfd=6 efd=7
+2024-09-17T20:35:37: Driver indi_script_dome: pid=4919 rfd=8 wfd=8 efd=9
+2024-09-17T20:35:37: Driver indi_sx_ccd: pid=4920 rfd=10 wfd=10 efd=11
+2024-09-17T20:35:37: Driver indi_atik_ccd: pid=4921 rfd=12 wfd=12 efd=13
+2024-09-17T20:35:37: Driver indi_atik_wheel: pid=4922 rfd=14 wfd=14 efd=15
+2024-09-17T20:35:37: Driver indi_moonlite_focus: pid=4923 rfd=16 wfd=16 efd=17
+2024-09-17T20:35:37: Driver indi_weather_safety_proxy: pid=4924 rfd=18 wfd=18 efd=19
+2024-09-17T20:35:37: Driver indi_sqm_weather: pid=4925 rfd=20 wfd=20 efd=21
+2024-09-17T20:35:37: Driver indi_watchdog: pid=4926 rfd=22 wfd=22 efd=23
+2024-09-17T20:35:37: listening to port 7624 on fd 5
+2024-09-17T20:35:37: Local server: listening on local domain at: @/tmp/indiserver
+2024-09-17T20:35:37: Driver indi_weather_safety_proxy: snooping on GPS Simulator.GEOGRAPHIC_COORD
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on Telescope Simulator.EQUATORIAL_EOD_COORD
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on Telescope Simulator.GEOGRAPHIC_COORD
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on Telescope Simulator.TELESCOPE_PARK
+2024-09-17T20:35:37: Driver indi_sx_ccd: snooping on iOptronV3.EQUATORIAL_EOD_COORD
+2024-09-17T20:35:37: Driver indi_sx_ccd: snooping on iOptronV3.EQUATORIAL_COORD
+2024-09-17T20:35:37: Driver indi_sx_ccd: snooping on iOptronV3.TELESCOPE_INFO
+2024-09-17T20:35:37: Driver indi_sx_ccd: snooping on iOptronV3.GEOGRAPHIC_COORD
+2024-09-17T20:35:37: Driver indi_sx_ccd: snooping on iOptronV3.TELESCOPE_PIER_SIDE
+2024-09-17T20:35:37: Driver indi_sx_ccd: snooping on SQM.SKY_QUALITY
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on iOptronV3.EQUATORIAL_EOD_COORD
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on iOptronV3.TARGET_EOD_COORD
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on iOptronV3.GEOGRAPHIC_COORD
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on iOptronV3.TELESCOPE_PARK
+2024-09-17T20:35:37: Driver indi_script_dome: snooping on iOptronV3.TELESCOPE_PIER_SIDE
+2024-09-17T20:35:37: Driver indi_ioptronv3_telescope: snooping on GPS Simulator.GEOGRAPHIC_COORD
+2024-09-17T20:35:37: Driver indi_ioptronv3_telescope: snooping on GPS Simulator.TIME_UTC
+2024-09-17T20:35:37: Driver indi_ioptronv3_telescope: snooping on Dome Simulator.DOME_PARK
+2024-09-17T20:35:37: Driver indi_ioptronv3_telescope: snooping on Dome Simulator.DOME_SHUTTER
+2024-09-17T20:35:37: Driver indi_ioptronv3_telescope: snooping on Dome Scripting Gateway.DOME_PARK
+2024-09-17T20:35:37: Driver indi_ioptronv3_telescope: snooping on Dome Scripting Gateway.DOME_SHUTTER
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on iOptronV3.EQUATORIAL_EOD_COORD
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on iOptronV3.EQUATORIAL_COORD
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on iOptronV3.TELESCOPE_INFO
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on iOptronV3.GEOGRAPHIC_COORD
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on iOptronV3.TELESCOPE_PIER_SIDE
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on IP Focuser.ABS_FOCUS_POSITION
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on IP Focuser.FOCUS_TEMPERATURE
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on Atik EFW2.FILTER_SLOT
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on Atik EFW2.FILTER_NAME
+2024-09-17T20:35:39: Driver indi_atik_ccd: snooping on SQM.SKY_QUALITY
+2024-09-17T20:35:41: Client 25: new arrival from 127.0.0.1:53920 - welcome!
+2024-09-17T20:35:41: Driver indi_watchdog: snooping on Weather Simulator.WEATHER_STATUS
+2024-09-17T20:35:41: Driver indi_watchdog: snooping on Telescope Simulator.TELESCOPE_PARK
+2024-09-17T20:35:41: Driver indi_watchdog: snooping on Dome Simulator.DOME_PARK
+2024-09-17T20:35:41: Driver indi_atik_ccd: snooping on MoonLite.ABS_FOCUS_POSITION
+2024-09-17T20:35:41: Driver indi_atik_ccd: snooping on MoonLite.FOCUS_TEMPERATURE
+2024-09-17T20:35:41: Client 26: new arrival from 127.0.0.1:53932 - welcome!
+2024-09-17T20:35:43: Driver indi_watchdog: snooping on Dome Scripting Gateway.DOME_PARK
+2024-09-17T20:35:43: Driver indi_watchdog: snooping on Weather Safety Proxy.WEATHER_STATUS
+2024-09-17T20:35:45: Client 27: new arrival from 127.0.0.1:57018 - welcome!
+2024-09-17T20:35:48: Client 28: new arrival from 192.168.1.225:50793 - welcome!
+2024-09-17T20:35:48: Client 28: read EOF
+2024-09-17T20:35:48: Client 28: shut down complete - bye!
+2024-09-17T20:36:01: Client 28: new arrival from 127.0.0.1:56922 - welcome!
+2024-09-17T20:36:03: Client 28: read EOF
+2024-09-17T20:36:03: Client 28: shut down complete - bye!
+2024-09-17T20:37:01: Client 28: new arrival from 127.0.0.1:36336 - welcome!
+2024-09-17T20:37:03: Client 28: read EOF
+2024-09-17T20:37:03: Client 28: shut down complete - bye!
+2024-09-17T20:37:47: Client 28: new arrival from 192.168.1.225:50802 - welcome!
+2024-09-17T20:37:47: Client 28: read EOF
+2024-09-17T20:37:47: Client 28: shut down complete - bye!
+2024-09-17T20:38:01: Client 28: new arrival from 127.0.0.1:37712 - welcome!
+2024-09-17T20:38:03: Client 28: read EOF
+2024-09-17T20:38:03: Client 28: shut down complete - bye!
+2024-09-17T20:38:20: Driver indi_watchdog: INDI::BaseClient::connectServer: creating new connection...
+2024-09-17T20:38:20: Client 28: new arrival from 127.0.0.1:43528 - welcome!
+2024-09-17T20:38:21: Driver indi_watchdog: Receiving new device: Dome Scripting Gateway
+2024-09-17T20:39:01: Client 29: new arrival from 127.0.0.1:53698 - welcome!
+2024-09-17T20:39:03: Client 29: read EOF
+2024-09-17T20:39:03: Client 29: shut down complete - bye!
+2024-09-17T20:39:48: Client 29: new arrival from 192.168.1.225:50814 - welcome!
+2024-09-17T20:39:48: Client 29: read EOF
+2024-09-17T20:39:48: Client 29: shut down complete - bye!
+2024-09-17T20:40:01: Client 29: new arrival from 127.0.0.1:52324 - welcome!
+2024-09-17T20:40:03: Client 29: read EOF
+2024-09-17T20:40:03: Client 29: shut down complete - bye!
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="ON_COORD_SET" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="EQUATORIAL_EOD_COORD" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_ABORT_MOTION" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_TRACK_MODE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_TRACK_RATE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_TRACK_STATE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_MOTION_NS" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_MOTION_WE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_REVERSE_MOTION" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_SLEW_RATE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TARGET_EOD_COORD" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TIME_UTC" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="GEOGRAPHIC_COORD" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_PARK" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_PARK_POSITION" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_PARK_OPTION" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_PIER_SIDE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="PEC" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="USEJOYSTICK" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="SNOOP_JOYSTICK" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="HOME" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="PEC_TRAINING" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="PEC_INFOS" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_TIMED_GUIDE_NS" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TELESCOPE_TIMED_GUIDE_WE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="GUIDE_RATE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="Firmware Info" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="GPS_STATUS" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="TIME_SOURCE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="HEMISPHERE" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="Slew Type" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="DaylightSaving" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="CWState" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="MERIDIAN_ACTION" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:40:07: Driver indi_watchdog: Dispatch command error(-1): 
+2024-09-17T20:40:07: Driver indi_watchdog: <delProperty device="iOptronV3" name="MERIDIAN_LIMIT" timestamp="2024-09-17T20:40:07"/>
+2024-09-17T20:41:01: Client 29: new arrival from 127.0.0.1:57092 - welcome!
+2024-09-17T20:41:03: Client 29: read EOF
+2024-09-17T20:41:03: Client 29: shut down complete - bye!
+2024-09-17T20:41:47: Client 29: new arrival from 192.168.1.225:50824 - welcome!
+2024-09-17T20:41:47: Client 29: read EOF
+2024-09-17T20:41:47: Client 29: shut down complete - bye!
+2024-09-17T20:42:01: Client 29: new arrival from 127.0.0.1:60770 - welcome!
+2024-09-17T20:42:03: Client 29: read EOF
+2024-09-17T20:42:03: Client 29: shut down complete - bye!
+2024-09-17T20:43:01: Client 29: new arrival from 127.0.0.1:35176 - welcome!
+2024-09-17T20:43:03: Client 29: read EOF
+2024-09-17T20:43:03: Client 29: shut down complete - bye!
+2024-09-17T20:43:47: Client 29: new arrival from 192.168.1.225:50834 - welcome!
+2024-09-17T20:43:47: Client 29: read: Connection reset by peer
+2024-09-17T20:43:47: Client 29: shut down complete - bye!
+2024-09-17T20:44:01: Client 29: new arrival from 127.0.0.1:33670 - welcome!
+2024-09-17T20:44:03: Client 29: read EOF
+2024-09-17T20:44:03: Client 29: shut down complete - bye!
+2024-09-17T20:45:01: Client 29: new arrival from 127.0.0.1:37678 - welcome!
+2024-09-17T20:45:03: Client 29: read EOF
+2024-09-17T20:45:03: Client 29: shut down complete - bye!
+2024-09-17T20:45:47: Client 29: new arrival from 192.168.1.225:50846 - welcome!
+2024-09-17T20:45:47: Client 29: read EOF
+2024-09-17T20:45:47: Client 29: shut down complete - bye!
+2024-09-17T20:46:01: Client 29: new arrival from 127.0.0.1:42418 - welcome!
+2024-09-17T20:46:03: Client 29: read EOF
+2024-09-17T20:46:03: Client 29: shut down complete - bye!
+2024-09-17T20:47:01: Client 29: new arrival from 127.0.0.1:42974 - welcome!
+2024-09-17T20:47:03: Client 29: read EOF
+2024-09-17T20:47:03: Client 29: shut down complete - bye!
+2024-09-17T20:47:47: Client 29: new arrival from 192.168.1.225:50856 - welcome!
+2024-09-17T20:47:47: Client 29: read: Connection reset by peer
+2024-09-17T20:47:47: Client 29: shut down complete - bye!
+2024-09-17T20:48:01: Client 29: new arrival from 127.0.0.1:57030 - welcome!
+2024-09-17T20:48:03: Client 29: read EOF
+2024-09-17T20:48:03: Client 29: shut down complete - bye!
+2024-09-17T20:49:01: Client 29: new arrival from 127.0.0.1:45380 - welcome!
+2024-09-17T20:49:03: Client 29: read EOF
+2024-09-17T20:49:03: Client 29: shut down complete - bye!
+2024-09-17T20:49:48: Client 29: new arrival from 192.168.1.225:50869 - welcome!
+2024-09-17T20:49:48: Client 29: read: Connection reset by peer
+2024-09-17T20:49:48: Client 29: shut down complete - bye!
+2024-09-17T20:50:01: Client 29: new arrival from 127.0.0.1:51758 - welcome!
+2024-09-17T20:50:03: Client 29: read EOF
+2024-09-17T20:50:03: Client 29: shut down complete - bye!
+2024-09-17T20:51:01: Client 29: new arrival from 127.0.0.1:33002 - welcome!
+2024-09-17T20:51:03: Client 29: read EOF
+2024-09-17T20:51:03: Client 29: shut down complete - bye!
+2024-09-17T20:51:47: Client 29: new arrival from 192.168.1.225:50879 - welcome!
+2024-09-17T20:51:47: Client 29: read: Connection reset by peer
+2024-09-17T20:51:47: Client 29: shut down complete - bye!
+2024-09-17T20:52:01: Client 29: new arrival from 127.0.0.1:39556 - welcome!
+2024-09-17T20:52:03: Client 29: read EOF
+2024-09-17T20:52:03: Client 29: shut down complete - bye!
+2024-09-17T20:53:01: Client 29: new arrival from 127.0.0.1:43696 - welcome!
+2024-09-17T20:53:03: Client 29: read EOF
+2024-09-17T20:53:03: Client 29: shut down complete - bye!
+2024-09-17T20:53:47: Client 29: new arrival from 192.168.1.225:50889 - welcome!
+2024-09-17T20:53:47: Client 29: read EOF
+2024-09-17T20:53:47: Client 29: shut down complete - bye!
+2024-09-17T20:54:01: Client 29: new arrival from 127.0.0.1:46662 - welcome!
+2024-09-17T20:54:03: Client 29: read EOF
+2024-09-17T20:54:03: Client 29: shut down complete - bye!
+2024-09-17T20:55:01: Client 29: new arrival from 127.0.0.1:60800 - welcome!
+2024-09-17T20:55:03: Client 29: read EOF
+2024-09-17T20:55:03: Client 29: shut down complete - bye!
+2024-09-17T20:55:50: Client 29: new arrival from 192.168.1.225:50903 - welcome!
+2024-09-17T20:55:50: Client 29: read: Connection reset by peer
+2024-09-17T20:55:50: Client 29: shut down complete - bye!
+2024-09-17T20:56:01: Client 29: new arrival from 127.0.0.1:54954 - welcome!
+2024-09-17T20:56:03: Client 29: read EOF
+2024-09-17T20:56:03: Client 29: shut down complete - bye!
+2024-09-17T20:57:01: Client 29: new arrival from 127.0.0.1:45508 - welcome!
+2024-09-17T20:57:03: Client 29: read EOF
+2024-09-17T20:57:03: Client 29: shut down complete - bye!
+2024-09-17T20:57:48: Client 29: new arrival from 192.168.1.225:50911 - welcome!
+2024-09-17T20:57:48: Client 29: read: Connection reset by peer
+2024-09-17T20:57:48: Client 29: shut down complete - bye!
+2024-09-17T20:58:01: Client 29: new arrival from 127.0.0.1:44280 - welcome!
+2024-09-17T20:58:03: Client 29: read EOF
+2024-09-17T20:58:03: Client 29: shut down complete - bye!
+2024-09-17T20:59:01: Client 29: new arrival from 127.0.0.1:43276 - welcome!
+2024-09-17T20:59:03: Client 29: read EOF
+2024-09-17T20:59:03: Client 29: shut down complete - bye!
+2024-09-17T20:59:47: Client 29: new arrival from 192.168.1.225:50924 - welcome!
+2024-09-17T20:59:47: Client 29: read EOF
+2024-09-17T20:59:47: Client 29: shut down complete - bye!
+2024-09-17T21:00:01: Client 29: new arrival from 127.0.0.1:48232 - welcome!
+2024-09-17T21:00:03: Client 29: read EOF
+2024-09-17T21:00:03: Client 29: shut down complete - bye!
+2024-09-17T21:01:01: Client 29: new arrival from 127.0.0.1:43398 - welcome!
+2024-09-17T21:01:03: Client 29: read EOF
+2024-09-17T21:01:03: Client 29: shut down complete - bye!
+2024-09-17T21:01:48: Client 29: new arrival from 192.168.1.225:50934 - welcome!
+2024-09-17T21:01:48: Client 29: read: Connection reset by peer
+2024-09-17T21:01:48: Client 29: shut down complete - bye!
+2024-09-17T21:02:01: Client 29: new arrival from 127.0.0.1:55408 - welcome!
+2024-09-17T21:02:03: Client 29: read EOF
+2024-09-17T21:02:03: Client 29: shut down complete - bye!
+2024-09-17T21:03:01: Client 29: new arrival from 127.0.0.1:35152 - welcome!
+2024-09-17T21:03:03: Client 29: read EOF
+2024-09-17T21:03:03: Client 29: shut down complete - bye!
+2024-09-17T21:03:47: Client 29: new arrival from 192.168.1.225:50944 - welcome!
+2024-09-17T21:03:47: Client 29: read EOF
+2024-09-17T21:03:47: Client 29: shut down complete - bye!
+2024-09-17T21:04:01: Client 29: new arrival from 127.0.0.1:36168 - welcome!
+2024-09-17T21:04:03: Client 29: read EOF
+2024-09-17T21:04:03: Client 29: shut down complete - bye!
+2024-09-17T21:05:01: Client 29: new arrival from 127.0.0.1:45630 - welcome!
+2024-09-17T21:05:03: Client 29: read EOF
+2024-09-17T21:05:03: Client 29: shut down complete - bye!
+2024-09-17T21:05:47: Client 29: new arrival from 192.168.1.225:50956 - welcome!
+2024-09-17T21:05:47: Client 29: read EOF
+2024-09-17T21:05:47: Client 29: shut down complete - bye!
+2024-09-17T21:06:01: Client 29: new arrival from 127.0.0.1:37776 - welcome!
+2024-09-17T21:06:03: Client 29: read EOF
+2024-09-17T21:06:03: Client 29: shut down complete - bye!
+2024-09-17T21:07:01: Client 29: new arrival from 127.0.0.1:51602 - welcome!
+2024-09-17T21:07:03: Client 29: read EOF
+2024-09-17T21:07:03: Client 29: shut down complete - bye!
+2024-09-17T21:07:47: Client 29: new arrival from 192.168.1.225:50966 - welcome!
+2024-09-17T21:07:47: Client 29: read EOF
+2024-09-17T21:07:47: Client 29: shut down complete - bye!
+2024-09-17T21:08:01: Client 29: new arrival from 127.0.0.1:39412 - welcome!
+2024-09-17T21:08:03: Client 29: read EOF
+2024-09-17T21:08:03: Client 29: shut down complete - bye!
+2024-09-17T21:09:01: Client 29: new arrival from 127.0.0.1:56610 - welcome!
+2024-09-17T21:09:03: Client 29: read EOF
+2024-09-17T21:09:03: Client 29: shut down complete - bye!
+2024-09-17T21:09:47: Client 29: new arrival from 192.168.1.225:50980 - welcome!
+2024-09-17T21:09:47: Client 29: read EOF
+2024-09-17T21:09:47: Client 29: shut down complete - bye!
+2024-09-17T21:10:01: Client 29: new arrival from 127.0.0.1:56792 - welcome!
+2024-09-17T21:10:03: Client 29: read EOF
+2024-09-17T21:10:03: Client 29: shut down complete - bye!
+2024-09-17T21:11:01: Client 29: new arrival from 127.0.0.1:45796 - welcome!
+2024-09-17T21:11:03: Client 29: read EOF
+2024-09-17T21:11:03: Client 29: shut down complete - bye!
+2024-09-17T21:11:48: Client 29: new arrival from 192.168.1.225:50990 - welcome!
+2024-09-17T21:11:48: Client 29: read EOF
+2024-09-17T21:11:48: Client 29: shut down complete - bye!
+2024-09-17T21:12:01: Client 29: new arrival from 127.0.0.1:42908 - welcome!
+2024-09-17T21:12:03: Client 29: read EOF
+2024-09-17T21:12:03: Client 29: shut down complete - bye!
+2024-09-17T21:13:01: Client 29: new arrival from 127.0.0.1:43970 - welcome!
+2024-09-17T21:13:03: Client 29: read EOF
+2024-09-17T21:13:03: Client 29: shut down complete - bye!
+2024-09-17T21:13:47: Client 29: new arrival from 192.168.1.225:51000 - welcome!
+2024-09-17T21:13:47: Client 29: read: Connection reset by peer
+2024-09-17T21:13:47: Client 29: shut down complete - bye!
+2024-09-17T21:14:01: Client 29: new arrival from 127.0.0.1:59006 - welcome!
+2024-09-17T21:14:03: Client 29: read EOF
+2024-09-17T21:14:03: Client 29: shut down complete - bye!
+2024-09-17T21:15:01: Client 29: new arrival from 127.0.0.1:41796 - welcome!
+2024-09-17T21:15:03: Client 29: read EOF
+2024-09-17T21:15:03: Client 29: shut down complete - bye!
+2024-09-17T21:15:47: Client 29: new arrival from 192.168.1.225:51012 - welcome!
+2024-09-17T21:15:47: Client 29: read EOF
+2024-09-17T21:15:47: Client 29: shut down complete - bye!
+2024-09-17T21:16:01: Client 29: new arrival from 127.0.0.1:45602 - welcome!
+2024-09-17T21:16:03: Client 29: read EOF
+2024-09-17T21:16:03: Client 29: shut down complete - bye!
+2024-09-17T21:17:01: Client 29: new arrival from 127.0.0.1:38846 - welcome!
+2024-09-17T21:17:03: Client 29: read EOF
+2024-09-17T21:17:03: Client 29: shut down complete - bye!
+2024-09-17T21:17:47: Client 29: new arrival from 192.168.1.225:51018 - welcome!
+2024-09-17T21:17:47: Client 29: read: Connection reset by peer
+2024-09-17T21:17:47: Client 29: shut down complete - bye!
+2024-09-17T21:18:01: Client 29: new arrival from 127.0.0.1:48750 - welcome!
+2024-09-17T21:18:03: Client 29: read EOF
+2024-09-17T21:18:03: Client 29: shut down complete - bye!
+2024-09-17T21:19:01: Client 29: new arrival from 127.0.0.1:34734 - welcome!
+2024-09-17T21:19:03: Client 29: read EOF
+2024-09-17T21:19:03: Client 29: shut down complete - bye!
+2024-09-17T21:19:47: Client 29: new arrival from 192.168.1.225:51027 - welcome!
+2024-09-17T21:19:47: Client 29: read EOF
+2024-09-17T21:19:47: Client 29: shut down complete - bye!
+2024-09-17T21:20:01: Client 29: new arrival from 127.0.0.1:45524 - welcome!
+2024-09-17T21:20:03: Client 29: read EOF
+2024-09-17T21:20:03: Client 29: shut down complete - bye!
+2024-09-17T21:21:01: Client 29: new arrival from 127.0.0.1:51260 - welcome!
+2024-09-17T21:21:03: Client 29: read EOF
+2024-09-17T21:21:03: Client 29: shut down complete - bye!
+2024-09-17T21:21:48: Client 29: new arrival from 192.168.1.225:51033 - welcome!
+2024-09-17T21:21:48: Client 29: read: Connection reset by peer
+2024-09-17T21:21:48: Client 29: shut down complete - bye!
+2024-09-17T21:22:01: Client 29: new arrival from 127.0.0.1:38672 - welcome!
+2024-09-17T21:22:03: Client 29: read EOF
+2024-09-17T21:22:03: Client 29: shut down complete - bye!
+2024-09-17T21:23:01: Client 29: new arrival from 127.0.0.1:42044 - welcome!
+2024-09-17T21:23:03: Client 29: read EOF
+2024-09-17T21:23:03: Client 29: shut down complete - bye!
+2024-09-17T21:23:47: Client 29: new arrival from 192.168.1.225:51041 - welcome!
+2024-09-17T21:23:47: Client 29: read EOF
+2024-09-17T21:23:47: Client 29: shut down complete - bye!
+2024-09-17T21:24:01: Client 29: new arrival from 127.0.0.1:39696 - welcome!
+2024-09-17T21:24:03: Client 29: read EOF
+2024-09-17T21:24:03: Client 29: shut down complete - bye!
+2024-09-17T21:25:01: Client 29: new arrival from 127.0.0.1:57308 - welcome!
+2024-09-17T21:25:03: Client 29: read EOF
+2024-09-17T21:25:03: Client 29: shut down complete - bye!
+2024-09-17T21:25:47: Client 29: new arrival from 192.168.1.225:51051 - welcome!
+2024-09-17T21:25:47: Client 29: read EOF
+2024-09-17T21:25:47: Client 29: shut down complete - bye!
+2024-09-17T21:26:01: Client 29: new arrival from 127.0.0.1:44510 - welcome!
+2024-09-17T21:26:03: Client 29: read EOF
+2024-09-17T21:26:03: Client 29: shut down complete - bye!
+2024-09-17T21:27:01: Client 29: new arrival from 127.0.0.1:56480 - welcome!
+2024-09-17T21:27:03: Client 29: read EOF
+2024-09-17T21:27:03: Client 29: shut down complete - bye!
+2024-09-17T21:27:47: Client 29: new arrival from 192.168.1.225:51057 - welcome!
+2024-09-17T21:27:47: Client 29: read EOF
+2024-09-17T21:27:47: Client 29: shut down complete - bye!
+2024-09-17T21:28:01: Client 29: new arrival from 127.0.0.1:48092 - welcome!
+2024-09-17T21:28:03: Client 29: read EOF
+2024-09-17T21:28:03: Client 29: shut down complete - bye!
+2024-09-17T21:29:01: Client 29: new arrival from 127.0.0.1:55326 - welcome!
+2024-09-17T21:29:03: Client 29: read EOF
+2024-09-17T21:29:03: Client 29: shut down complete - bye!
+2024-09-17T21:29:47: Client 29: new arrival from 192.168.1.225:51070 - welcome!
+2024-09-17T21:29:47: Client 29: read: Connection reset by peer
+2024-09-17T21:29:47: Client 29: shut down complete - bye!
+2024-09-17T21:30:01: Client 29: new arrival from 127.0.0.1:42684 - welcome!
+2024-09-17T21:30:03: Client 29: read EOF
+2024-09-17T21:30:03: Client 29: shut down complete - bye!
+2024-09-17T21:31:01: Client 29: new arrival from 127.0.0.1:37492 - welcome!
+2024-09-17T21:31:03: Client 29: read EOF
+2024-09-17T21:31:03: Client 29: shut down complete - bye!
+2024-09-17T21:31:47: Client 29: new arrival from 192.168.1.225:51076 - welcome!
+2024-09-17T21:31:47: Client 29: read EOF
+2024-09-17T21:31:47: Client 29: shut down complete - bye!
+2024-09-17T21:32:01: Client 29: new arrival from 127.0.0.1:58856 - welcome!
+2024-09-17T21:32:03: Client 29: read EOF
+2024-09-17T21:32:03: Client 29: shut down complete - bye!
+2024-09-17T21:33:01: Client 29: new arrival from 127.0.0.1:39590 - welcome!
+2024-09-17T21:33:03: Client 29: read EOF
+2024-09-17T21:33:03: Client 29: shut down complete - bye!
+2024-09-17T21:33:47: Client 29: new arrival from 192.168.1.225:51082 - welcome!
+2024-09-17T21:33:47: Client 29: read EOF
+2024-09-17T21:33:47: Client 29: shut down complete - bye!
+2024-09-17T21:34:01: Client 29: new arrival from 127.0.0.1:52654 - welcome!
+2024-09-17T21:34:03: Client 29: read EOF
+2024-09-17T21:34:03: Client 29: shut down complete - bye!
+2024-09-17T21:35:01: Client 29: new arrival from 127.0.0.1:36424 - welcome!
+2024-09-17T21:35:03: Client 29: read EOF
+2024-09-17T21:35:03: Client 29: shut down complete - bye!
+2024-09-17T21:35:47: Client 29: new arrival from 192.168.1.225:51090 - welcome!
+2024-09-17T21:35:47: Client 29: read EOF
+2024-09-17T21:35:47: Client 29: shut down complete - bye!
+2024-09-17T21:36:02: Client 29: new arrival from 127.0.0.1:46682 - welcome!
+2024-09-17T21:36:04: Client 29: read EOF
+2024-09-17T21:36:04: Client 29: shut down complete - bye!
+2024-09-17T21:37:01: Client 29: new arrival from 127.0.0.1:33620 - welcome!
+2024-09-17T21:37:03: Client 29: read EOF
+2024-09-17T21:37:03: Client 29: shut down complete - bye!
+2024-09-17T21:37:47: Client 29: new arrival from 192.168.1.225:51096 - welcome!
+2024-09-17T21:37:47: Client 29: read EOF
+2024-09-17T21:37:47: Client 29: shut down complete - bye!
+2024-09-17T21:38:01: Client 29: new arrival from 127.0.0.1:37586 - welcome!
+2024-09-17T21:38:03: Client 29: read EOF
+2024-09-17T21:38:03: Client 29: shut down complete - bye!
+2024-09-17T21:39:01: Client 29: new arrival from 127.0.0.1:36018 - welcome!
+2024-09-17T21:39:03: Client 29: read EOF
+2024-09-17T21:39:03: Client 29: shut down complete - bye!
+2024-09-17T21:39:47: Client 29: new arrival from 192.168.1.225:51106 - welcome!
+2024-09-17T21:39:47: Client 29: read EOF
+2024-09-17T21:39:47: Client 29: shut down complete - bye!
+2024-09-17T21:40:01: Client 29: new arrival from 127.0.0.1:33402 - welcome!
+2024-09-17T21:40:03: Client 29: read EOF
+2024-09-17T21:40:03: Client 29: shut down complete - bye!
+2024-09-17T21:41:01: Client 29: new arrival from 127.0.0.1:42460 - welcome!
+2024-09-17T21:41:03: Client 29: read EOF
+2024-09-17T21:41:03: Client 29: shut down complete - bye!
+2024-09-17T21:41:47: Client 29: new arrival from 192.168.1.225:51112 - welcome!
+2024-09-17T21:41:47: Client 29: read EOF
+2024-09-17T21:41:47: Client 29: shut down complete - bye!
+2024-09-17T21:42:01: Client 29: new arrival from 127.0.0.1:53884 - welcome!
+2024-09-17T21:42:03: Client 29: read EOF
+2024-09-17T21:42:03: Client 29: shut down complete - bye!
+2024-09-17T21:43:01: Client 29: new arrival from 127.0.0.1:55432 - welcome!
+2024-09-17T21:43:03: Client 29: read EOF
+2024-09-17T21:43:03: Client 29: shut down complete - bye!
+2024-09-17T21:43:47: Client 29: new arrival from 192.168.1.225:51118 - welcome!
+2024-09-17T21:43:47: Client 29: read EOF
+2024-09-17T21:43:47: Client 29: shut down complete - bye!
+2024-09-17T21:44:01: Client 29: new arrival from 127.0.0.1:59848 - welcome!
+2024-09-17T21:44:03: Client 29: read EOF
+2024-09-17T21:44:03: Client 29: shut down complete - bye!
+2024-09-17T21:45:01: Client 29: new arrival from 127.0.0.1:55362 - welcome!
+2024-09-17T21:45:03: Client 29: read EOF
+2024-09-17T21:45:03: Client 29: shut down complete - bye!
+2024-09-17T21:45:47: Client 29: new arrival from 192.168.1.225:51130 - welcome!
+2024-09-17T21:45:47: Client 29: read: Connection reset by peer
+2024-09-17T21:45:47: Client 29: shut down complete - bye!
+2024-09-17T21:46:01: Client 29: new arrival from 127.0.0.1:44374 - welcome!
+2024-09-17T21:46:03: Client 29: read EOF
+2024-09-17T21:46:03: Client 29: shut down complete - bye!
+2024-09-17T21:47:01: Client 29: new arrival from 127.0.0.1:54350 - welcome!
+2024-09-17T21:47:03: Client 29: read EOF
+2024-09-17T21:47:03: Client 29: shut down complete - bye!
+2024-09-17T21:47:46: Client 29: new arrival from 192.168.1.225:51136 - welcome!
+2024-09-17T21:47:46: Client 29: read EOF
+2024-09-17T21:47:46: Client 29: shut down complete - bye!
+2024-09-17T21:48:01: Client 29: new arrival from 127.0.0.1:42732 - welcome!
+2024-09-17T21:48:03: Client 29: read EOF
+2024-09-17T21:48:03: Client 29: shut down complete - bye!
+2024-09-17T21:49:01: Client 29: new arrival from 127.0.0.1:53462 - welcome!
+2024-09-17T21:49:03: Client 29: read EOF
+2024-09-17T21:49:03: Client 29: shut down complete - bye!
+2024-09-17T21:49:47: Client 29: new arrival from 192.168.1.225:51145 - welcome!
+2024-09-17T21:49:47: Client 29: read: Connection reset by peer
+2024-09-17T21:49:47: Client 29: shut down complete - bye!
+2024-09-17T21:50:01: Client 29: new arrival from 127.0.0.1:44356 - welcome!
+2024-09-17T21:50:03: Client 29: read EOF
+2024-09-17T21:50:03: Client 29: shut down complete - bye!
+2024-09-17T21:51:01: Client 29: new arrival from 127.0.0.1:33612 - welcome!
+2024-09-17T21:51:03: Client 29: read EOF
+2024-09-17T21:51:03: Client 29: shut down complete - bye!
+2024-09-17T21:51:47: Client 29: new arrival from 192.168.1.225:51151 - welcome!
+2024-09-17T21:51:47: Client 29: read EOF
+2024-09-17T21:51:47: Client 29: shut down complete - bye!
+2024-09-17T21:52:01: Client 29: new arrival from 127.0.0.1:49176 - welcome!
+2024-09-17T21:52:03: Client 29: read EOF
+2024-09-17T21:52:03: Client 29: shut down complete - bye!
+2024-09-17T21:53:01: Client 29: new arrival from 127.0.0.1:52312 - welcome!
+2024-09-17T21:53:03: Client 29: read EOF
+2024-09-17T21:53:03: Client 29: shut down complete - bye!
+2024-09-17T21:53:47: Client 29: new arrival from 192.168.1.225:51157 - welcome!
+2024-09-17T21:53:47: Client 29: read EOF
+2024-09-17T21:53:47: Client 29: shut down complete - bye!
+2024-09-17T21:54:01: Client 29: new arrival from 127.0.0.1:40574 - welcome!
+2024-09-17T21:54:03: Client 29: read EOF
+2024-09-17T21:54:03: Client 29: shut down complete - bye!
+2024-09-17T21:55:01: Client 29: new arrival from 127.0.0.1:40128 - welcome!
+2024-09-17T21:55:03: Client 29: read EOF
+2024-09-17T21:55:03: Client 29: shut down complete - bye!
+2024-09-17T21:55:46: Client 29: new arrival from 192.168.1.225:51165 - welcome!
+2024-09-17T21:55:46: Client 29: read EOF
+2024-09-17T21:55:46: Client 29: shut down complete - bye!
+2024-09-17T21:56:01: Client 29: new arrival from 127.0.0.1:37902 - welcome!
+2024-09-17T21:56:03: Client 29: read EOF
+2024-09-17T21:56:03: Client 29: shut down complete - bye!
+2024-09-17T21:57:01: Client 29: new arrival from 127.0.0.1:58520 - welcome!
+2024-09-17T21:57:03: Client 29: read EOF
+2024-09-17T21:57:03: Client 29: shut down complete - bye!
+2024-09-17T21:57:47: Client 29: new arrival from 192.168.1.225:51171 - welcome!
+2024-09-17T21:57:47: Client 29: read EOF
+2024-09-17T21:57:47: Client 29: shut down complete - bye!
+2024-09-17T21:58:01: Client 29: new arrival from 127.0.0.1:53886 - welcome!
+2024-09-17T21:58:03: Client 29: read EOF
+2024-09-17T21:58:03: Client 29: shut down complete - bye!
+2024-09-17T21:59:01: Client 29: new arrival from 127.0.0.1:53224 - welcome!
+2024-09-17T21:59:03: Client 29: read EOF
+2024-09-17T21:59:03: Client 29: shut down complete - bye!
+2024-09-17T21:59:47: Client 29: new arrival from 192.168.1.225:51185 - welcome!
+2024-09-17T21:59:47: Client 29: read EOF
+2024-09-17T21:59:47: Client 29: shut down complete - bye!
+2024-09-17T22:00:02: Client 29: new arrival from 127.0.0.1:53898 - welcome!
+2024-09-17T22:00:04: Client 29: read EOF
+2024-09-17T22:00:04: Client 29: shut down complete - bye!
+2024-09-17T22:01:01: Client 29: new arrival from 127.0.0.1:41950 - welcome!
+2024-09-17T22:01:03: Client 29: read EOF
+2024-09-17T22:01:03: Client 29: shut down complete - bye!
+2024-09-17T22:01:47: Client 29: new arrival from 192.168.1.225:51191 - welcome!
+2024-09-17T22:01:47: Client 29: read EOF
+2024-09-17T22:01:47: Client 29: shut down complete - bye!
+2024-09-17T22:02:01: Client 29: new arrival from 127.0.0.1:47244 - welcome!
+2024-09-17T22:02:03: Client 29: read EOF
+2024-09-17T22:02:03: Client 29: shut down complete - bye!
+2024-09-17T22:03:01: Client 29: new arrival from 127.0.0.1:41994 - welcome!
+2024-09-17T22:03:03: Client 29: read EOF
+2024-09-17T22:03:03: Client 29: shut down complete - bye!
+2024-09-17T22:03:47: Client 29: new arrival from 192.168.1.225:51197 - welcome!
+2024-09-17T22:03:47: Client 29: read EOF
+2024-09-17T22:03:47: Client 29: shut down complete - bye!
+2024-09-17T22:04:01: Client 29: new arrival from 127.0.0.1:34022 - welcome!
+2024-09-17T22:04:03: Client 29: read EOF
+2024-09-17T22:04:03: Client 29: shut down complete - bye!
+2024-09-17T22:05:01: Client 29: new arrival from 127.0.0.1:55884 - welcome!
+2024-09-17T22:05:03: Client 29: read EOF
+2024-09-17T22:05:03: Client 29: shut down complete - bye!
+2024-09-17T22:05:47: Client 29: new arrival from 192.168.1.225:51205 - welcome!
+2024-09-17T22:05:47: Client 29: read EOF
+2024-09-17T22:05:47: Client 29: shut down complete - bye!
+2024-09-17T22:06:01: Client 29: new arrival from 127.0.0.1:49906 - welcome!
+2024-09-17T22:06:03: Client 29: read EOF
+2024-09-17T22:06:03: Client 29: shut down complete - bye!
+2024-09-17T22:07:01: Client 29: new arrival from 127.0.0.1:37906 - welcome!
+2024-09-17T22:07:03: Client 29: read EOF
+2024-09-17T22:07:03: Client 29: shut down complete - bye!
+2024-09-17T22:07:47: Client 29: new arrival from 192.168.1.225:51211 - welcome!
+2024-09-17T22:07:47: Client 29: read EOF
+2024-09-17T22:07:47: Client 29: shut down complete - bye!
+2024-09-17T22:08:01: Client 29: new arrival from 127.0.0.1:47690 - welcome!
+2024-09-17T22:08:03: Client 29: read EOF
+2024-09-17T22:08:03: Client 29: shut down complete - bye!
+2024-09-17T22:09:01: Client 29: new arrival from 127.0.0.1:49730 - welcome!
+2024-09-17T22:09:03: Client 29: read EOF
+2024-09-17T22:09:03: Client 29: shut down complete - bye!
+2024-09-17T22:09:47: Client 29: new arrival from 192.168.1.225:51220 - welcome!
+2024-09-17T22:09:47: Client 29: read: Connection reset by peer
+2024-09-17T22:09:47: Client 29: shut down complete - bye!
+2024-09-17T22:10:01: Client 29: new arrival from 127.0.0.1:60618 - welcome!
+2024-09-17T22:10:03: Client 29: read EOF
+2024-09-17T22:10:03: Client 29: shut down complete - bye!
+2024-09-17T22:11:01: Client 29: new arrival from 127.0.0.1:41516 - welcome!
+2024-09-17T22:11:03: Client 29: read EOF
+2024-09-17T22:11:03: Client 29: shut down complete - bye!
+2024-09-17T22:11:46: Client 29: new arrival from 192.168.1.225:51226 - welcome!
+2024-09-17T22:11:46: Client 29: read EOF
+2024-09-17T22:11:46: Client 29: shut down complete - bye!
+2024-09-17T22:12:01: Client 29: new arrival from 127.0.0.1:49024 - welcome!
+2024-09-17T22:12:03: Client 29: read EOF
+2024-09-17T22:12:03: Client 29: shut down complete - bye!
+2024-09-17T22:13:01: Client 29: new arrival from 127.0.0.1:59196 - welcome!
+2024-09-17T22:13:03: Client 29: read EOF
+2024-09-17T22:13:03: Client 29: shut down complete - bye!
+2024-09-17T22:13:47: Client 29: new arrival from 192.168.1.225:51232 - welcome!
+2024-09-17T22:13:47: Client 29: read EOF
+2024-09-17T22:13:47: Client 29: shut down complete - bye!
+2024-09-17T22:14:01: Client 29: new arrival from 127.0.0.1:53036 - welcome!
+2024-09-17T22:14:03: Client 29: read EOF
+2024-09-17T22:14:03: Client 29: shut down complete - bye!
+2024-09-17T22:15:01: Client 29: new arrival from 127.0.0.1:45484 - welcome!
+2024-09-17T22:15:03: Client 29: read EOF
+2024-09-17T22:15:03: Client 29: shut down complete - bye!
+2024-09-17T22:15:47: Client 29: new arrival from 192.168.1.225:51244 - welcome!
+2024-09-17T22:15:47: Client 29: read EOF
+2024-09-17T22:15:47: Client 29: shut down complete - bye!
+2024-09-17T22:16:02: Client 29: new arrival from 127.0.0.1:34394 - welcome!
+2024-09-17T22:16:04: Client 29: read EOF
+2024-09-17T22:16:04: Client 29: shut down complete - bye!
+2024-09-17T22:17:01: Client 29: new arrival from 127.0.0.1:44812 - welcome!
+2024-09-17T22:17:03: Client 29: read EOF
+2024-09-17T22:17:03: Client 29: shut down complete - bye!
+2024-09-17T22:17:47: Client 29: new arrival from 192.168.1.225:51250 - welcome!
+2024-09-17T22:17:47: Client 29: read EOF
+2024-09-17T22:17:47: Client 29: shut down complete - bye!
+2024-09-17T22:18:01: Client 29: new arrival from 127.0.0.1:50724 - welcome!
+2024-09-17T22:18:03: Client 29: read EOF
+2024-09-17T22:18:03: Client 29: shut down complete - bye!
+2024-09-17T22:19:01: Client 29: new arrival from 127.0.0.1:46526 - welcome!
+2024-09-17T22:19:03: Client 29: read EOF
+2024-09-17T22:19:03: Client 29: shut down complete - bye!
+2024-09-17T22:19:47: Client 29: new arrival from 192.168.1.225:51260 - welcome!
+2024-09-17T22:19:47: Client 29: read EOF
+2024-09-17T22:19:47: Client 29: shut down complete - bye!
+2024-09-17T22:20:01: Client 29: new arrival from 127.0.0.1:50676 - welcome!
+2024-09-17T22:20:03: Client 29: read EOF
+2024-09-17T22:20:03: Client 29: shut down complete - bye!
+2024-09-17T22:21:01: Client 29: new arrival from 127.0.0.1:45930 - welcome!
+2024-09-17T22:21:03: Client 29: read EOF
+2024-09-17T22:21:03: Client 29: shut down complete - bye!
+2024-09-17T22:21:47: Client 29: new arrival from 192.168.1.225:51266 - welcome!
+2024-09-17T22:21:47: Client 29: read EOF
+2024-09-17T22:21:47: Client 29: shut down complete - bye!
+2024-09-17T22:22:01: Client 29: new arrival from 127.0.0.1:45532 - welcome!
+2024-09-17T22:22:03: Client 29: read EOF
+2024-09-17T22:22:03: Client 29: shut down complete - bye!
+2024-09-17T22:23:01: Client 29: new arrival from 127.0.0.1:43630 - welcome!
+2024-09-17T22:23:03: Client 29: read EOF
+2024-09-17T22:23:03: Client 29: shut down complete - bye!
+2024-09-17T22:23:47: Client 29: new arrival from 192.168.1.225:51274 - welcome!
+2024-09-17T22:23:47: Client 29: read: Connection reset by peer
+2024-09-17T22:23:47: Client 29: shut down complete - bye!
+2024-09-17T22:24:02: Client 29: new arrival from 127.0.0.1:34534 - welcome!
+2024-09-17T22:24:04: Client 29: read EOF
+2024-09-17T22:24:04: Client 29: shut down complete - bye!
+2024-09-17T22:25:01: Client 29: new arrival from 127.0.0.1:39744 - welcome!
+2024-09-17T22:25:03: Client 29: read EOF
+2024-09-17T22:25:03: Client 29: shut down complete - bye!
+2024-09-17T22:25:47: Client 29: new arrival from 192.168.1.225:51284 - welcome!
+2024-09-17T22:25:47: Client 29: read EOF
+2024-09-17T22:25:47: Client 29: shut down complete - bye!
+2024-09-17T22:26:01: Client 29: new arrival from 127.0.0.1:58558 - welcome!
+2024-09-17T22:26:03: Client 29: read EOF
+2024-09-17T22:26:03: Client 29: shut down complete - bye!
+2024-09-17T22:27:01: Client 29: new arrival from 127.0.0.1:55912 - welcome!
+2024-09-17T22:27:03: Client 29: read EOF
+2024-09-17T22:27:03: Client 29: shut down complete - bye!
+2024-09-17T22:27:47: Client 29: new arrival from 192.168.1.225:51290 - welcome!
+2024-09-17T22:27:47: Client 29: read EOF
+2024-09-17T22:27:47: Client 29: shut down complete - bye!
+2024-09-17T22:28:01: Client 29: new arrival from 127.0.0.1:44404 - welcome!
+2024-09-17T22:28:03: Client 29: read EOF
+2024-09-17T22:28:03: Client 29: shut down complete - bye!
+2024-09-17T22:29:01: Client 29: new arrival from 127.0.0.1:54904 - welcome!
+2024-09-17T22:29:03: Client 29: read EOF
+2024-09-17T22:29:03: Client 29: shut down complete - bye!
+2024-09-17T22:29:47: Client 29: new arrival from 192.168.1.225:51303 - welcome!
+2024-09-17T22:29:47: Client 29: read: Connection reset by peer
+2024-09-17T22:29:47: Client 29: shut down complete - bye!
+2024-09-17T22:30:01: Client 29: new arrival from 127.0.0.1:53064 - welcome!
+2024-09-17T22:30:03: Client 29: read EOF
+2024-09-17T22:30:03: Client 29: shut down complete - bye!
+2024-09-17T22:31:01: Client 29: new arrival from 127.0.0.1:44846 - welcome!
+2024-09-17T22:31:03: Client 29: read EOF
+2024-09-17T22:31:03: Client 29: shut down complete - bye!
+2024-09-17T22:31:47: Client 29: new arrival from 192.168.1.225:51309 - welcome!
+2024-09-17T22:31:47: Client 29: read EOF
+2024-09-17T22:31:47: Client 29: shut down complete - bye!
+2024-09-17T22:32:01: Client 29: new arrival from 127.0.0.1:51340 - welcome!
+2024-09-17T22:32:03: Client 29: read EOF
+2024-09-17T22:32:03: Client 29: shut down complete - bye!
+2024-09-17T22:33:01: Client 29: new arrival from 127.0.0.1:60170 - welcome!
+2024-09-17T22:33:03: Client 29: read EOF
+2024-09-17T22:33:03: Client 29: shut down complete - bye!
+2024-09-17T22:33:47: Client 29: new arrival from 192.168.1.225:51315 - welcome!
+2024-09-17T22:33:47: Client 29: read EOF
+2024-09-17T22:33:47: Client 29: shut down complete - bye!
+2024-09-17T22:34:01: Client 29: new arrival from 127.0.0.1:51404 - welcome!
+2024-09-17T22:34:03: Client 29: read EOF
+2024-09-17T22:34:03: Client 29: shut down complete - bye!
+2024-09-17T22:35:01: Client 29: new arrival from 127.0.0.1:44388 - welcome!
+2024-09-17T22:35:03: Client 29: read EOF
+2024-09-17T22:35:03: Client 29: shut down complete - bye!
+2024-09-17T22:35:47: Client 29: new arrival from 192.168.1.225:51323 - welcome!
+2024-09-17T22:35:47: Client 29: read EOF
+2024-09-17T22:35:47: Client 29: shut down complete - bye!
+2024-09-17T22:36:01: Client 29: new arrival from 127.0.0.1:46000 - welcome!
+2024-09-17T22:36:03: Client 29: read EOF
+2024-09-17T22:36:03: Client 29: shut down complete - bye!
+2024-09-17T22:37:01: Client 29: new arrival from 127.0.0.1:55518 - welcome!
+2024-09-17T22:37:03: Client 29: read EOF
+2024-09-17T22:37:03: Client 29: shut down complete - bye!
+2024-09-17T22:37:47: Client 29: new arrival from 192.168.1.225:51329 - welcome!
+2024-09-17T22:37:47: Client 29: read: Connection reset by peer
+2024-09-17T22:37:47: Client 29: shut down complete - bye!
+2024-09-17T22:38:01: Client 29: new arrival from 127.0.0.1:54724 - welcome!
+2024-09-17T22:38:03: Client 29: read EOF
+2024-09-17T22:38:03: Client 29: shut down complete - bye!
+2024-09-17T22:39:01: Client 29: new arrival from 127.0.0.1:40722 - welcome!
+2024-09-17T22:39:03: Client 29: read EOF
+2024-09-17T22:39:03: Client 29: shut down complete - bye!
+2024-09-17T22:39:48: Client 29: new arrival from 192.168.1.225:51339 - welcome!
+2024-09-17T22:39:48: Client 29: read EOF
+2024-09-17T22:39:48: Client 29: shut down complete - bye!
+2024-09-17T22:40:02: Client 29: new arrival from 127.0.0.1:40018 - welcome!
+2024-09-17T22:40:04: Client 29: read EOF
+2024-09-17T22:40:04: Client 29: shut down complete - bye!
+2024-09-17T22:41:01: Client 29: new arrival from 127.0.0.1:36442 - welcome!
+2024-09-17T22:41:03: Client 29: read EOF
+2024-09-17T22:41:03: Client 29: shut down complete - bye!
+2024-09-17T22:41:47: Client 29: new arrival from 192.168.1.225:51345 - welcome!
+2024-09-17T22:41:47: Client 29: read EOF
+2024-09-17T22:41:47: Client 29: shut down complete - bye!
+2024-09-17T22:42:01: Client 29: new arrival from 127.0.0.1:43570 - welcome!
+2024-09-17T22:42:03: Client 29: read EOF
+2024-09-17T22:42:03: Client 29: shut down complete - bye!
+2024-09-17T22:43:01: Client 29: new arrival from 127.0.0.1:44730 - welcome!
+2024-09-17T22:43:03: Client 29: read EOF
+2024-09-17T22:43:03: Client 29: shut down complete - bye!
+2024-09-17T22:43:47: Client 29: new arrival from 192.168.1.225:51351 - welcome!
+2024-09-17T22:43:47: Client 29: read EOF
+2024-09-17T22:43:47: Client 29: shut down complete - bye!
+2024-09-17T22:44:01: Client 29: new arrival from 127.0.0.1:34474 - welcome!
+2024-09-17T22:44:03: Client 29: read EOF
+2024-09-17T22:44:03: Client 29: shut down complete - bye!
+2024-09-17T22:45:01: Client 29: new arrival from 127.0.0.1:39096 - welcome!
+2024-09-17T22:45:03: Client 29: read EOF
+2024-09-17T22:45:03: Client 29: shut down complete - bye!
+2024-09-17T22:45:47: Client 29: new arrival from 192.168.1.225:51363 - welcome!
+2024-09-17T22:45:47: Client 29: read: Connection reset by peer
+2024-09-17T22:45:47: Client 29: shut down complete - bye!
+2024-09-17T22:46:01: Client 29: new arrival from 127.0.0.1:36262 - welcome!
+2024-09-17T22:46:03: Client 29: read EOF
+2024-09-17T22:46:03: Client 29: shut down complete - bye!
+2024-09-17T22:47:01: Client 29: new arrival from 127.0.0.1:57722 - welcome!
+2024-09-17T22:47:03: Client 29: read EOF
+2024-09-17T22:47:03: Client 29: shut down complete - bye!
+2024-09-17T22:47:47: Client 29: new arrival from 192.168.1.225:51369 - welcome!
+2024-09-17T22:47:47: Client 29: read EOF
+2024-09-17T22:47:47: Client 29: shut down complete - bye!
+2024-09-17T22:48:02: Client 29: new arrival from 127.0.0.1:46250 - welcome!
+2024-09-17T22:48:04: Client 29: read EOF
+2024-09-17T22:48:04: Client 29: shut down complete - bye!
+2024-09-17T22:49:01: Client 29: new arrival from 127.0.0.1:37460 - welcome!
+2024-09-17T22:49:03: Client 29: read EOF
+2024-09-17T22:49:03: Client 29: shut down complete - bye!
+2024-09-17T22:49:47: Client 29: new arrival from 192.168.1.225:51378 - welcome!
+2024-09-17T22:49:47: Client 29: read EOF
+2024-09-17T22:49:47: Client 29: shut down complete - bye!
+2024-09-17T22:50:01: Client 29: new arrival from 127.0.0.1:59220 - welcome!
+2024-09-17T22:50:03: Client 29: read EOF
+2024-09-17T22:50:03: Client 29: shut down complete - bye!
+2024-09-17T22:51:01: Client 29: new arrival from 127.0.0.1:52452 - welcome!
+2024-09-17T22:51:03: Client 29: read EOF
+2024-09-17T22:51:03: Client 29: shut down complete - bye!
+2024-09-17T22:51:47: Client 29: new arrival from 192.168.1.225:51384 - welcome!
+2024-09-17T22:51:47: Client 29: read EOF
+2024-09-17T22:51:47: Client 29: shut down complete - bye!
+2024-09-17T22:52:01: Client 29: new arrival from 127.0.0.1:45840 - welcome!
+2024-09-17T22:52:03: Client 29: read EOF
+2024-09-17T22:52:03: Client 29: shut down complete - bye!
+2024-09-17T22:53:01: Client 29: new arrival from 127.0.0.1:35266 - welcome!
+2024-09-17T22:53:03: Client 29: read EOF
+2024-09-17T22:53:03: Client 29: shut down complete - bye!
+2024-09-17T22:53:47: Client 29: new arrival from 192.168.1.225:51390 - welcome!
+2024-09-17T22:53:47: Client 29: read EOF
+2024-09-17T22:53:47: Client 29: shut down complete - bye!
+2024-09-17T22:54:01: Client 29: new arrival from 127.0.0.1:40656 - welcome!
+2024-09-17T22:54:03: Client 29: read EOF
+2024-09-17T22:54:03: Client 29: shut down complete - bye!
+2024-09-17T22:55:01: Client 29: new arrival from 127.0.0.1:56086 - welcome!
+2024-09-17T22:55:03: Client 29: read EOF
+2024-09-17T22:55:03: Client 29: shut down complete - bye!
+2024-09-17T22:55:46: Client 29: new arrival from 192.168.1.225:51398 - welcome!
+2024-09-17T22:55:46: Client 29: read: Connection reset by peer
+2024-09-17T22:55:46: Client 29: shut down complete - bye!
+2024-09-17T22:56:02: Client 29: new arrival from 127.0.0.1:51946 - welcome!
+2024-09-17T22:56:04: Client 29: read EOF
+2024-09-17T22:56:04: Client 29: shut down complete - bye!
+2024-09-17T22:57:01: Client 29: new arrival from 127.0.0.1:50630 - welcome!
+2024-09-17T22:57:03: Client 29: read EOF
+2024-09-17T22:57:03: Client 29: shut down complete - bye!
+2024-09-17T22:57:47: Client 29: new arrival from 192.168.1.225:51404 - welcome!
+2024-09-17T22:57:47: Client 29: read: Connection reset by peer
+2024-09-17T22:57:47: Client 29: shut down complete - bye!
+2024-09-17T22:58:01: Client 29: new arrival from 127.0.0.1:43780 - welcome!
+2024-09-17T22:58:03: Client 29: read EOF
+2024-09-17T22:58:03: Client 29: shut down complete - bye!
+2024-09-17T22:59:01: Client 29: new arrival from 127.0.0.1:46878 - welcome!
+2024-09-17T22:59:03: Client 29: read EOF
+2024-09-17T22:59:03: Client 29: shut down complete - bye!
+2024-09-17T22:59:46: Client 29: new arrival from 192.168.1.225:51418 - welcome!
+2024-09-17T22:59:46: Client 29: read EOF
+2024-09-17T22:59:46: Client 29: shut down complete - bye!
+2024-09-17T23:00:01: Client 29: new arrival from 127.0.0.1:43244 - welcome!
+2024-09-17T23:00:03: Client 29: read EOF
+2024-09-17T23:00:03: Client 29: shut down complete - bye!
+2024-09-17T23:01:01: Client 29: new arrival from 127.0.0.1:50368 - welcome!
+2024-09-17T23:01:03: Client 29: read EOF
+2024-09-17T23:01:03: Client 29: shut down complete - bye!
+2024-09-17T23:01:47: Client 29: new arrival from 192.168.1.225:51424 - welcome!
+2024-09-17T23:01:47: Client 29: read: Connection reset by peer
+2024-09-17T23:01:47: Client 29: shut down complete - bye!
+2024-09-17T23:02:01: Client 29: new arrival from 127.0.0.1:52070 - welcome!
+2024-09-17T23:02:03: Client 29: read EOF
+2024-09-17T23:02:03: Client 29: shut down complete - bye!
+2024-09-17T23:03:01: Client 29: new arrival from 127.0.0.1:59126 - welcome!
+2024-09-17T23:03:03: Client 29: read EOF
+2024-09-17T23:03:03: Client 29: shut down complete - bye!
+2024-09-17T23:03:47: Client 29: new arrival from 192.168.1.225:51430 - welcome!
+2024-09-17T23:03:47: Client 29: read EOF
+2024-09-17T23:03:47: Client 29: shut down complete - bye!
+2024-09-17T23:04:01: Client 29: new arrival from 127.0.0.1:50574 - welcome!
+2024-09-17T23:04:03: Client 29: read EOF
+2024-09-17T23:04:03: Client 29: shut down complete - bye!
+2024-09-17T23:05:01: Client 29: new arrival from 127.0.0.1:41190 - welcome!
+2024-09-17T23:05:03: Client 29: read EOF
+2024-09-17T23:05:03: Client 29: shut down complete - bye!
+2024-09-17T23:05:47: Client 29: new arrival from 192.168.1.225:51438 - welcome!
+2024-09-17T23:05:47: Client 29: read: Connection reset by peer
+2024-09-17T23:05:47: Client 29: shut down complete - bye!
+2024-09-17T23:06:01: Client 29: new arrival from 127.0.0.1:60208 - welcome!
+2024-09-17T23:06:03: Client 29: read EOF
+2024-09-17T23:06:03: Client 29: shut down complete - bye!
+2024-09-17T23:07:01: Client 29: new arrival from 127.0.0.1:57962 - welcome!
+2024-09-17T23:07:03: Client 29: read EOF
+2024-09-17T23:07:03: Client 29: shut down complete - bye!
+2024-09-17T23:07:47: Client 29: new arrival from 192.168.1.225:51444 - welcome!
+2024-09-17T23:07:47: Client 29: read EOF
+2024-09-17T23:07:47: Client 29: shut down complete - bye!
+2024-09-17T23:08:01: Client 29: new arrival from 127.0.0.1:39652 - welcome!
+2024-09-17T23:08:03: Client 29: read EOF
+2024-09-17T23:08:03: Client 29: shut down complete - bye!
+2024-09-17T23:09:01: Client 29: new arrival from 127.0.0.1:41254 - welcome!
+2024-09-17T23:09:03: Client 29: read EOF
+2024-09-17T23:09:03: Client 29: shut down complete - bye!
+2024-09-17T23:09:47: Client 29: new arrival from 192.168.1.225:51453 - welcome!
+2024-09-17T23:09:47: Client 29: read: Connection reset by peer
+2024-09-17T23:09:47: Client 29: shut down complete - bye!
+2024-09-17T23:10:01: Client 29: new arrival from 127.0.0.1:55360 - welcome!
+2024-09-17T23:10:03: Client 29: read EOF
+2024-09-17T23:10:03: Client 29: shut down complete - bye!
+2024-09-17T23:11:01: Client 29: new arrival from 127.0.0.1:50366 - welcome!
+2024-09-17T23:11:03: Client 29: read EOF
+2024-09-17T23:11:03: Client 29: shut down complete - bye!
+2024-09-17T23:11:47: Client 29: new arrival from 192.168.1.225:51459 - welcome!
+2024-09-17T23:11:47: Client 29: read: Connection reset by peer
+2024-09-17T23:11:47: Client 29: shut down complete - bye!
+2024-09-17T23:12:01: Client 29: new arrival from 127.0.0.1:46508 - welcome!
+2024-09-17T23:12:03: Client 29: read EOF
+2024-09-17T23:12:03: Client 29: shut down complete - bye!
+2024-09-17T23:13:01: Client 29: new arrival from 127.0.0.1:55048 - welcome!
+2024-09-17T23:13:03: Client 29: read EOF
+2024-09-17T23:13:03: Client 29: shut down complete - bye!
+2024-09-17T23:13:47: Client 29: new arrival from 192.168.1.225:51465 - welcome!
+2024-09-17T23:13:47: Client 29: read EOF
+2024-09-17T23:13:47: Client 29: shut down complete - bye!
+2024-09-17T23:14:01: Client 29: new arrival from 127.0.0.1:43812 - welcome!
+2024-09-17T23:14:03: Client 29: read EOF
+2024-09-17T23:14:03: Client 29: shut down complete - bye!
+2024-09-17T23:15:01: Client 29: new arrival from 127.0.0.1:50246 - welcome!
+2024-09-17T23:15:03: Client 29: read EOF
+2024-09-17T23:15:03: Client 29: shut down complete - bye!
+2024-09-17T23:15:47: Client 29: new arrival from 192.168.1.225:51477 - welcome!
+2024-09-17T23:15:47: Client 29: read EOF
+2024-09-17T23:15:47: Client 29: shut down complete - bye!
+2024-09-17T23:16:01: Client 29: new arrival from 127.0.0.1:45274 - welcome!
+2024-09-17T23:16:03: Client 29: read EOF
+2024-09-17T23:16:03: Client 29: shut down complete - bye!
+2024-09-17T23:17:01: Client 29: new arrival from 127.0.0.1:58086 - welcome!
+2024-09-17T23:17:03: Client 29: read EOF
+2024-09-17T23:17:03: Client 29: shut down complete - bye!
+2024-09-17T23:17:48: Client 29: new arrival from 192.168.1.225:51483 - welcome!
+2024-09-17T23:17:48: Client 29: read EOF
+2024-09-17T23:17:48: Client 29: shut down complete - bye!
+2024-09-17T23:18:01: Client 29: new arrival from 127.0.0.1:42006 - welcome!
+2024-09-17T23:18:03: Client 29: read EOF
+2024-09-17T23:18:03: Client 29: shut down complete - bye!
+2024-09-17T23:19:01: Client 29: new arrival from 127.0.0.1:43536 - welcome!
+2024-09-17T23:19:03: Client 29: read EOF
+2024-09-17T23:19:03: Client 29: shut down complete - bye!
+2024-09-17T23:19:47: Client 29: new arrival from 192.168.1.225:51493 - welcome!
+2024-09-17T23:19:47: Client 29: read EOF
+2024-09-17T23:19:47: Client 29: shut down complete - bye!
+2024-09-17T23:20:02: Client 29: new arrival from 127.0.0.1:37746 - welcome!
+2024-09-17T23:20:04: Client 29: read EOF
+2024-09-17T23:20:04: Client 29: shut down complete - bye!
+2024-09-17T23:21:01: Client 29: new arrival from 127.0.0.1:46650 - welcome!
+2024-09-17T23:21:03: Client 29: read EOF
+2024-09-17T23:21:03: Client 29: shut down complete - bye!
+2024-09-17T23:21:47: Client 29: new arrival from 192.168.1.225:51499 - welcome!
+2024-09-17T23:21:47: Client 29: read EOF
+2024-09-17T23:21:47: Client 29: shut down complete - bye!
+2024-09-17T23:22:01: Client 29: new arrival from 127.0.0.1:37258 - welcome!
+2024-09-17T23:22:03: Client 29: read EOF
+2024-09-17T23:22:03: Client 29: shut down complete - bye!
+2024-09-17T23:23:01: Client 29: new arrival from 127.0.0.1:40030 - welcome!
+2024-09-17T23:23:03: Client 29: read EOF
+2024-09-17T23:23:03: Client 29: shut down complete - bye!
+2024-09-17T23:23:47: Client 29: new arrival from 192.168.1.225:51507 - welcome!
+2024-09-17T23:23:47: Client 29: read EOF
+2024-09-17T23:23:47: Client 29: shut down complete - bye!
+2024-09-17T23:24:01: Client 29: new arrival from 127.0.0.1:50926 - welcome!
+2024-09-17T23:24:03: Client 29: read EOF
+2024-09-17T23:24:03: Client 29: shut down complete - bye!
+2024-09-17T23:25:01: Client 29: new arrival from 127.0.0.1:57086 - welcome!
+2024-09-17T23:25:03: Client 29: read EOF
+2024-09-17T23:25:03: Client 29: shut down complete - bye!
+2024-09-17T23:25:48: Client 29: new arrival from 192.168.1.225:51517 - welcome!
+2024-09-17T23:25:48: Client 29: read: Connection reset by peer
+2024-09-17T23:25:48: Client 29: shut down complete - bye!
+2024-09-17T23:26:01: Client 29: new arrival from 127.0.0.1:56088 - welcome!
+2024-09-17T23:26:03: Client 29: read EOF
+2024-09-17T23:26:03: Client 29: shut down complete - bye!
+2024-09-17T23:27:01: Client 29: new arrival from 127.0.0.1:50702 - welcome!
+2024-09-17T23:27:03: Client 29: read EOF
+2024-09-17T23:27:03: Client 29: shut down complete - bye!
+2024-09-17T23:27:47: Client 29: new arrival from 192.168.1.225:51523 - welcome!
+2024-09-17T23:27:47: Client 29: read EOF
+2024-09-17T23:27:47: Client 29: shut down complete - bye!
+2024-09-17T23:28:01: Client 29: new arrival from 127.0.0.1:57930 - welcome!
+2024-09-17T23:28:03: Client 29: read EOF
+2024-09-17T23:28:03: Client 29: shut down complete - bye!
+2024-09-17T23:29:01: Client 29: new arrival from 127.0.0.1:51496 - welcome!
+2024-09-17T23:29:03: Client 29: read EOF
+2024-09-17T23:29:03: Client 29: shut down complete - bye!
+2024-09-17T23:29:48: Client 29: new arrival from 192.168.1.225:51536 - welcome!
+2024-09-17T23:29:48: Client 29: read: Connection reset by peer
+2024-09-17T23:29:48: Client 29: shut down complete - bye!
+2024-09-17T23:30:01: Client 29: new arrival from 127.0.0.1:49238 - welcome!
+2024-09-17T23:30:03: Client 29: read EOF
+2024-09-17T23:30:03: Client 29: shut down complete - bye!
+2024-09-17T23:31:01: Client 29: new arrival from 127.0.0.1:53736 - welcome!
+2024-09-17T23:31:03: Client 29: read EOF
+2024-09-17T23:31:03: Client 29: shut down complete - bye!
+2024-09-17T23:31:47: Client 29: new arrival from 192.168.1.225:51542 - welcome!
+2024-09-17T23:31:47: Client 29: read: Connection reset by peer
+2024-09-17T23:31:47: Client 29: shut down complete - bye!
+2024-09-17T23:32:01: Client 29: new arrival from 127.0.0.1:50898 - welcome!
+2024-09-17T23:32:03: Client 29: read EOF
+2024-09-17T23:32:03: Client 29: shut down complete - bye!
+2024-09-17T23:33:01: Client 29: new arrival from 127.0.0.1:35058 - welcome!
+2024-09-17T23:33:03: Client 29: read EOF
+2024-09-17T23:33:03: Client 29: shut down complete - bye!
+2024-09-17T23:33:46: Client 29: new arrival from 192.168.1.225:51548 - welcome!
+2024-09-17T23:33:46: Client 29: read: Connection reset by peer
+2024-09-17T23:33:46: Client 29: shut down complete - bye!
+2024-09-17T23:34:01: Client 29: new arrival from 127.0.0.1:52888 - welcome!
+2024-09-17T23:34:03: Client 29: read EOF
+2024-09-17T23:34:03: Client 29: shut down complete - bye!
+2024-09-17T23:35:02: Client 29: new arrival from 127.0.0.1:40756 - welcome!
+2024-09-17T23:35:04: Client 29: read EOF
+2024-09-17T23:35:04: Client 29: shut down complete - bye!
+2024-09-17T23:35:48: Client 29: new arrival from 192.168.1.225:51556 - welcome!
+2024-09-17T23:35:48: Client 29: read EOF
+2024-09-17T23:35:48: Client 29: shut down complete - bye!
+2024-09-17T23:36:01: Client 29: new arrival from 127.0.0.1:34062 - welcome!
+2024-09-17T23:36:03: Client 29: read EOF
+2024-09-17T23:36:03: Client 29: shut down complete - bye!
+2024-09-17T23:37:01: Client 29: new arrival from 127.0.0.1:51750 - welcome!
+2024-09-17T23:37:03: Client 29: read EOF
+2024-09-17T23:37:03: Client 29: shut down complete - bye!
+2024-09-17T23:37:47: Client 29: new arrival from 192.168.1.225:51562 - welcome!
+2024-09-17T23:37:47: Client 29: read EOF
+2024-09-17T23:37:47: Client 29: shut down complete - bye!
+2024-09-17T23:38:01: Client 29: new arrival from 127.0.0.1:34030 - welcome!
+2024-09-17T23:38:03: Client 29: read EOF
+2024-09-17T23:38:03: Client 29: shut down complete - bye!
+2024-09-17T23:39:01: Client 29: new arrival from 127.0.0.1:40124 - welcome!
+2024-09-17T23:39:03: Client 29: read EOF
+2024-09-17T23:39:03: Client 29: shut down complete - bye!
+2024-09-17T23:39:47: Client 29: new arrival from 192.168.1.225:51571 - welcome!
+2024-09-17T23:39:47: Client 29: read EOF
+2024-09-17T23:39:47: Client 29: shut down complete - bye!
+2024-09-17T23:40:01: Client 29: new arrival from 127.0.0.1:50462 - welcome!
+2024-09-17T23:40:03: Client 29: read EOF
+2024-09-17T23:40:03: Client 29: shut down complete - bye!
+2024-09-17T23:41:01: Client 29: new arrival from 127.0.0.1:48026 - welcome!
+2024-09-17T23:41:03: Client 29: read EOF
+2024-09-17T23:41:03: Client 29: shut down complete - bye!
+2024-09-17T23:41:47: Client 29: new arrival from 192.168.1.225:51577 - welcome!
+2024-09-17T23:41:47: Client 29: read EOF
+2024-09-17T23:41:47: Client 29: shut down complete - bye!
+2024-09-17T23:42:01: Client 29: new arrival from 127.0.0.1:38630 - welcome!
+2024-09-17T23:42:03: Client 29: read EOF
+2024-09-17T23:42:03: Client 29: shut down complete - bye!
+2024-09-17T23:43:01: Client 29: new arrival from 127.0.0.1:55114 - welcome!
+2024-09-17T23:43:03: Client 29: read EOF
+2024-09-17T23:43:03: Client 29: shut down complete - bye!
+2024-09-17T23:43:48: Client 29: new arrival from 192.168.1.225:51583 - welcome!
+2024-09-17T23:43:48: Client 29: read EOF
+2024-09-17T23:43:48: Client 29: shut down complete - bye!
+2024-09-17T23:44:01: Client 29: new arrival from 127.0.0.1:41752 - welcome!
+2024-09-17T23:44:03: Client 29: read EOF
+2024-09-17T23:44:03: Client 29: shut down complete - bye!
+2024-09-17T23:45:01: Client 29: new arrival from 127.0.0.1:44982 - welcome!
+2024-09-17T23:45:03: Client 29: read EOF
+2024-09-17T23:45:03: Client 29: shut down complete - bye!
+2024-09-17T23:45:47: Client 29: new arrival from 192.168.1.225:51595 - welcome!
+2024-09-17T23:45:47: Client 29: read: Connection reset by peer
+2024-09-17T23:45:47: Client 29: shut down complete - bye!
+2024-09-17T23:46:01: Client 29: new arrival from 127.0.0.1:59764 - welcome!
+2024-09-17T23:46:03: Client 29: read EOF
+2024-09-17T23:46:03: Client 29: shut down complete - bye!
+2024-09-17T23:47:01: Client 29: new arrival from 127.0.0.1:51370 - welcome!
+2024-09-17T23:47:03: Client 29: read EOF
+2024-09-17T23:47:03: Client 29: shut down complete - bye!
+2024-09-17T23:47:47: Client 29: new arrival from 192.168.1.225:51601 - welcome!
+2024-09-17T23:47:47: Client 29: read EOF
+2024-09-17T23:47:47: Client 29: shut down complete - bye!
+2024-09-17T23:48:01: Client 29: new arrival from 127.0.0.1:44898 - welcome!
+2024-09-17T23:48:03: Client 29: read EOF
+2024-09-17T23:48:03: Client 29: shut down complete - bye!
+2024-09-17T23:49:01: Client 29: new arrival from 127.0.0.1:60224 - welcome!
+2024-09-17T23:49:03: Client 29: read EOF
+2024-09-17T23:49:03: Client 29: shut down complete - bye!
+2024-09-17T23:49:47: Client 29: new arrival from 192.168.1.225:51611 - welcome!
+2024-09-17T23:49:48: Client 29: read: Connection reset by peer
+2024-09-17T23:49:48: Client 29: shut down complete - bye!
+2024-09-17T23:50:01: Client 29: new arrival from 127.0.0.1:37782 - welcome!
+2024-09-17T23:50:03: Client 29: read EOF
+2024-09-17T23:50:03: Client 29: shut down complete - bye!
+2024-09-17T23:51:01: Client 29: new arrival from 127.0.0.1:52120 - welcome!
+2024-09-17T23:51:03: Client 29: read EOF
+2024-09-17T23:51:03: Client 29: shut down complete - bye!
+2024-09-17T23:51:47: Client 29: new arrival from 192.168.1.225:51617 - welcome!
+2024-09-17T23:51:47: Client 29: read: Connection reset by peer
+2024-09-17T23:51:47: Client 29: shut down complete - bye!
+2024-09-17T23:52:01: Client 29: new arrival from 127.0.0.1:39702 - welcome!
+2024-09-17T23:52:03: Client 29: read EOF
+2024-09-17T23:52:03: Client 29: shut down complete - bye!
+2024-09-17T23:53:01: Client 29: new arrival from 127.0.0.1:54594 - welcome!
+2024-09-17T23:53:03: Client 29: read EOF
+2024-09-17T23:53:03: Client 29: shut down complete - bye!
+2024-09-17T23:53:47: Client 29: new arrival from 192.168.1.225:51623 - welcome!
+2024-09-17T23:53:47: Client 29: read: Connection reset by peer
+2024-09-17T23:53:47: Client 29: shut down complete - bye!
+2024-09-17T23:54:01: Client 29: new arrival from 127.0.0.1:53674 - welcome!
+2024-09-17T23:54:03: Client 29: read EOF
+2024-09-17T23:54:03: Client 29: shut down complete - bye!
+2024-09-17T23:55:01: Client 29: new arrival from 127.0.0.1:51166 - welcome!
+2024-09-17T23:55:03: Client 29: read EOF
+2024-09-17T23:55:03: Client 29: shut down complete - bye!
+2024-09-17T23:55:47: Client 29: new arrival from 192.168.1.225:51631 - welcome!
+2024-09-17T23:55:47: Client 29: read: Connection reset by peer
+2024-09-17T23:55:47: Client 29: shut down complete - bye!
+2024-09-17T23:56:01: Client 29: new arrival from 127.0.0.1:59926 - welcome!
+2024-09-17T23:56:03: Client 29: read EOF
+2024-09-17T23:56:03: Client 29: shut down complete - bye!
+2024-09-17T23:57:01: Client 29: new arrival from 127.0.0.1:43636 - welcome!
+2024-09-17T23:57:03: Client 29: read EOF
+2024-09-17T23:57:03: Client 29: shut down complete - bye!
+2024-09-17T23:57:47: Client 29: new arrival from 192.168.1.225:51637 - welcome!
+2024-09-17T23:57:47: Client 29: read EOF
+2024-09-17T23:57:47: Client 29: shut down complete - bye!
+2024-09-17T23:58:01: Client 29: new arrival from 127.0.0.1:43376 - welcome!
+2024-09-17T23:58:03: Client 29: read EOF
+2024-09-17T23:58:03: Client 29: shut down complete - bye!
+2024-09-17T23:59:01: Client 29: new arrival from 127.0.0.1:57626 - welcome!
+2024-09-17T23:59:03: Client 29: read EOF
+2024-09-17T23:59:03: Client 29: shut down complete - bye!
+2024-09-17T23:59:48: Client 29: new arrival from 192.168.1.225:51650 - welcome!
+2024-09-17T23:59:48: Client 29: read EOF
+2024-09-17T23:59:48: Client 29: shut down complete - bye!
+2024-09-18T00:00:01: Client 29: new arrival from 127.0.0.1:60948 - welcome!
+2024-09-18T00:00:03: Client 29: read EOF
+2024-09-18T00:00:03: Client 29: shut down complete - bye!
+2024-09-18T00:01:01: Client 29: new arrival from 127.0.0.1:43776 - welcome!
+2024-09-18T00:01:03: Client 29: read EOF
+2024-09-18T00:01:03: Client 29: shut down complete - bye!
+2024-09-18T00:01:47: Client 29: new arrival from 192.168.1.225:51656 - welcome!
+2024-09-18T00:01:47: Client 29: read EOF
+2024-09-18T00:01:47: Client 29: shut down complete - bye!
+2024-09-18T00:02:01: Client 29: new arrival from 127.0.0.1:39802 - welcome!
+2024-09-18T00:02:03: Client 29: read EOF
+2024-09-18T00:02:03: Client 29: shut down complete - bye!
+2024-09-18T00:03:01: Client 29: new arrival from 127.0.0.1:48428 - welcome!
+2024-09-18T00:03:03: Client 29: read EOF
+2024-09-18T00:03:03: Client 29: shut down complete - bye!
+2024-09-18T00:03:47: Client 29: new arrival from 192.168.1.225:51662 - welcome!
+2024-09-18T00:03:47: Client 29: read EOF
+2024-09-18T00:03:47: Client 29: shut down complete - bye!
+2024-09-18T00:04:01: Client 29: new arrival from 127.0.0.1:42924 - welcome!
+2024-09-18T00:04:03: Client 29: read EOF
+2024-09-18T00:04:03: Client 29: shut down complete - bye!
+2024-09-18T00:05:01: Client 29: new arrival from 127.0.0.1:59000 - welcome!
+2024-09-18T00:05:03: Client 29: read EOF
+2024-09-18T00:05:03: Client 29: shut down complete - bye!
+2024-09-18T00:05:47: Client 29: new arrival from 192.168.1.225:51670 - welcome!
+2024-09-18T00:05:47: Client 29: read EOF
+2024-09-18T00:05:47: Client 29: shut down complete - bye!
+2024-09-18T00:06:01: Client 29: new arrival from 127.0.0.1:58980 - welcome!
+2024-09-18T00:06:03: Client 29: read EOF
+2024-09-18T00:06:03: Client 29: shut down complete - bye!
+2024-09-18T00:07:01: Client 29: new arrival from 127.0.0.1:52224 - welcome!
+2024-09-18T00:07:03: Client 29: read EOF
+2024-09-18T00:07:03: Client 29: shut down complete - bye!
+2024-09-18T00:07:47: Client 29: new arrival from 192.168.1.225:51676 - welcome!
+2024-09-18T00:07:47: Client 29: read EOF
+2024-09-18T00:07:47: Client 29: shut down complete - bye!
+2024-09-18T00:08:01: Client 29: new arrival from 127.0.0.1:37252 - welcome!
+2024-09-18T00:08:03: Client 29: read EOF
+2024-09-18T00:08:03: Client 29: shut down complete - bye!
+2024-09-18T00:09:01: Client 29: new arrival from 127.0.0.1:50654 - welcome!
+2024-09-18T00:09:03: Client 29: read EOF
+2024-09-18T00:09:03: Client 29: shut down complete - bye!
+2024-09-18T00:09:47: Client 29: new arrival from 192.168.1.225:51686 - welcome!
+2024-09-18T00:09:47: Client 29: read EOF
+2024-09-18T00:09:47: Client 29: shut down complete - bye!
+2024-09-18T00:10:01: Client 29: new arrival from 127.0.0.1:60308 - welcome!
+2024-09-18T00:10:03: Client 29: read EOF
+2024-09-18T00:10:03: Client 29: shut down complete - bye!
+2024-09-18T00:11:01: Client 29: new arrival from 127.0.0.1:47608 - welcome!
+2024-09-18T00:11:03: Client 29: read EOF
+2024-09-18T00:11:03: Client 29: shut down complete - bye!
+2024-09-18T00:11:47: Client 29: new arrival from 192.168.1.225:51692 - welcome!
+2024-09-18T00:11:47: Client 29: read EOF
+2024-09-18T00:11:47: Client 29: shut down complete - bye!
+2024-09-18T00:12:01: Client 29: new arrival from 127.0.0.1:34316 - welcome!
+2024-09-18T00:12:03: Client 29: read EOF
+2024-09-18T00:12:03: Client 29: shut down complete - bye!
+2024-09-18T00:13:01: Client 29: new arrival from 127.0.0.1:34478 - welcome!
+2024-09-18T00:13:03: Client 29: read EOF
+2024-09-18T00:13:03: Client 29: shut down complete - bye!
+2024-09-18T00:13:47: Client 29: new arrival from 192.168.1.225:51698 - welcome!
+2024-09-18T00:13:47: Client 29: read EOF
+2024-09-18T00:13:47: Client 29: shut down complete - bye!
+2024-09-18T00:14:01: Client 29: new arrival from 127.0.0.1:51400 - welcome!
+2024-09-18T00:14:03: Client 29: read EOF
+2024-09-18T00:14:03: Client 29: shut down complete - bye!
+2024-09-18T00:15:01: Client 29: new arrival from 127.0.0.1:58340 - welcome!
+2024-09-18T00:15:03: Client 29: read EOF
+2024-09-18T00:15:03: Client 29: shut down complete - bye!
+2024-09-18T00:15:47: Client 29: new arrival from 192.168.1.225:51710 - welcome!
+2024-09-18T00:15:47: Client 29: read EOF
+2024-09-18T00:15:47: Client 29: shut down complete - bye!
+2024-09-18T00:16:01: Client 29: new arrival from 127.0.0.1:43378 - welcome!
+2024-09-18T00:16:03: Client 29: read EOF
+2024-09-18T00:16:03: Client 29: shut down complete - bye!
+2024-09-18T00:17:01: Client 29: new arrival from 127.0.0.1:56080 - welcome!
+2024-09-18T00:17:03: Client 29: read EOF
+2024-09-18T00:17:03: Client 29: shut down complete - bye!
+2024-09-18T00:17:47: Client 29: new arrival from 192.168.1.225:51716 - welcome!
+2024-09-18T00:17:47: Client 29: read EOF
+2024-09-18T00:17:47: Client 29: shut down complete - bye!
+2024-09-18T00:18:01: Client 29: new arrival from 127.0.0.1:42142 - welcome!
+2024-09-18T00:18:03: Client 29: read EOF
+2024-09-18T00:18:03: Client 29: shut down complete - bye!
+2024-09-18T00:19:01: Client 29: new arrival from 127.0.0.1:43892 - welcome!
+2024-09-18T00:19:03: Client 29: read EOF
+2024-09-18T00:19:03: Client 29: shut down complete - bye!
+2024-09-18T00:19:47: Client 29: new arrival from 192.168.1.225:51724 - welcome!
+2024-09-18T00:19:47: Client 29: read EOF
+2024-09-18T00:19:47: Client 29: shut down complete - bye!
+2024-09-18T00:20:01: Client 29: new arrival from 127.0.0.1:48428 - welcome!
+2024-09-18T00:20:03: Client 29: read EOF
+2024-09-18T00:20:03: Client 29: shut down complete - bye!
+2024-09-18T00:21:01: Client 29: new arrival from 127.0.0.1:41432 - welcome!
+2024-09-18T00:21:03: Client 29: read EOF
+2024-09-18T00:21:03: Client 29: shut down complete - bye!
+2024-09-18T00:21:46: Client 29: new arrival from 192.168.1.225:51731 - welcome!
+2024-09-18T00:21:46: Client 29: read: Connection reset by peer
+2024-09-18T00:21:46: Client 29: shut down complete - bye!
+2024-09-18T00:22:01: Client 29: new arrival from 127.0.0.1:39418 - welcome!
+2024-09-18T00:22:03: Client 29: read EOF
+2024-09-18T00:22:03: Client 29: shut down complete - bye!
+2024-09-18T00:23:01: Client 29: new arrival from 127.0.0.1:35598 - welcome!
+2024-09-18T00:23:03: Client 29: read EOF
+2024-09-18T00:23:03: Client 29: shut down complete - bye!
+2024-09-18T00:23:47: Client 29: new arrival from 192.168.1.225:51741 - welcome!
+2024-09-18T00:23:47: Client 29: read: Connection reset by peer
+2024-09-18T00:23:47: Client 29: shut down complete - bye!
+2024-09-18T00:24:01: Client 29: new arrival from 127.0.0.1:53556 - welcome!
+2024-09-18T00:24:03: Client 29: read EOF
+2024-09-18T00:24:03: Client 29: shut down complete - bye!
+2024-09-18T00:25:01: Client 29: new arrival from 127.0.0.1:58036 - welcome!
+2024-09-18T00:25:03: Client 29: read EOF
+2024-09-18T00:25:03: Client 29: shut down complete - bye!
+2024-09-18T00:25:47: Client 29: new arrival from 192.168.1.225:51749 - welcome!
+2024-09-18T00:25:47: Client 29: read EOF
+2024-09-18T00:25:47: Client 29: shut down complete - bye!
+2024-09-18T00:26:01: Client 29: new arrival from 127.0.0.1:46320 - welcome!
+2024-09-18T00:26:03: Client 29: read EOF
+2024-09-18T00:26:03: Client 29: shut down complete - bye!
+2024-09-18T00:27:01: Client 29: new arrival from 127.0.0.1:50598 - welcome!
+2024-09-18T00:27:03: Client 29: read EOF
+2024-09-18T00:27:03: Client 29: shut down complete - bye!
+2024-09-18T00:27:47: Client 29: new arrival from 192.168.1.225:51755 - welcome!
+2024-09-18T00:27:47: Client 29: read EOF
+2024-09-18T00:27:47: Client 29: shut down complete - bye!
+2024-09-18T00:28:01: Client 29: new arrival from 127.0.0.1:34492 - welcome!
+2024-09-18T00:28:03: Client 29: read EOF
+2024-09-18T00:28:03: Client 29: shut down complete - bye!
+2024-09-18T00:29:01: Client 29: new arrival from 127.0.0.1:57416 - welcome!
+2024-09-18T00:29:03: Client 29: read EOF
+2024-09-18T00:29:03: Client 29: shut down complete - bye!
+2024-09-18T00:29:46: Client 29: new arrival from 192.168.1.225:51767 - welcome!
+2024-09-18T00:29:46: Client 29: read: Connection reset by peer
+2024-09-18T00:29:46: Client 29: shut down complete - bye!
+2024-09-18T00:30:01: Client 29: new arrival from 127.0.0.1:53132 - welcome!
+2024-09-18T00:30:03: Client 29: read EOF
+2024-09-18T00:30:03: Client 29: shut down complete - bye!
+2024-09-18T00:31:01: Client 29: new arrival from 127.0.0.1:48560 - welcome!
+2024-09-18T00:31:03: Client 29: read EOF
+2024-09-18T00:31:03: Client 29: shut down complete - bye!
+2024-09-18T00:31:47: Client 29: new arrival from 192.168.1.225:51775 - welcome!
+2024-09-18T00:31:47: Client 29: read: Connection reset by peer
+2024-09-18T00:31:47: Client 29: shut down complete - bye!
+2024-09-18T00:32:01: Client 29: new arrival from 127.0.0.1:47788 - welcome!
+2024-09-18T00:32:03: Client 29: read EOF
+2024-09-18T00:32:03: Client 29: shut down complete - bye!
+2024-09-18T00:33:01: Client 29: new arrival from 127.0.0.1:34684 - welcome!
+2024-09-18T00:33:03: Client 29: read EOF
+2024-09-18T00:33:03: Client 29: shut down complete - bye!
+2024-09-18T00:33:47: Client 29: new arrival from 192.168.1.225:51781 - welcome!
+2024-09-18T00:33:47: Client 29: read: Connection reset by peer
+2024-09-18T00:33:47: Client 29: shut down complete - bye!
+2024-09-18T00:34:01: Client 29: new arrival from 127.0.0.1:49118 - welcome!
+2024-09-18T00:34:03: Client 29: read EOF
+2024-09-18T00:34:03: Client 29: shut down complete - bye!
+2024-09-18T00:35:01: Client 29: new arrival from 127.0.0.1:55704 - welcome!
+2024-09-18T00:35:03: Client 29: read EOF
+2024-09-18T00:35:03: Client 29: shut down complete - bye!
+2024-09-18T00:35:47: Client 29: new arrival from 192.168.1.225:51788 - welcome!
+2024-09-18T00:35:47: Client 29: read EOF
+2024-09-18T00:35:47: Client 29: shut down complete - bye!
+2024-09-18T00:36:01: Client 29: new arrival from 127.0.0.1:54264 - welcome!
+2024-09-18T00:36:03: Client 29: read EOF
+2024-09-18T00:36:03: Client 29: shut down complete - bye!
+2024-09-18T00:37:01: Client 29: new arrival from 127.0.0.1:42878 - welcome!
+2024-09-18T00:37:03: Client 29: read EOF
+2024-09-18T00:37:03: Client 29: shut down complete - bye!
+2024-09-18T00:37:47: Client 29: new arrival from 192.168.1.225:51794 - welcome!
+2024-09-18T00:37:47: Client 29: read EOF
+2024-09-18T00:37:47: Client 29: shut down complete - bye!
+2024-09-18T00:38:02: Client 29: new arrival from 127.0.0.1:35632 - welcome!
+2024-09-18T00:38:04: Client 29: read EOF
+2024-09-18T00:38:04: Client 29: shut down complete - bye!
+2024-09-18T00:39:01: Client 29: new arrival from 127.0.0.1:49836 - welcome!
+2024-09-18T00:39:03: Client 29: read EOF
+2024-09-18T00:39:03: Client 29: shut down complete - bye!
+2024-09-18T00:39:47: Client 29: new arrival from 192.168.1.225:51802 - welcome!
+2024-09-18T00:39:47: Client 29: read EOF
+2024-09-18T00:39:47: Client 29: shut down complete - bye!
+2024-09-18T00:40:01: Client 29: new arrival from 127.0.0.1:47956 - welcome!
+2024-09-18T00:40:03: Client 29: read EOF
+2024-09-18T00:40:03: Client 29: shut down complete - bye!
+2024-09-18T00:41:01: Client 29: new arrival from 127.0.0.1:44724 - welcome!
+2024-09-18T00:41:03: Client 29: read EOF
+2024-09-18T00:41:03: Client 29: shut down complete - bye!
+2024-09-18T00:41:46: Client 29: new arrival from 192.168.1.225:51810 - welcome!
+2024-09-18T00:41:47: Client 29: read EOF
+2024-09-18T00:41:47: Client 29: shut down complete - bye!
+2024-09-18T00:42:01: Client 29: new arrival from 127.0.0.1:46058 - welcome!
+2024-09-18T00:42:03: Client 29: read EOF
+2024-09-18T00:42:03: Client 29: shut down complete - bye!
+2024-09-18T00:43:01: Client 29: new arrival from 127.0.0.1:47332 - welcome!
+2024-09-18T00:43:03: Client 29: read EOF
+2024-09-18T00:43:03: Client 29: shut down complete - bye!
+2024-09-18T00:43:47: Client 29: new arrival from 192.168.1.225:51816 - welcome!
+2024-09-18T00:43:47: Client 29: read: Connection reset by peer
+2024-09-18T00:43:47: Client 29: shut down complete - bye!
+2024-09-18T00:44:01: Client 29: new arrival from 127.0.0.1:51376 - welcome!
+2024-09-18T00:44:03: Client 29: read EOF
+2024-09-18T00:44:03: Client 29: shut down complete - bye!
+2024-09-18T00:45:01: Client 29: new arrival from 127.0.0.1:57648 - welcome!
+2024-09-18T00:45:03: Client 29: read EOF
+2024-09-18T00:45:03: Client 29: shut down complete - bye!
+2024-09-18T00:45:47: Client 29: new arrival from 192.168.1.225:51827 - welcome!
+2024-09-18T00:45:47: Client 29: read: Connection reset by peer
+2024-09-18T00:45:47: Client 29: shut down complete - bye!
+2024-09-18T00:46:02: Client 29: new arrival from 127.0.0.1:33118 - welcome!
+2024-09-18T00:46:04: Client 29: read EOF
+2024-09-18T00:46:04: Client 29: shut down complete - bye!
+2024-09-18T00:47:01: Client 29: new arrival from 127.0.0.1:34056 - welcome!
+2024-09-18T00:47:03: Client 29: read EOF
+2024-09-18T00:47:03: Client 29: shut down complete - bye!
+2024-09-18T00:47:47: Client 29: new arrival from 192.168.1.225:51833 - welcome!
+2024-09-18T00:47:47: Client 29: read EOF
+2024-09-18T00:47:47: Client 29: shut down complete - bye!
+2024-09-18T00:48:01: Client 29: new arrival from 127.0.0.1:42262 - welcome!
+2024-09-18T00:48:03: Client 29: read EOF
+2024-09-18T00:48:03: Client 29: shut down complete - bye!
+2024-09-18T00:49:01: Client 29: new arrival from 127.0.0.1:53106 - welcome!
+2024-09-18T00:49:03: Client 29: read EOF
+2024-09-18T00:49:03: Client 29: shut down complete - bye!
+2024-09-18T00:49:47: Client 29: new arrival from 192.168.1.225:51841 - welcome!
+2024-09-18T00:49:47: Client 29: read: Connection reset by peer
+2024-09-18T00:49:47: Client 29: shut down complete - bye!
+2024-09-18T00:50:01: Client 29: new arrival from 127.0.0.1:36490 - welcome!
+2024-09-18T00:50:03: Client 29: read EOF
+2024-09-18T00:50:03: Client 29: shut down complete - bye!
+2024-09-18T00:51:01: Client 29: new arrival from 127.0.0.1:49656 - welcome!
+2024-09-18T00:51:03: Client 29: read EOF
+2024-09-18T00:51:03: Client 29: shut down complete - bye!
+2024-09-18T00:51:47: Client 29: new arrival from 192.168.1.225:51849 - welcome!
+2024-09-18T00:51:47: Client 29: read EOF
+2024-09-18T00:51:47: Client 29: shut down complete - bye!
+2024-09-18T00:52:01: Client 29: new arrival from 127.0.0.1:58224 - welcome!
+2024-09-18T00:52:03: Client 29: read EOF
+2024-09-18T00:52:03: Client 29: shut down complete - bye!
+2024-09-18T00:53:01: Client 29: new arrival from 127.0.0.1:41344 - welcome!
+2024-09-18T00:53:03: Client 29: read EOF
+2024-09-18T00:53:03: Client 29: shut down complete - bye!
+2024-09-18T00:53:47: Client 29: new arrival from 192.168.1.225:51855 - welcome!
+2024-09-18T00:53:47: Client 29: read EOF
+2024-09-18T00:53:47: Client 29: shut down complete - bye!
+2024-09-18T00:54:02: Client 29: new arrival from 127.0.0.1:46166 - welcome!
+2024-09-18T00:54:04: Client 29: read EOF
+2024-09-18T00:54:04: Client 29: shut down complete - bye!
+2024-09-18T00:55:01: Client 29: new arrival from 127.0.0.1:35524 - welcome!
+2024-09-18T00:55:03: Client 29: read EOF
+2024-09-18T00:55:03: Client 29: shut down complete - bye!
+2024-09-18T00:55:47: Client 29: new arrival from 192.168.1.225:51863 - welcome!
+2024-09-18T00:55:47: Client 29: read: Connection reset by peer
+2024-09-18T00:55:47: Client 29: shut down complete - bye!
+2024-09-18T00:56:01: Client 29: new arrival from 127.0.0.1:33806 - welcome!
+2024-09-18T00:56:03: Client 29: read EOF
+2024-09-18T00:56:03: Client 29: shut down complete - bye!
+2024-09-18T00:57:01: Client 29: new arrival from 127.0.0.1:36930 - welcome!
+2024-09-18T00:57:03: Client 29: read EOF
+2024-09-18T00:57:03: Client 29: shut down complete - bye!
+2024-09-18T00:57:47: Client 29: new arrival from 192.168.1.225:51869 - welcome!
+2024-09-18T00:57:47: Client 29: read: Connection reset by peer
+2024-09-18T00:57:47: Client 29: shut down complete - bye!
+2024-09-18T00:58:01: Client 29: new arrival from 127.0.0.1:47508 - welcome!
+2024-09-18T00:58:03: Client 29: read EOF
+2024-09-18T00:58:03: Client 29: shut down complete - bye!
+2024-09-18T00:59:01: Client 29: new arrival from 127.0.0.1:58216 - welcome!
+2024-09-18T00:59:03: Client 29: read EOF
+2024-09-18T00:59:03: Client 29: shut down complete - bye!
+2024-09-18T00:59:47: Client 29: new arrival from 192.168.1.225:51881 - welcome!
+2024-09-18T00:59:47: Client 29: read: Connection reset by peer
+2024-09-18T00:59:47: Client 29: shut down complete - bye!
+2024-09-18T01:00:01: Client 29: new arrival from 127.0.0.1:35284 - welcome!
+2024-09-18T01:00:03: Client 29: read EOF
+2024-09-18T01:00:03: Client 29: shut down complete - bye!
+2024-09-18T01:01:01: Client 29: new arrival from 127.0.0.1:41916 - welcome!
+2024-09-18T01:01:03: Client 29: read EOF
+2024-09-18T01:01:03: Client 29: shut down complete - bye!
+2024-09-18T01:01:47: Client 29: new arrival from 192.168.1.225:51888 - welcome!
+2024-09-18T01:01:47: Client 29: read EOF
+2024-09-18T01:01:47: Client 29: shut down complete - bye!
+2024-09-18T01:02:02: Client 29: new arrival from 127.0.0.1:47674 - welcome!
+2024-09-18T01:02:04: Client 29: read EOF
+2024-09-18T01:02:04: Client 29: shut down complete - bye!
+2024-09-18T01:03:01: Client 29: new arrival from 127.0.0.1:38704 - welcome!
+2024-09-18T01:03:03: Client 29: read EOF
+2024-09-18T01:03:03: Client 29: shut down complete - bye!
+2024-09-18T01:03:47: Client 29: new arrival from 192.168.1.225:51894 - welcome!
+2024-09-18T01:03:47: Client 29: read: Connection reset by peer
+2024-09-18T01:03:47: Client 29: shut down complete - bye!
+2024-09-18T01:04:01: Client 29: new arrival from 127.0.0.1:53922 - welcome!
+2024-09-18T01:04:03: Client 29: read EOF
+2024-09-18T01:04:03: Client 29: shut down complete - bye!
+2024-09-18T01:05:01: Client 29: new arrival from 127.0.0.1:39384 - welcome!
+2024-09-18T01:05:03: Client 29: read EOF
+2024-09-18T01:05:03: Client 29: shut down complete - bye!
+2024-09-18T01:05:47: Client 29: new arrival from 192.168.1.225:51902 - welcome!
+2024-09-18T01:05:47: Client 29: read: Connection reset by peer
+2024-09-18T01:05:47: Client 29: shut down complete - bye!
+2024-09-18T01:06:01: Client 29: new arrival from 127.0.0.1:51434 - welcome!
+2024-09-18T01:06:03: Client 29: read EOF
+2024-09-18T01:06:03: Client 29: shut down complete - bye!
+2024-09-18T01:07:01: Client 29: new arrival from 127.0.0.1:49662 - welcome!
+2024-09-18T01:07:03: Client 29: read EOF
+2024-09-18T01:07:03: Client 29: shut down complete - bye!
+2024-09-18T01:07:47: Client 29: new arrival from 192.168.1.225:51908 - welcome!
+2024-09-18T01:07:47: Client 29: read EOF
+2024-09-18T01:07:47: Client 29: shut down complete - bye!
+2024-09-18T01:08:01: Client 29: new arrival from 127.0.0.1:45384 - welcome!
+2024-09-18T01:08:03: Client 29: read EOF
+2024-09-18T01:08:03: Client 29: shut down complete - bye!
+2024-09-18T01:09:01: Client 29: new arrival from 127.0.0.1:49392 - welcome!
+2024-09-18T01:09:03: Client 29: read EOF
+2024-09-18T01:09:03: Client 29: shut down complete - bye!
+2024-09-18T01:09:46: Client 29: new arrival from 192.168.1.225:51916 - welcome!
+2024-09-18T01:09:46: Client 29: read: Connection reset by peer
+2024-09-18T01:09:46: Client 29: shut down complete - bye!
+2024-09-18T01:10:01: Client 29: new arrival from 127.0.0.1:58886 - welcome!
+2024-09-18T01:10:03: Client 29: read EOF
+2024-09-18T01:10:03: Client 29: shut down complete - bye!
+2024-09-18T01:11:01: Client 29: new arrival from 127.0.0.1:51282 - welcome!
+2024-09-18T01:11:03: Client 29: read EOF
+2024-09-18T01:11:03: Client 29: shut down complete - bye!
+2024-09-18T01:11:47: Client 29: new arrival from 192.168.1.225:51924 - welcome!
+2024-09-18T01:11:47: Client 29: read EOF
+2024-09-18T01:11:47: Client 29: shut down complete - bye!
+2024-09-18T01:12:01: Client 29: new arrival from 127.0.0.1:50696 - welcome!
+2024-09-18T01:12:03: Client 29: read EOF
+2024-09-18T01:12:03: Client 29: shut down complete - bye!
+2024-09-18T01:13:01: Client 29: new arrival from 127.0.0.1:43870 - welcome!
+2024-09-18T01:13:03: Client 29: read EOF
+2024-09-18T01:13:03: Client 29: shut down complete - bye!
+2024-09-18T01:13:47: Client 29: new arrival from 192.168.1.225:51930 - welcome!
+2024-09-18T01:13:47: Client 29: read EOF
+2024-09-18T01:13:47: Client 29: shut down complete - bye!
+2024-09-18T01:14:01: Client 29: new arrival from 127.0.0.1:50712 - welcome!
+2024-09-18T01:14:03: Client 29: read EOF
+2024-09-18T01:14:03: Client 29: shut down complete - bye!
+2024-09-18T01:15:01: Client 29: new arrival from 127.0.0.1:51420 - welcome!
+2024-09-18T01:15:03: Client 29: read EOF
+2024-09-18T01:15:03: Client 29: shut down complete - bye!
+2024-09-18T01:15:47: Client 29: new arrival from 192.168.1.225:51941 - welcome!
+2024-09-18T01:15:47: Client 29: read: Connection reset by peer
+2024-09-18T01:15:47: Client 29: shut down complete - bye!
+2024-09-18T01:16:01: Client 29: new arrival from 127.0.0.1:43444 - welcome!
+2024-09-18T01:16:03: Client 29: read EOF
+2024-09-18T01:16:03: Client 29: shut down complete - bye!
+2024-09-18T01:17:02: Client 29: new arrival from 127.0.0.1:53714 - welcome!
+2024-09-18T01:17:04: Client 29: read EOF
+2024-09-18T01:17:04: Client 29: shut down complete - bye!
+2024-09-18T01:17:47: Client 29: new arrival from 192.168.1.225:51947 - welcome!
+2024-09-18T01:17:47: Client 29: read EOF
+2024-09-18T01:17:47: Client 29: shut down complete - bye!
+2024-09-18T01:18:01: Client 29: new arrival from 127.0.0.1:46236 - welcome!
+2024-09-18T01:18:03: Client 29: read EOF
+2024-09-18T01:18:03: Client 29: shut down complete - bye!
+2024-09-18T01:19:01: Client 29: new arrival from 127.0.0.1:57608 - welcome!
+2024-09-18T01:19:03: Client 29: read EOF
+2024-09-18T01:19:03: Client 29: shut down complete - bye!
+2024-09-18T01:19:47: Client 29: new arrival from 192.168.1.225:51955 - welcome!
+2024-09-18T01:19:47: Client 29: read EOF
+2024-09-18T01:19:47: Client 29: shut down complete - bye!
+2024-09-18T01:20:01: Client 29: new arrival from 127.0.0.1:49086 - welcome!
+2024-09-18T01:20:03: Client 29: read EOF
+2024-09-18T01:20:03: Client 29: shut down complete - bye!
+2024-09-18T01:21:01: Client 29: new arrival from 127.0.0.1:41838 - welcome!
+2024-09-18T01:21:03: Client 29: read EOF
+2024-09-18T01:21:03: Client 29: shut down complete - bye!
+2024-09-18T01:21:47: Client 29: new arrival from 192.168.1.225:51963 - welcome!
+2024-09-18T01:21:47: Client 29: read EOF
+2024-09-18T01:21:47: Client 29: shut down complete - bye!
+2024-09-18T01:22:01: Client 29: new arrival from 127.0.0.1:51274 - welcome!
+2024-09-18T01:22:03: Client 29: read EOF
+2024-09-18T01:22:03: Client 29: shut down complete - bye!
+2024-09-18T01:23:01: Client 29: new arrival from 127.0.0.1:32844 - welcome!
+2024-09-18T01:23:03: Client 29: read EOF
+2024-09-18T01:23:03: Client 29: shut down complete - bye!
+2024-09-18T01:23:47: Client 29: new arrival from 192.168.1.225:51971 - welcome!
+2024-09-18T01:23:47: Client 29: read EOF
+2024-09-18T01:23:47: Client 29: shut down complete - bye!
+2024-09-18T01:24:02: Client 29: new arrival from 127.0.0.1:40548 - welcome!
+2024-09-18T01:24:04: Client 29: read EOF
+2024-09-18T01:24:04: Client 29: shut down complete - bye!
+2024-09-18T01:25:01: Client 29: new arrival from 127.0.0.1:45850 - welcome!
+2024-09-18T01:25:03: Client 29: read EOF
+2024-09-18T01:25:03: Client 29: shut down complete - bye!
+2024-09-18T01:25:47: Client 29: new arrival from 192.168.1.225:51981 - welcome!
+2024-09-18T01:25:47: Client 29: read EOF
+2024-09-18T01:25:47: Client 29: shut down complete - bye!
+2024-09-18T01:26:01: Client 29: new arrival from 127.0.0.1:33178 - welcome!
+2024-09-18T01:26:03: Client 29: read EOF
+2024-09-18T01:26:03: Client 29: shut down complete - bye!
+2024-09-18T01:27:01: Client 29: new arrival from 127.0.0.1:37766 - welcome!
+2024-09-18T01:27:03: Client 29: read EOF
+2024-09-18T01:27:03: Client 29: shut down complete - bye!
+2024-09-18T01:27:47: Client 29: new arrival from 192.168.1.225:51987 - welcome!
+2024-09-18T01:27:47: Client 29: read EOF
+2024-09-18T01:27:47: Client 29: shut down complete - bye!
+2024-09-18T01:28:01: Client 29: new arrival from 127.0.0.1:35564 - welcome!
+2024-09-18T01:28:03: Client 29: read EOF
+2024-09-18T01:28:03: Client 29: shut down complete - bye!
+2024-09-18T01:29:01: Client 29: new arrival from 127.0.0.1:56992 - welcome!
+2024-09-18T01:29:03: Client 29: read EOF
+2024-09-18T01:29:03: Client 29: shut down complete - bye!
+2024-09-18T01:29:47: Client 29: new arrival from 192.168.1.225:51999 - welcome!
+2024-09-18T01:29:47: Client 29: read EOF
+2024-09-18T01:29:47: Client 29: shut down complete - bye!
+2024-09-18T01:30:01: Client 29: new arrival from 127.0.0.1:42498 - welcome!
+2024-09-18T01:30:03: Client 29: read EOF
+2024-09-18T01:30:03: Client 29: shut down complete - bye!
+2024-09-18T01:31:01: Client 29: new arrival from 127.0.0.1:52362 - welcome!
+2024-09-18T01:31:03: Client 29: read EOF
+2024-09-18T01:31:03: Client 29: shut down complete - bye!
+2024-09-18T01:31:47: Client 29: new arrival from 192.168.1.225:52006 - welcome!
+2024-09-18T01:31:47: Client 29: read EOF
+2024-09-18T01:31:47: Client 29: shut down complete - bye!
+2024-09-18T01:32:01: Client 29: new arrival from 127.0.0.1:34626 - welcome!
+2024-09-18T01:32:03: Client 29: read EOF
+2024-09-18T01:32:03: Client 29: shut down complete - bye!
+2024-09-18T01:33:01: Client 29: new arrival from 127.0.0.1:52142 - welcome!
+2024-09-18T01:33:03: Client 29: read EOF
+2024-09-18T01:33:03: Client 29: shut down complete - bye!
+2024-09-18T01:33:47: Client 29: new arrival from 192.168.1.225:52012 - welcome!
+2024-09-18T01:33:47: Client 29: read: Connection reset by peer
+2024-09-18T01:33:47: Client 29: shut down complete - bye!
+2024-09-18T01:34:01: Client 29: new arrival from 127.0.0.1:57530 - welcome!
+2024-09-18T01:34:03: Client 29: read EOF
+2024-09-18T01:34:03: Client 29: shut down complete - bye!
+2024-09-18T01:35:01: Client 29: new arrival from 127.0.0.1:45268 - welcome!
+2024-09-18T01:35:03: Client 29: read EOF
+2024-09-18T01:35:03: Client 29: shut down complete - bye!
+2024-09-18T01:35:47: Client 29: new arrival from 192.168.1.225:52020 - welcome!
+2024-09-18T01:35:47: Client 29: read EOF
+2024-09-18T01:35:47: Client 29: shut down complete - bye!
+2024-09-18T01:36:01: Client 29: new arrival from 127.0.0.1:44056 - welcome!
+2024-09-18T01:36:03: Client 29: read EOF
+2024-09-18T01:36:03: Client 29: shut down complete - bye!
+2024-09-18T01:37:01: Client 29: new arrival from 127.0.0.1:33428 - welcome!
+2024-09-18T01:37:03: Client 29: read EOF
+2024-09-18T01:37:03: Client 29: shut down complete - bye!
+2024-09-18T01:37:47: Client 29: new arrival from 192.168.1.225:52026 - welcome!
+2024-09-18T01:37:47: Client 29: read EOF
+2024-09-18T01:37:47: Client 29: shut down complete - bye!
+2024-09-18T01:38:01: Client 29: new arrival from 127.0.0.1:60430 - welcome!
+2024-09-18T01:38:03: Client 29: read EOF
+2024-09-18T01:38:03: Client 29: shut down complete - bye!
+2024-09-18T01:39:01: Client 29: new arrival from 127.0.0.1:41058 - welcome!
+2024-09-18T01:39:03: Client 29: read EOF
+2024-09-18T01:39:03: Client 29: shut down complete - bye!
+2024-09-18T01:39:47: Client 29: new arrival from 192.168.1.225:52034 - welcome!
+2024-09-18T01:39:47: Client 29: read EOF
+2024-09-18T01:39:47: Client 29: shut down complete - bye!
+2024-09-18T01:40:01: Client 29: new arrival from 127.0.0.1:41856 - welcome!
+2024-09-18T01:40:03: Client 29: read EOF
+2024-09-18T01:40:03: Client 29: shut down complete - bye!
+2024-09-18T01:41:01: Client 29: new arrival from 127.0.0.1:40828 - welcome!
+2024-09-18T01:41:03: Client 29: read EOF
+2024-09-18T01:41:03: Client 29: shut down complete - bye!
+2024-09-18T01:41:47: Client 29: new arrival from 192.168.1.225:52041 - welcome!
+2024-09-18T01:41:47: Client 29: read: Connection reset by peer
+2024-09-18T01:41:47: Client 29: shut down complete - bye!
+2024-09-18T01:42:01: Client 29: new arrival from 127.0.0.1:37702 - welcome!
+2024-09-18T01:42:03: Client 29: read EOF
+2024-09-18T01:42:03: Client 29: shut down complete - bye!
+2024-09-18T01:43:01: Client 29: new arrival from 127.0.0.1:44286 - welcome!
+2024-09-18T01:43:03: Client 29: read EOF
+2024-09-18T01:43:03: Client 29: shut down complete - bye!
+2024-09-18T01:43:47: Client 29: new arrival from 192.168.1.225:52047 - welcome!
+2024-09-18T01:43:47: Client 29: read EOF
+2024-09-18T01:43:47: Client 29: shut down complete - bye!
+2024-09-18T01:44:01: Client 29: new arrival from 127.0.0.1:43180 - welcome!
+2024-09-18T01:44:03: Client 29: read EOF
+2024-09-18T01:44:03: Client 29: shut down complete - bye!
+2024-09-18T01:45:01: Client 29: new arrival from 127.0.0.1:44650 - welcome!
+2024-09-18T01:45:03: Client 29: read EOF
+2024-09-18T01:45:03: Client 29: shut down complete - bye!
+2024-09-18T01:45:46: Client 29: new arrival from 192.168.1.225:52059 - welcome!
+2024-09-18T01:45:47: Client 29: read: Connection reset by peer
+2024-09-18T01:45:47: Client 29: shut down complete - bye!
+2024-09-18T01:46:01: Client 29: new arrival from 127.0.0.1:57838 - welcome!
+2024-09-18T01:46:03: Client 29: read EOF
+2024-09-18T01:46:03: Client 29: shut down complete - bye!
+2024-09-18T01:47:01: Client 29: new arrival from 127.0.0.1:59926 - welcome!
+2024-09-18T01:47:03: Client 29: read EOF
+2024-09-18T01:47:03: Client 29: shut down complete - bye!
+2024-09-18T01:47:47: Client 29: new arrival from 192.168.1.225:52065 - welcome!
+2024-09-18T01:47:47: Client 29: read EOF
+2024-09-18T01:47:47: Client 29: shut down complete - bye!
+2024-09-18T01:48:01: Client 29: new arrival from 127.0.0.1:38244 - welcome!
+2024-09-18T01:48:03: Client 29: read EOF
+2024-09-18T01:48:03: Client 29: shut down complete - bye!
+2024-09-18T01:49:01: Client 29: new arrival from 127.0.0.1:33192 - welcome!
+2024-09-18T01:49:03: Client 29: read EOF
+2024-09-18T01:49:03: Client 29: shut down complete - bye!
+2024-09-18T01:49:47: Client 29: new arrival from 192.168.1.225:52073 - welcome!
+2024-09-18T01:49:47: Client 29: read EOF
+2024-09-18T01:49:47: Client 29: shut down complete - bye!
+2024-09-18T01:50:01: Client 29: new arrival from 127.0.0.1:55678 - welcome!
+2024-09-18T01:50:03: Client 29: read EOF
+2024-09-18T01:50:03: Client 29: shut down complete - bye!
+2024-09-18T01:51:01: Client 29: new arrival from 127.0.0.1:35644 - welcome!
+2024-09-18T01:51:03: Client 29: read EOF
+2024-09-18T01:51:03: Client 29: shut down complete - bye!
+2024-09-18T01:51:47: Client 29: new arrival from 192.168.1.225:52080 - welcome!
+2024-09-18T01:51:47: Client 29: read: Connection reset by peer
+2024-09-18T01:51:47: Client 29: shut down complete - bye!
+2024-09-18T01:52:01: Client 29: new arrival from 127.0.0.1:50746 - welcome!
+2024-09-18T01:52:03: Client 29: read EOF
+2024-09-18T01:52:03: Client 29: shut down complete - bye!
+2024-09-18T01:53:01: Client 29: new arrival from 127.0.0.1:59394 - welcome!
+2024-09-18T01:53:03: Client 29: read EOF
+2024-09-18T01:53:03: Client 29: shut down complete - bye!
+2024-09-18T01:53:48: Client 29: new arrival from 192.168.1.225:52086 - welcome!
+2024-09-18T01:53:48: Client 29: read: Connection reset by peer
+2024-09-18T01:53:48: Client 29: shut down complete - bye!
+2024-09-18T01:54:01: Client 29: new arrival from 127.0.0.1:56434 - welcome!
+2024-09-18T01:54:03: Client 29: read EOF
+2024-09-18T01:54:03: Client 29: shut down complete - bye!
+2024-09-18T01:55:02: Client 29: new arrival from 127.0.0.1:60510 - welcome!
+2024-09-18T01:55:04: Client 29: read EOF
+2024-09-18T01:55:04: Client 29: shut down complete - bye!
+2024-09-18T01:55:47: Client 29: new arrival from 192.168.1.225:52094 - welcome!
+2024-09-18T01:55:47: Client 29: read: Connection reset by peer
+2024-09-18T01:55:47: Client 29: shut down complete - bye!
+2024-09-18T01:56:01: Client 29: new arrival from 127.0.0.1:39838 - welcome!
+2024-09-18T01:56:03: Client 29: read EOF
+2024-09-18T01:56:03: Client 29: shut down complete - bye!
+2024-09-18T01:57:01: Client 29: new arrival from 127.0.0.1:43018 - welcome!
+2024-09-18T01:57:03: Client 29: read EOF
+2024-09-18T01:57:03: Client 29: shut down complete - bye!
+2024-09-18T01:57:47: Client 29: new arrival from 192.168.1.225:52100 - welcome!
+2024-09-18T01:57:47: Client 29: read EOF
+2024-09-18T01:57:47: Client 29: shut down complete - bye!
+2024-09-18T01:58:01: Client 29: new arrival from 127.0.0.1:52302 - welcome!
+2024-09-18T01:58:03: Client 29: read EOF
+2024-09-18T01:58:03: Client 29: shut down complete - bye!
+2024-09-18T01:59:01: Client 29: new arrival from 127.0.0.1:33166 - welcome!
+2024-09-18T01:59:03: Client 29: read EOF
+2024-09-18T01:59:03: Client 29: shut down complete - bye!
+2024-09-18T01:59:47: Client 29: new arrival from 192.168.1.225:52112 - welcome!
+2024-09-18T01:59:47: Client 29: read EOF
+2024-09-18T01:59:47: Client 29: shut down complete - bye!
+2024-09-18T02:00:01: Client 29: new arrival from 127.0.0.1:49422 - welcome!
+2024-09-18T02:00:03: Client 29: read EOF
+2024-09-18T02:00:03: Client 29: shut down complete - bye!
+2024-09-18T02:01:01: Client 29: new arrival from 127.0.0.1:42594 - welcome!
+2024-09-18T02:01:03: Client 29: read EOF
+2024-09-18T02:01:03: Client 29: shut down complete - bye!
+2024-09-18T02:01:47: Client 29: new arrival from 192.168.1.225:52120 - welcome!
+2024-09-18T02:01:47: Client 29: read EOF
+2024-09-18T02:01:47: Client 29: shut down complete - bye!
+2024-09-18T02:02:01: Client 29: new arrival from 127.0.0.1:42474 - welcome!
+2024-09-18T02:02:03: Client 29: read EOF
+2024-09-18T02:02:03: Client 29: shut down complete - bye!
+2024-09-18T02:03:02: Client 29: new arrival from 127.0.0.1:51384 - welcome!
+2024-09-18T02:03:04: Client 29: read EOF
+2024-09-18T02:03:04: Client 29: shut down complete - bye!
+2024-09-18T02:03:47: Client 29: new arrival from 192.168.1.225:52126 - welcome!
+2024-09-18T02:03:47: Client 29: read EOF
+2024-09-18T02:03:47: Client 29: shut down complete - bye!
+2024-09-18T02:04:01: Client 29: new arrival from 127.0.0.1:41082 - welcome!
+2024-09-18T02:04:03: Client 29: read EOF
+2024-09-18T02:04:03: Client 29: shut down complete - bye!
+2024-09-18T02:05:01: Client 29: new arrival from 127.0.0.1:45324 - welcome!
+2024-09-18T02:05:03: Client 29: read EOF
+2024-09-18T02:05:03: Client 29: shut down complete - bye!
+2024-09-18T02:05:47: Client 29: new arrival from 192.168.1.225:52133 - welcome!
+2024-09-18T02:05:47: Client 29: read EOF
+2024-09-18T02:05:47: Client 29: shut down complete - bye!
+2024-09-18T02:06:01: Client 29: new arrival from 127.0.0.1:38080 - welcome!
+2024-09-18T02:06:03: Client 29: read EOF
+2024-09-18T02:06:03: Client 29: shut down complete - bye!
+2024-09-18T02:07:01: Client 29: new arrival from 127.0.0.1:33060 - welcome!
+2024-09-18T02:07:03: Client 29: read EOF
+2024-09-18T02:07:03: Client 29: shut down complete - bye!
+2024-09-18T02:07:47: Client 29: new arrival from 192.168.1.225:52139 - welcome!
+2024-09-18T02:07:47: Client 29: read EOF
+2024-09-18T02:07:47: Client 29: shut down complete - bye!
+2024-09-18T02:08:01: Client 29: new arrival from 127.0.0.1:44206 - welcome!
+2024-09-18T02:08:03: Client 29: read EOF
+2024-09-18T02:08:03: Client 29: shut down complete - bye!
+2024-09-18T02:09:01: Client 29: new arrival from 127.0.0.1:41394 - welcome!
+2024-09-18T02:09:03: Client 29: read EOF
+2024-09-18T02:09:03: Client 29: shut down complete - bye!
+2024-09-18T02:09:47: Client 29: new arrival from 192.168.1.225:52147 - welcome!
+2024-09-18T02:09:47: Client 29: read: Connection reset by peer
+2024-09-18T02:09:47: Client 29: shut down complete - bye!
+2024-09-18T02:10:01: Client 29: new arrival from 127.0.0.1:46824 - welcome!
+2024-09-18T02:10:03: Client 29: read EOF
+2024-09-18T02:10:03: Client 29: shut down complete - bye!
+2024-09-18T02:11:02: Client 29: new arrival from 127.0.0.1:50888 - welcome!
+2024-09-18T02:11:04: Client 29: read EOF
+2024-09-18T02:11:04: Client 29: shut down complete - bye!
+2024-09-18T02:11:47: Client 29: new arrival from 192.168.1.225:52155 - welcome!
+2024-09-18T02:11:47: Client 29: read EOF
+2024-09-18T02:11:47: Client 29: shut down complete - bye!
+2024-09-18T02:12:01: Client 29: new arrival from 127.0.0.1:37350 - welcome!
+2024-09-18T02:12:03: Client 29: read EOF
+2024-09-18T02:12:03: Client 29: shut down complete - bye!
+2024-09-18T02:13:01: Client 29: new arrival from 127.0.0.1:42176 - welcome!
+2024-09-18T02:13:03: Client 29: read EOF
+2024-09-18T02:13:03: Client 29: shut down complete - bye!
+2024-09-18T02:13:47: Client 29: new arrival from 192.168.1.225:52161 - welcome!
+2024-09-18T02:13:47: Client 29: read: Connection reset by peer
+2024-09-18T02:13:47: Client 29: shut down complete - bye!
+2024-09-18T02:14:01: Client 29: new arrival from 127.0.0.1:32858 - welcome!
+2024-09-18T02:14:03: Client 29: read EOF
+2024-09-18T02:14:03: Client 29: shut down complete - bye!
+2024-09-18T02:15:01: Client 29: new arrival from 127.0.0.1:50204 - welcome!
+2024-09-18T02:15:03: Client 29: read EOF
+2024-09-18T02:15:03: Client 29: shut down complete - bye!
+2024-09-18T02:15:47: Client 29: new arrival from 192.168.1.225:52172 - welcome!
+2024-09-18T02:15:47: Client 29: read: Connection reset by peer
+2024-09-18T02:15:47: Client 29: shut down complete - bye!
+2024-09-18T02:16:01: Client 29: new arrival from 127.0.0.1:39690 - welcome!
+2024-09-18T02:16:03: Client 29: read EOF
+2024-09-18T02:16:03: Client 29: shut down complete - bye!
+2024-09-18T02:17:01: Client 29: new arrival from 127.0.0.1:34858 - welcome!
+2024-09-18T02:17:03: Client 29: read EOF
+2024-09-18T02:17:03: Client 29: shut down complete - bye!
+2024-09-18T02:17:48: Client 29: new arrival from 192.168.1.225:52178 - welcome!
+2024-09-18T02:17:48: Client 29: read EOF
+2024-09-18T02:17:48: Client 29: shut down complete - bye!
+2024-09-18T02:18:01: Client 29: new arrival from 127.0.0.1:44454 - welcome!
+2024-09-18T02:18:03: Client 29: read EOF
+2024-09-18T02:18:03: Client 29: shut down complete - bye!
+2024-09-18T02:19:01: Client 29: new arrival from 127.0.0.1:33590 - welcome!
+2024-09-18T02:19:03: Client 29: read EOF
+2024-09-18T02:19:03: Client 29: shut down complete - bye!
+2024-09-18T02:19:47: Client 29: new arrival from 192.168.1.225:52186 - welcome!
+2024-09-18T02:19:47: Client 29: read EOF
+2024-09-18T02:19:47: Client 29: shut down complete - bye!
+2024-09-18T02:20:01: Client 29: new arrival from 127.0.0.1:48700 - welcome!
+2024-09-18T02:20:03: Client 29: read EOF
+2024-09-18T02:20:03: Client 29: shut down complete - bye!
+2024-09-18T02:21:01: Client 29: new arrival from 127.0.0.1:49956 - welcome!
+2024-09-18T02:21:03: Client 29: read EOF
+2024-09-18T02:21:03: Client 29: shut down complete - bye!
+2024-09-18T02:21:47: Client 29: new arrival from 192.168.1.225:52194 - welcome!
+2024-09-18T02:21:47: Client 29: read EOF
+2024-09-18T02:21:47: Client 29: shut down complete - bye!
+2024-09-18T02:22:01: Client 29: new arrival from 127.0.0.1:42168 - welcome!
+2024-09-18T02:22:03: Client 29: read EOF
+2024-09-18T02:22:03: Client 29: shut down complete - bye!
+2024-09-18T02:23:01: Client 29: new arrival from 127.0.0.1:51518 - welcome!
+2024-09-18T02:23:03: Client 29: read EOF
+2024-09-18T02:23:03: Client 29: shut down complete - bye!
+2024-09-18T02:23:48: Client 29: new arrival from 192.168.1.225:52204 - welcome!
+2024-09-18T02:23:48: Client 29: read EOF
+2024-09-18T02:23:48: Client 29: shut down complete - bye!
+2024-09-18T02:24:01: Client 29: new arrival from 127.0.0.1:52630 - welcome!
+2024-09-18T02:24:03: Client 29: read EOF
+2024-09-18T02:24:03: Client 29: shut down complete - bye!
+2024-09-18T02:25:01: Client 29: new arrival from 127.0.0.1:54972 - welcome!
+2024-09-18T02:25:03: Client 29: read EOF
+2024-09-18T02:25:03: Client 29: shut down complete - bye!
+2024-09-18T02:25:47: Client 29: new arrival from 192.168.1.225:52211 - welcome!
+2024-09-18T02:25:47: Client 29: read: Connection reset by peer
+2024-09-18T02:25:47: Client 29: shut down complete - bye!
+2024-09-18T02:26:01: Client 29: new arrival from 127.0.0.1:58470 - welcome!
+2024-09-18T02:26:03: Client 29: read EOF
+2024-09-18T02:26:03: Client 29: shut down complete - bye!
+2024-09-18T02:27:02: Client 29: new arrival from 127.0.0.1:56602 - welcome!
+2024-09-18T02:27:04: Client 29: read EOF
+2024-09-18T02:27:04: Client 29: shut down complete - bye!
+2024-09-18T02:27:47: Client 29: new arrival from 192.168.1.225:52217 - welcome!
+2024-09-18T02:27:47: Client 29: read EOF
+2024-09-18T02:27:47: Client 29: shut down complete - bye!
+2024-09-18T02:28:01: Client 29: new arrival from 127.0.0.1:50902 - welcome!
+2024-09-18T02:28:03: Client 29: read EOF
+2024-09-18T02:28:03: Client 29: shut down complete - bye!
+2024-09-18T02:29:01: Client 29: new arrival from 127.0.0.1:42090 - welcome!
+2024-09-18T02:29:03: Client 29: read EOF
+2024-09-18T02:29:03: Client 29: shut down complete - bye!
+2024-09-18T02:29:46: Client 29: new arrival from 192.168.1.225:52229 - welcome!
+2024-09-18T02:29:46: Client 29: read: Connection reset by peer
+2024-09-18T02:29:46: Client 29: shut down complete - bye!
+2024-09-18T02:30:01: Client 29: new arrival from 127.0.0.1:49568 - welcome!
+2024-09-18T02:30:03: Client 29: read EOF
+2024-09-18T02:30:03: Client 29: shut down complete - bye!
+2024-09-18T02:31:01: Client 29: new arrival from 127.0.0.1:46386 - welcome!
+2024-09-18T02:31:03: Client 29: read EOF
+2024-09-18T02:31:03: Client 29: shut down complete - bye!
+2024-09-18T02:31:47: Client 29: new arrival from 192.168.1.225:52237 - welcome!
+2024-09-18T02:31:47: Client 29: read EOF
+2024-09-18T02:31:47: Client 29: shut down complete - bye!
+2024-09-18T02:32:01: Client 29: new arrival from 127.0.0.1:52870 - welcome!
+2024-09-18T02:32:03: Client 29: read EOF
+2024-09-18T02:32:03: Client 29: shut down complete - bye!
+2024-09-18T02:33:01: Client 29: new arrival from 127.0.0.1:42124 - welcome!
+2024-09-18T02:33:03: Client 29: read EOF
+2024-09-18T02:33:03: Client 29: shut down complete - bye!
+2024-09-18T02:33:47: Client 29: new arrival from 192.168.1.225:52243 - welcome!
+2024-09-18T02:33:47: Client 29: read: Connection reset by peer
+2024-09-18T02:33:47: Client 29: shut down complete - bye!
+2024-09-18T02:34:01: Client 29: new arrival from 127.0.0.1:36502 - welcome!
+2024-09-18T02:34:03: Client 29: read EOF
+2024-09-18T02:34:03: Client 29: shut down complete - bye!
+2024-09-18T02:35:01: Client 29: new arrival from 127.0.0.1:42840 - welcome!
+2024-09-18T02:35:04: Client 29: read EOF
+2024-09-18T02:35:04: Client 29: shut down complete - bye!
+2024-09-18T02:35:47: Client 29: new arrival from 192.168.1.225:52251 - welcome!
+2024-09-18T02:35:47: Client 29: read: Connection reset by peer
+2024-09-18T02:35:47: Client 29: shut down complete - bye!
+2024-09-18T02:36:01: Client 29: new arrival from 127.0.0.1:38990 - welcome!
+2024-09-18T02:36:03: Client 29: read EOF
+2024-09-18T02:36:03: Client 29: shut down complete - bye!
+2024-09-18T02:37:01: Client 29: new arrival from 127.0.0.1:39296 - welcome!
+2024-09-18T02:37:03: Client 29: read EOF
+2024-09-18T02:37:03: Client 29: shut down complete - bye!
+2024-09-18T02:37:47: Client 29: new arrival from 192.168.1.225:52257 - welcome!
+2024-09-18T02:37:47: Client 29: read: Connection reset by peer
+2024-09-18T02:37:47: Client 29: shut down complete - bye!
+2024-09-18T02:38:01: Client 29: new arrival from 127.0.0.1:48082 - welcome!
+2024-09-18T02:38:03: Client 29: read EOF
+2024-09-18T02:38:03: Client 29: shut down complete - bye!
+2024-09-18T02:39:01: Client 29: new arrival from 127.0.0.1:41568 - welcome!
+2024-09-18T02:39:03: Client 29: read EOF
+2024-09-18T02:39:03: Client 29: shut down complete - bye!
+2024-09-18T02:39:47: Client 29: new arrival from 192.168.1.225:52265 - welcome!
+2024-09-18T02:39:47: Client 29: read EOF
+2024-09-18T02:39:47: Client 29: shut down complete - bye!
+2024-09-18T02:40:01: Client 29: new arrival from 127.0.0.1:34348 - welcome!
+2024-09-18T02:40:03: Client 29: read EOF
+2024-09-18T02:40:03: Client 29: shut down complete - bye!
+2024-09-18T02:41:01: Client 29: new arrival from 127.0.0.1:43694 - welcome!
+2024-09-18T02:41:03: Client 29: read EOF
+2024-09-18T02:41:03: Client 29: shut down complete - bye!
+2024-09-18T02:41:46: Client 29: new arrival from 192.168.1.225:52273 - welcome!
+2024-09-18T02:41:46: Client 29: read EOF
+2024-09-18T02:41:46: Client 29: shut down complete - bye!
+2024-09-18T02:42:01: Client 29: new arrival from 127.0.0.1:55050 - welcome!
+2024-09-18T02:42:03: Client 29: read EOF
+2024-09-18T02:42:03: Client 29: shut down complete - bye!
+2024-09-18T02:43:01: Client 29: new arrival from 127.0.0.1:32790 - welcome!
+2024-09-18T02:43:04: Client 29: read EOF
+2024-09-18T02:43:04: Client 29: shut down complete - bye!
+2024-09-18T02:43:48: Client 29: new arrival from 192.168.1.225:52279 - welcome!
+2024-09-18T02:43:48: Client 29: read EOF
+2024-09-18T02:43:48: Client 29: shut down complete - bye!
+2024-09-18T02:44:01: Client 29: new arrival from 127.0.0.1:53792 - welcome!
+2024-09-18T02:44:03: Client 29: read EOF
+2024-09-18T02:44:03: Client 29: shut down complete - bye!
+2024-09-18T02:45:01: Client 29: new arrival from 127.0.0.1:48732 - welcome!
+2024-09-18T02:45:03: Client 29: read EOF
+2024-09-18T02:45:03: Client 29: shut down complete - bye!
+2024-09-18T02:45:47: Client 29: new arrival from 192.168.1.225:52290 - welcome!
+2024-09-18T02:45:47: Client 29: read: Connection reset by peer
+2024-09-18T02:45:47: Client 29: shut down complete - bye!
+2024-09-18T02:46:01: Client 29: new arrival from 127.0.0.1:44872 - welcome!
+2024-09-18T02:46:03: Client 29: read EOF
+2024-09-18T02:46:03: Client 29: shut down complete - bye!
+2024-09-18T02:47:01: Client 29: new arrival from 127.0.0.1:33990 - welcome!
+2024-09-18T02:47:03: Client 29: read EOF
+2024-09-18T02:47:03: Client 29: shut down complete - bye!
+2024-09-18T02:47:47: Client 29: new arrival from 192.168.1.225:52296 - welcome!
+2024-09-18T02:47:47: Client 29: read: Connection reset by peer
+2024-09-18T02:47:47: Client 29: shut down complete - bye!
+2024-09-18T02:48:01: Client 29: new arrival from 127.0.0.1:54356 - welcome!
+2024-09-18T02:48:03: Client 29: read EOF
+2024-09-18T02:48:03: Client 29: shut down complete - bye!
+2024-09-18T02:49:01: Client 29: new arrival from 127.0.0.1:37700 - welcome!
+2024-09-18T02:49:03: Client 29: read EOF
+2024-09-18T02:49:03: Client 29: shut down complete - bye!
+2024-09-18T02:49:47: Client 29: new arrival from 192.168.1.225:52304 - welcome!
+2024-09-18T02:49:47: Client 29: read EOF
+2024-09-18T02:49:47: Client 29: shut down complete - bye!
+2024-09-18T02:50:01: Client 29: new arrival from 127.0.0.1:39636 - welcome!
+2024-09-18T02:50:03: Client 29: read EOF
+2024-09-18T02:50:03: Client 29: shut down complete - bye!
+2024-09-18T02:51:01: Client 29: new arrival from 127.0.0.1:42064 - welcome!
+2024-09-18T02:51:03: Client 29: read EOF
+2024-09-18T02:51:03: Client 29: shut down complete - bye!
+2024-09-18T02:51:47: Client 29: new arrival from 192.168.1.225:52312 - welcome!
+2024-09-18T02:51:47: Client 29: read: Connection reset by peer
+2024-09-18T02:51:47: Client 29: shut down complete - bye!
+2024-09-18T02:52:01: Client 29: new arrival from 127.0.0.1:57544 - welcome!
+2024-09-18T02:52:03: Client 29: read EOF
+2024-09-18T02:52:03: Client 29: shut down complete - bye!
+2024-09-18T02:53:01: Client 29: new arrival from 127.0.0.1:42960 - welcome!
+2024-09-18T02:53:03: Client 29: read EOF
+2024-09-18T02:53:03: Client 29: shut down complete - bye!
+2024-09-18T02:53:47: Client 29: new arrival from 192.168.1.225:52318 - welcome!
+2024-09-18T02:53:47: Client 29: read EOF
+2024-09-18T02:53:47: Client 29: shut down complete - bye!
+2024-09-18T02:54:01: Client 29: new arrival from 127.0.0.1:34058 - welcome!
+2024-09-18T02:54:03: Client 29: read EOF
+2024-09-18T02:54:03: Client 29: shut down complete - bye!
+2024-09-18T02:55:01: Client 29: new arrival from 127.0.0.1:50798 - welcome!
+2024-09-18T02:55:03: Client 29: read EOF
+2024-09-18T02:55:03: Client 29: shut down complete - bye!
+2024-09-18T02:55:47: Client 29: new arrival from 192.168.1.225:52326 - welcome!
+2024-09-18T02:55:47: Client 29: read: Connection reset by peer
+2024-09-18T02:55:47: Client 29: shut down complete - bye!
+2024-09-18T02:56:01: Client 29: new arrival from 127.0.0.1:35658 - welcome!
+2024-09-18T02:56:03: Client 29: read EOF
+2024-09-18T02:56:03: Client 29: shut down complete - bye!
+2024-09-18T02:57:01: Client 29: new arrival from 127.0.0.1:41170 - welcome!
+2024-09-18T02:57:03: Client 29: read EOF
+2024-09-18T02:57:03: Client 29: shut down complete - bye!
+2024-09-18T02:57:46: Client 29: new arrival from 192.168.1.225:52332 - welcome!
+2024-09-18T02:57:46: Client 29: read: Connection reset by peer
+2024-09-18T02:57:46: Client 29: shut down complete - bye!
+2024-09-18T02:58:01: Client 29: new arrival from 127.0.0.1:40188 - welcome!
+2024-09-18T02:58:03: Client 29: read EOF
+2024-09-18T02:58:03: Client 29: shut down complete - bye!
+2024-09-18T02:59:01: Client 29: new arrival from 127.0.0.1:35258 - welcome!
+2024-09-18T02:59:04: Client 29: read EOF
+2024-09-18T02:59:04: Client 29: shut down complete - bye!
+2024-09-18T02:59:47: Client 29: new arrival from 192.168.1.225:52344 - welcome!
+2024-09-18T02:59:47: Client 29: read EOF
+2024-09-18T02:59:47: Client 29: shut down complete - bye!
+2024-09-18T03:00:01: Client 29: new arrival from 127.0.0.1:48838 - welcome!
+2024-09-18T03:00:03: Client 29: read EOF
+2024-09-18T03:00:03: Client 29: shut down complete - bye!
+2024-09-18T03:01:01: Client 29: new arrival from 127.0.0.1:50878 - welcome!
+2024-09-18T03:01:03: Client 29: read EOF
+2024-09-18T03:01:03: Client 29: shut down complete - bye!
+2024-09-18T03:01:47: Client 29: new arrival from 192.168.1.225:52352 - welcome!
+2024-09-18T03:01:47: Client 29: read EOF
+2024-09-18T03:01:47: Client 29: shut down complete - bye!
+2024-09-18T03:02:01: Client 29: new arrival from 127.0.0.1:45394 - welcome!
+2024-09-18T03:02:03: Client 29: read EOF
+2024-09-18T03:02:03: Client 29: shut down complete - bye!
+2024-09-18T03:03:01: Client 29: new arrival from 127.0.0.1:52638 - welcome!
+2024-09-18T03:03:03: Client 29: read EOF
+2024-09-18T03:03:03: Client 29: shut down complete - bye!
+2024-09-18T03:03:47: Client 29: new arrival from 192.168.1.225:52358 - welcome!
+2024-09-18T03:03:47: Client 29: read EOF
+2024-09-18T03:03:47: Client 29: shut down complete - bye!
+2024-09-18T03:04:01: Client 29: new arrival from 127.0.0.1:46654 - welcome!
+2024-09-18T03:04:03: Client 29: read EOF
+2024-09-18T03:04:03: Client 29: shut down complete - bye!
+2024-09-18T03:05:01: Client 29: new arrival from 127.0.0.1:42426 - welcome!
+2024-09-18T03:05:03: Client 29: read EOF
+2024-09-18T03:05:03: Client 29: shut down complete - bye!
+2024-09-18T03:05:47: Client 29: new arrival from 192.168.1.225:52365 - welcome!
+2024-09-18T03:05:47: Client 29: read: Connection reset by peer
+2024-09-18T03:05:47: Client 29: shut down complete - bye!
+2024-09-18T03:06:01: Client 29: new arrival from 127.0.0.1:58216 - welcome!
+2024-09-18T03:06:03: Client 29: read EOF
+2024-09-18T03:06:03: Client 29: shut down complete - bye!
+2024-09-18T03:07:01: Client 29: new arrival from 127.0.0.1:55464 - welcome!
+2024-09-18T03:07:03: Client 29: read EOF
+2024-09-18T03:07:03: Client 29: shut down complete - bye!
+2024-09-18T03:07:47: Client 29: new arrival from 192.168.1.225:52371 - welcome!
+2024-09-18T03:07:47: Client 29: read EOF
+2024-09-18T03:07:47: Client 29: shut down complete - bye!
+2024-09-18T03:08:01: Client 29: new arrival from 127.0.0.1:41344 - welcome!
+2024-09-18T03:08:03: Client 29: read EOF
+2024-09-18T03:08:03: Client 29: shut down complete - bye!
+2024-09-18T03:09:01: Client 29: new arrival from 127.0.0.1:57132 - welcome!
+2024-09-18T03:09:03: Client 29: read EOF
+2024-09-18T03:09:03: Client 29: shut down complete - bye!
+2024-09-18T03:09:47: Client 29: new arrival from 192.168.1.225:52379 - welcome!
+2024-09-18T03:09:47: Client 29: read: Connection reset by peer
+2024-09-18T03:09:47: Client 29: shut down complete - bye!
+2024-09-18T03:10:01: Client 29: new arrival from 127.0.0.1:48064 - welcome!
+2024-09-18T03:10:03: Client 29: read EOF
+2024-09-18T03:10:03: Client 29: shut down complete - bye!
+2024-09-18T03:11:01: Client 29: new arrival from 127.0.0.1:48550 - welcome!
+2024-09-18T03:11:03: Client 29: read EOF
+2024-09-18T03:11:03: Client 29: shut down complete - bye!
+2024-09-18T03:11:47: Client 29: new arrival from 192.168.1.225:52387 - welcome!
+2024-09-18T03:11:47: Client 29: read: Connection reset by peer
+2024-09-18T03:11:47: Client 29: shut down complete - bye!
+2024-09-18T03:12:01: Client 29: new arrival from 127.0.0.1:57940 - welcome!
+2024-09-18T03:12:03: Client 29: read EOF
+2024-09-18T03:12:03: Client 29: shut down complete - bye!
+2024-09-18T03:13:01: Client 29: new arrival from 127.0.0.1:40458 - welcome!
+2024-09-18T03:13:03: Client 29: read EOF
+2024-09-18T03:13:03: Client 29: shut down complete - bye!
+2024-09-18T03:13:48: Client 29: new arrival from 192.168.1.225:52393 - welcome!
+2024-09-18T03:13:48: Client 29: read EOF
+2024-09-18T03:13:48: Client 29: shut down complete - bye!
+2024-09-18T03:14:01: Client 29: new arrival from 127.0.0.1:42942 - welcome!
+2024-09-18T03:14:03: Client 29: read EOF
+2024-09-18T03:14:03: Client 29: shut down complete - bye!
+2024-09-18T03:15:01: Client 29: new arrival from 127.0.0.1:35754 - welcome!
+2024-09-18T03:15:03: Client 29: read EOF
+2024-09-18T03:15:03: Client 29: shut down complete - bye!
+2024-09-18T03:15:47: Client 29: new arrival from 192.168.1.225:52405 - welcome!
+2024-09-18T03:15:47: Client 29: read EOF
+2024-09-18T03:15:47: Client 29: shut down complete - bye!
+2024-09-18T03:16:01: Client 29: new arrival from 127.0.0.1:38264 - welcome!
+2024-09-18T03:16:03: Client 29: read EOF
+2024-09-18T03:16:03: Client 29: shut down complete - bye!
+2024-09-18T03:17:01: Client 29: new arrival from 127.0.0.1:60606 - welcome!
+2024-09-18T03:17:03: Client 29: read EOF
+2024-09-18T03:17:03: Client 29: shut down complete - bye!
+2024-09-18T03:17:48: Client 29: new arrival from 192.168.1.225:52411 - welcome!
+2024-09-18T03:17:48: Client 29: read: Connection reset by peer
+2024-09-18T03:17:48: Client 29: shut down complete - bye!
+2024-09-18T03:18:01: Client 29: new arrival from 127.0.0.1:60902 - welcome!
+2024-09-18T03:18:03: Client 29: read EOF
+2024-09-18T03:18:03: Client 29: shut down complete - bye!
+2024-09-18T03:19:01: Client 29: new arrival from 127.0.0.1:37540 - welcome!
+2024-09-18T03:19:03: Client 29: read EOF
+2024-09-18T03:19:03: Client 29: shut down complete - bye!
+2024-09-18T03:19:47: Client 29: new arrival from 192.168.1.225:52419 - welcome!
+2024-09-18T03:19:47: Client 29: read: Connection reset by peer
+2024-09-18T03:19:47: Client 29: shut down complete - bye!
+2024-09-18T03:20:01: Client 29: new arrival from 127.0.0.1:33914 - welcome!
+2024-09-18T03:20:03: Client 29: read EOF
+2024-09-18T03:20:03: Client 29: shut down complete - bye!
+2024-09-18T03:21:01: Client 29: new arrival from 127.0.0.1:58390 - welcome!
+2024-09-18T03:21:03: Client 29: read EOF
+2024-09-18T03:21:03: Client 29: shut down complete - bye!
+2024-09-18T03:21:47: Client 29: new arrival from 192.168.1.225:52427 - welcome!
+2024-09-18T03:21:47: Client 29: read: Connection reset by peer
+2024-09-18T03:21:47: Client 29: shut down complete - bye!
+2024-09-18T03:22:01: Client 29: new arrival from 127.0.0.1:39324 - welcome!
+2024-09-18T03:22:03: Client 29: read EOF
+2024-09-18T03:22:03: Client 29: shut down complete - bye!
+2024-09-18T03:23:01: Client 29: new arrival from 127.0.0.1:48368 - welcome!
+2024-09-18T03:23:04: Client 29: read EOF
+2024-09-18T03:23:04: Client 29: shut down complete - bye!
+2024-09-18T03:23:48: Client 29: new arrival from 192.168.1.225:52436 - welcome!
+2024-09-18T03:23:48: Client 29: read EOF
+2024-09-18T03:23:48: Client 29: shut down complete - bye!
+2024-09-18T03:24:01: Client 29: new arrival from 127.0.0.1:42352 - welcome!
+2024-09-18T03:24:03: Client 29: read EOF
+2024-09-18T03:24:03: Client 29: shut down complete - bye!
+2024-09-18T03:25:01: Client 29: new arrival from 127.0.0.1:56164 - welcome!
+2024-09-18T03:25:03: Client 29: read EOF
+2024-09-18T03:25:03: Client 29: shut down complete - bye!
+2024-09-18T03:25:48: Client 29: new arrival from 192.168.1.225:52444 - welcome!
+2024-09-18T03:25:48: Client 29: read EOF
+2024-09-18T03:25:48: Client 29: shut down complete - bye!
+2024-09-18T03:26:01: Client 29: new arrival from 127.0.0.1:39042 - welcome!
+2024-09-18T03:26:03: Client 29: read EOF
+2024-09-18T03:26:03: Client 29: shut down complete - bye!
+2024-09-18T03:27:01: Client 29: new arrival from 127.0.0.1:36000 - welcome!
+2024-09-18T03:27:03: Client 29: read EOF
+2024-09-18T03:27:03: Client 29: shut down complete - bye!
+2024-09-18T03:27:47: Client 29: new arrival from 192.168.1.225:52450 - welcome!
+2024-09-18T03:27:47: Client 29: read: Connection reset by peer
+2024-09-18T03:27:47: Client 29: shut down complete - bye!
+2024-09-18T03:28:01: Client 29: new arrival from 127.0.0.1:54716 - welcome!
+2024-09-18T03:28:03: Client 29: read EOF
+2024-09-18T03:28:03: Client 29: shut down complete - bye!
+2024-09-18T03:29:01: Client 29: new arrival from 127.0.0.1:55988 - welcome!
+2024-09-18T03:29:03: Client 29: read EOF
+2024-09-18T03:29:03: Client 29: shut down complete - bye!
+2024-09-18T03:29:47: Client 29: new arrival from 192.168.1.225:52462 - welcome!
+2024-09-18T03:29:47: Client 29: read EOF
+2024-09-18T03:29:47: Client 29: shut down complete - bye!
+2024-09-18T03:30:01: Client 29: new arrival from 127.0.0.1:42870 - welcome!
+2024-09-18T03:30:03: Client 29: read EOF
+2024-09-18T03:30:03: Client 29: shut down complete - bye!
+2024-09-18T03:31:02: Client 29: new arrival from 127.0.0.1:53474 - welcome!
+2024-09-18T03:31:04: Client 29: read EOF
+2024-09-18T03:31:04: Client 29: shut down complete - bye!
+2024-09-18T03:31:47: Client 29: new arrival from 192.168.1.225:52470 - welcome!
+2024-09-18T03:31:47: Client 29: read: Connection reset by peer
+2024-09-18T03:31:47: Client 29: shut down complete - bye!
+2024-09-18T03:32:01: Client 29: new arrival from 127.0.0.1:42218 - welcome!
+2024-09-18T03:32:03: Client 29: read EOF
+2024-09-18T03:32:03: Client 29: shut down complete - bye!
+2024-09-18T03:33:01: Client 29: new arrival from 127.0.0.1:55480 - welcome!
+2024-09-18T03:33:03: Client 29: read EOF
+2024-09-18T03:33:03: Client 29: shut down complete - bye!
+2024-09-18T03:33:47: Client 29: new arrival from 192.168.1.225:52476 - welcome!
+2024-09-18T03:33:47: Client 29: read EOF
+2024-09-18T03:33:47: Client 29: shut down complete - bye!
+2024-09-18T03:34:01: Client 29: new arrival from 127.0.0.1:36630 - welcome!
+2024-09-18T03:34:03: Client 29: read EOF
+2024-09-18T03:34:03: Client 29: shut down complete - bye!
+2024-09-18T03:35:01: Client 29: new arrival from 127.0.0.1:34706 - welcome!
+2024-09-18T03:35:03: Client 29: read EOF
+2024-09-18T03:35:03: Client 29: shut down complete - bye!
+2024-09-18T03:35:48: Client 29: new arrival from 192.168.1.225:52484 - welcome!
+2024-09-18T03:35:48: Client 29: read EOF
+2024-09-18T03:35:48: Client 29: shut down complete - bye!
+2024-09-18T03:36:01: Client 29: new arrival from 127.0.0.1:55736 - welcome!
+2024-09-18T03:36:03: Client 29: read EOF
+2024-09-18T03:36:03: Client 29: shut down complete - bye!
+2024-09-18T03:37:01: Client 29: new arrival from 127.0.0.1:55726 - welcome!
+2024-09-18T03:37:03: Client 29: read EOF
+2024-09-18T03:37:03: Client 29: shut down complete - bye!
+2024-09-18T03:37:47: Client 29: new arrival from 192.168.1.225:52490 - welcome!
+2024-09-18T03:37:47: Client 29: read: Connection reset by peer
+2024-09-18T03:37:47: Client 29: shut down complete - bye!
+2024-09-18T03:38:01: Client 29: new arrival from 127.0.0.1:34298 - welcome!
+2024-09-18T03:38:03: Client 29: read EOF
+2024-09-18T03:38:03: Client 29: shut down complete - bye!
+2024-09-18T03:39:02: Client 29: new arrival from 127.0.0.1:55102 - welcome!
+2024-09-18T03:39:04: Client 29: read EOF
+2024-09-18T03:39:04: Client 29: shut down complete - bye!
+2024-09-18T03:39:47: Client 29: new arrival from 192.168.1.225:52498 - welcome!
+2024-09-18T03:39:47: Client 29: read: Connection reset by peer
+2024-09-18T03:39:47: Client 29: shut down complete - bye!
+2024-09-18T03:40:01: Client 29: new arrival from 127.0.0.1:47970 - welcome!
+2024-09-18T03:40:03: Client 29: read EOF
+2024-09-18T03:40:03: Client 29: shut down complete - bye!
+2024-09-18T03:41:01: Client 29: new arrival from 127.0.0.1:56392 - welcome!
+2024-09-18T03:41:03: Client 29: read EOF
+2024-09-18T03:41:03: Client 29: shut down complete - bye!
+2024-09-18T03:41:48: Client 29: new arrival from 192.168.1.225:52506 - welcome!
+2024-09-18T03:41:48: Client 29: read EOF
+2024-09-18T03:41:48: Client 29: shut down complete - bye!
+2024-09-18T03:42:01: Client 29: new arrival from 127.0.0.1:41128 - welcome!
+2024-09-18T03:42:03: Client 29: read EOF
+2024-09-18T03:42:03: Client 29: shut down complete - bye!
+2024-09-18T03:43:01: Client 29: new arrival from 127.0.0.1:37702 - welcome!
+2024-09-18T03:43:03: Client 29: read EOF
+2024-09-18T03:43:03: Client 29: shut down complete - bye!
+2024-09-18T03:43:47: Client 29: new arrival from 192.168.1.225:52512 - welcome!
+2024-09-18T03:43:47: Client 29: read: Connection reset by peer
+2024-09-18T03:43:47: Client 29: shut down complete - bye!
+2024-09-18T03:44:01: Client 29: new arrival from 127.0.0.1:41632 - welcome!
+2024-09-18T03:44:03: Client 29: read EOF
+2024-09-18T03:44:03: Client 29: shut down complete - bye!
+2024-09-18T03:45:01: Client 29: new arrival from 127.0.0.1:35862 - welcome!
+2024-09-18T03:45:03: Client 29: read EOF
+2024-09-18T03:45:03: Client 29: shut down complete - bye!
+2024-09-18T03:45:48: Client 29: new arrival from 192.168.1.225:52523 - welcome!
+2024-09-18T03:45:48: Client 29: read: Connection reset by peer
+2024-09-18T03:45:48: Client 29: shut down complete - bye!
+2024-09-18T03:46:01: Client 29: new arrival from 127.0.0.1:43662 - welcome!
+2024-09-18T03:46:03: Client 29: read EOF
+2024-09-18T03:46:03: Client 29: shut down complete - bye!
+2024-09-18T03:47:01: Client 29: new arrival from 127.0.0.1:51806 - welcome!
+2024-09-18T03:47:03: Client 29: read EOF
+2024-09-18T03:47:03: Client 29: shut down complete - bye!
+2024-09-18T03:47:11: Client 29: new arrival from 127.0.0.1:44942 - welcome!
+2024-09-18T03:47:13: Client 29: read EOF
+2024-09-18T03:47:13: Client 29: shut down complete - bye!
+2024-09-18T03:47:48: Client 29: new arrival from 192.168.1.225:52529 - welcome!
+2024-09-18T03:47:48: Client 29: read: Connection reset by peer
+2024-09-18T03:47:48: Client 29: shut down complete - bye!
+2024-09-18T03:48:01: Client 29: new arrival from 127.0.0.1:59028 - welcome!
+2024-09-18T03:48:03: Client 29: read EOF
+2024-09-18T03:48:03: Client 29: shut down complete - bye!
+2024-09-18T03:49:01: Client 29: new arrival from 127.0.0.1:42884 - welcome!
+2024-09-18T03:49:03: Client 29: read EOF
+2024-09-18T03:49:03: Client 29: shut down complete - bye!
+2024-09-18T03:49:47: Client 29: new arrival from 192.168.1.225:52537 - welcome!
+2024-09-18T03:49:47: Client 29: read: Connection reset by peer
+2024-09-18T03:49:47: Client 29: shut down complete - bye!
+2024-09-18T03:50:01: Client 29: new arrival from 127.0.0.1:60646 - welcome!
+2024-09-18T03:50:03: Client 29: read EOF
+2024-09-18T03:50:03: Client 29: shut down complete - bye!
+2024-09-18T03:51:01: Client 29: new arrival from 127.0.0.1:32914 - welcome!
+2024-09-18T03:51:03: Client 29: read EOF
+2024-09-18T03:51:03: Client 29: shut down complete - bye!
+2024-09-18T03:51:47: Client 29: new arrival from 192.168.1.225:52545 - welcome!
+2024-09-18T03:51:47: Client 29: read EOF
+2024-09-18T03:51:47: Client 29: shut down complete - bye!
+2024-09-18T03:52:01: Client 29: new arrival from 127.0.0.1:42364 - welcome!
+2024-09-18T03:52:03: Client 29: read EOF
+2024-09-18T03:52:03: Client 29: shut down complete - bye!
+2024-09-18T03:52:27: Client 27: read: Connection reset by peer
+2024-09-18T03:52:27: Client 27: shut down complete - bye!
+2024-09-18T03:52:27: Client 26: read: Connection reset by peer
+2024-09-18T03:52:27: Client 26: shut down complete - bye!
+2024-09-18T03:52:27: Client 25: read: Connection reset by peer
+2024-09-18T03:52:27: Client 25: shut down complete - bye!
