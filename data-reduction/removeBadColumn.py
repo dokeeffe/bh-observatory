@@ -38,7 +38,6 @@ def remove_bad_column(input_fits, side='right'):
         if 'Removed bad column on right side' in header['COMMENT']:
             logging.warning(f"Bad column already removed from {input_fits}")
             return
-        print(header['NAXIS1'])
         # Update the NAXIS1 keyword in header to reflect new size
         header['NAXIS1'] = cleaned_data.shape[1]
         header['COMMENT'] = 'Removed bad column on right side'

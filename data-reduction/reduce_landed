@@ -4,6 +4,7 @@ cd ~/code/github/bh-observatory/data-reduction/calibration
 python3 calibrateLightFrames.py
 cd ~/code/github/bh-observatory/data-reduction
 python3 addFitsObjectToFilename.py
-#python solveAll.py
+find ~/Pictures/CalibratedLight -type f -mmin -60 -name "*.fits" | xargs python removeBadColumn.py
+python solveAll.py
 echo 'Reduction Complete'
 
