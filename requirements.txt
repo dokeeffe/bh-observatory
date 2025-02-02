@@ -9,4 +9,5 @@ pyserial
 python-dateutil
 pytz
 six
-
+lxml
+requests
