@@ -14,30 +14,43 @@ def check_file(root, filename, to_find):
         hdulist = fits.open(os.path.join(root, filename))
         header = hdulist[0].header
         wcs = WCS(header)
-        x,y = to_find.to_pixel(wcs)
-        if x > 0 and y>0 and x<3000 and y<3000:
+
+        # Get the image dimensions from the header
+        width = header.get('NAXIS1', 0)
+        height = header.get('NAXIS2', 0)
+
+        x, y = to_find.to_pixel(wcs)
+
+        # Check if coordinates are within the image dimensions
+        if x > 0 and y > 0 and x < width and y < height:
             print('Matched coordinates in file {}'.format(filename))
+
+        hdulist.close()  # Explicitly close the FITS file
     except NoConvergence as e:
         pass
-    except:
-        print('not platesolved {}'.format(filename))
-
+    except Exception as e:
+        print('Error processing {}: {}'.format(filename, e))
 
 
 def find(arg):
-    to_find = SkyCoord.from_name(arg[0])
-    print('Searching for {} {}'.format(arg[0],to_find))
+    # List of directories to search
+    search_directories = [
+        '/home/dokeeffe/Pictures/CalibratedLight',
+        '/mnt/storage/home/dokeeffe/Pictures/CalibratedLightArchive'
+    ]
 
-    for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLight'):
-        for filename in fnmatch.filter(filenames, '*.fits'):
-            check_file(root, filename, to_find)
-    for root, dirnames, filenames in os.walk('/home/dokeeffe/Pictures/CalibratedLightArchive'):
-        for filename in fnmatch.filter(filenames, '*.fits'):
-            check_file(root, filename, to_find)
+    to_find = SkyCoord.from_name(arg[0])
+    print('Searching for {} {}'.format(arg[0], to_find))
+
+    # Iterate through the list of directories
+    for directory in search_directories:
+        for root, dirnames, filenames in os.walk(directory):
+            for filename in fnmatch.filter(filenames, '*.fits'):
+                check_file(root, filename, to_find)
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print('Usage searchfor <object name> /nExample searchfor NGC7318')
-        sys.exit(2) 
+        print('Usage searchfor <object name> \nExample searchfor NGC7318')
+        sys.exit(2)
     find(sys.argv[1:])
