@@ -93,11 +93,11 @@ def process_fits_file(fits_path, tmp_dir):
         temp_file = Path(tmp_dir) / fits_path.name
         copyfile(fits_path, temp_file)
 
-        logging.info(f"Processing: {fits_path}")
+        logging.debug(f"Processing: {fits_path}")
         fits_info = get_fits_info(temp_file)
-        logging.info(f"Focal length: {fits_info['focal_length']}")
-        logging.info(f"Arc-sec per pixel: {fits_info['arcsec_per_pixel']:.2f}")
-        logging.info(f"RA: {fits_info['ra']}, Dec: {fits_info['dec']}")
+        logging.debug(f"Focal length: {fits_info['focal_length']}")
+        logging.debug(f"Arc-sec per pixel: {fits_info['arcsec_per_pixel']:.2f}")
+        logging.debug(f"RA: {fits_info['ra']}, Dec: {fits_info['dec']}")
 
         if solve_field(temp_file):
             new_file = temp_file.with_suffix('.new')

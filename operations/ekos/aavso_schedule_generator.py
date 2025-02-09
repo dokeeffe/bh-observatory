@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 
 import configparser
-import re
+import csv
+import io
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
 import requests
 
 import os
-
+import logging
 import urllib.request
 import lxml.html
 
-import numpy
 from astroplan import (AltitudeConstraint, AirmassConstraint,
                        AtNightConstraint)
 from astroplan import Observer, FixedTarget, observability_table
@@ -20,58 +23,87 @@ from mako.template import Template
 from datetime import datetime
 from datetime import timedelta
 from astropy.utils.iers import conf
+
 conf.auto_max_age = None
 
 
-class WebopsClient:
+def setup_logging():
+    """Configure logging with appropriate format and level."""
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+
+
+class VsxClient:
 
     def __init__(self):
         pass
 
-    def _load_page(self, page, star, start, end):
-        #params = {'start': start, 'end': end, 'num_results': 100, 'obs_types': 'ccd', 'star': star, 'page': page}
-        params = {'num_results': 25, 'obs_types': 'ccd', 'star': star}
-        url = 'https://aavso.org/apps/webobs/results/?' + \
-            urllib.parse.urlencode(params)
-        print(url)
-        fp = urllib.request.urlopen(url)
-        tree = lxml.html.fromstring(fp.read())
-        rows = tree.xpath('//table[@class="observations"]/tbody/tr')
-        print(f'Got {len(rows)} rows')
-        return rows
+    def get_most_recent_measurement(self, star_name: str, band: str, previous_days=90) -> float:
+        """
+            Get the most recent measurement for a star in a given band from VSX
+            :param star_name:
+            :param band:
+            :param previous_days:
+            :return:
+            """
+        today = Time.now().jd
+        from_date = (Time.now() - timedelta(days=previous_days)).jd
+        vsx_url = f'https://www.aavso.org/vsx/index.php?view=api.object&ident={urllib.parse.quote(star_name)}&data&csv&minfields&fromjd={from_date}&tojd={today}'
+        logging.debug(f'Loading vsx {vsx_url}')
+        resp = urllib.request.urlopen(vsx_url)
+        data = self._parse_vsx_xml(resp.read().decode('utf-8'))
+        for phot in data['csv_data']:
+            if phot['band'] == band:
+                logging.debug(f'Found V band measurement for {star_name} {phot["mag"]}')
+                return float(phot["mag"])
+        logging.warning(f'No {band} band measurement found for {star_name}')
 
-    def _find_first_matching_filter(self, rows, filt):
-        for row in rows:
-            values = [col.text_content() for col in row]
-            if len(values) > 6:
-                mag = values[4]
-                photo_filter = values[6]
-                if photo_filter == filt:
-                    return mag
+    def _parse_vsx_xml(self, xml_string):
+        """
+            Parse VSX XML string and extract all rows of CSV data from CDATA
 
-    def get_most_recent_measurement(self, star, filt):
-        page = 1
-        start = datetime.now() - timedelta(days=10)
-        end = datetime.now()
-        start_str = start.strftime("%Y-%m-%d")
-        end_str = end.strftime("%Y-%m-%d")
-        while page < 2:
-            try:
-                rows = self._load_page(page, star, start_str, end_str)
-            except:
-                print('ERROR loading page')
-                return
-            measure = self._find_first_matching_filter(rows, filt)
-            if measure is not None:
-                return float(measure.replace('<', ''))
-            else:
-                page += 1
+            Args:
+                xml_string (str): XML string containing VSX data
+
+            Returns:
+                dict: Dictionary containing both XML metadata and all CSV data rows
+            """
+        root = ET.fromstring(xml_string)
+        # Get basic XML data
+        result = {
+            'name': root.find('Name').text,
+            'auid': root.find('AUID').text,
+            'ra': float(root.find('RA2000').text),
+            'dec': float(root.find('Declination2000').text),
+            'var_type': root.find('VariabilityType').text,
+        }
+        cdata = root.find('Data').text
+        # Parse all CSV rows from CDATA
+        csv_reader = csv.DictReader(io.StringIO(cdata))
+        result['csv_data'] = list(csv_reader)
+        return result
+
+
+def determine_capture_sequence(mag):
+    if mag > 15.0:
+        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x300PV.esq'
+    if mag > 13.5:
+        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x240PV.esq'
+    if mag > 12.5:
+        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/4x120PV.esq'
+    if mag > 11.0:
+        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x60PV.esq'
+    else:
+        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x20PV.esq'
 
 
 class AavsoEkosScheduleGenerator:
-    '''
-    A tool to generate EKOS schedules from AAVSO's target list https://filtergraph.com/aavso
-    '''
+    """
+    A tool to generate EKOS schedules from AAVSO's target list
+    """
     MAX_MAGNITUDE = 9.0
     MIN_MAGNITUDE = 17
     DEFAULT_LONGITUDE = -8.2
@@ -99,39 +131,70 @@ class AavsoEkosScheduleGenerator:
         sunset = self.location.sun_set_time(self.time, which='nearest')
         sunrise = self.location.sun_rise_time(self.time, which='next')
         self.time_range = Time([sunset, sunrise])
-        self.webops_client = WebopsClient()
+        self.vsx_client = VsxClient()
         self.api_key = api_key
 
-    
+    def load_aavso_targets(self, obs_section='Alerts / Campaigns'):
+        resp = requests.get("https://targettool.aavso.org/TargetTool/api/v1/targets", auth=(self.api_key, "api_token"),
+                            params={'obs_section': ['Alerts / Campaigns']})
+        result = resp.json()['targets']
+        logging.info(f'Loaded {len(result)} targets')
+        return result
 
-    def load_aavso_data(self, obs_section='Alerts / Campaigns'):
-            resp = requests.get("https://targettool.aavso.org/TargetTool/api/v1/targets",auth=(self.api_key,"api_token"),params={'obs_section':['Alerts / Campaigns']})
-            return resp.json()['targets']
-    
     def get_observable_stars(self, all_targets):
-        result = []
-       
         time = Time.now()
         sunset = self.location.twilight_evening_astronomical(time, which='nearest')
         sunrise = self.location.twilight_morning_astronomical(time, which='next')
         time_range = Time([sunset, sunrise])
-        
-        
-        aavso_targets = sorted(all_targets, key=lambda x: x['star_name'])
-        targets = []
-        for target in aavso_targets:
-            if target["priority"] and target['filter'] == 'V' and target['min_mag'] and target['min_mag'] < self.MIN_MAGNITUDE and target['max_mag'] > self.MAX_MAGNITUDE:
-                coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.deg, u.deg))
-                print(f'{target["star_name"]} {coordinates}')
-                ft = FixedTarget(name=target["star_name"], coord=coordinates)
-                targets.append(ft)
-        
-        table = observability_table(self.constraints, self.location, targets, time_range=time_range)
 
-        for schedule_entry in table[table['fraction of time observable'] > 0.05]:
+        aavso_targets = sorted(all_targets, key=lambda x: x['star_name'])
+        priority_targets = []
+        non_priority_targets = []
+        for target in aavso_targets:
+            if self.photometric_filter_available(target) and self.is_in_magintude_range(target):
+                coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.deg, u.deg))
+                ft = FixedTarget(name=target["star_name"], coord=coordinates)
+                if target["priority"]:
+                    logging.debug(f'Adding {target["star_name"]} to priority targets')
+                    priority_targets.append(ft)
+                else:
+                    logging.debug(f'Adding {target["star_name"]} to non-priority targets')
+                    non_priority_targets.append(ft)
+            else:
+                logging.debug(
+                    f'Skipping {target["star_name"]} {target["priority"]} {target["min_mag"]} {target["max_mag"]} {target["filter"]}')
+        logging.info(
+            f'Filtered {len(aavso_targets)} stars to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets')
+
+        logging.info(f'Checking observability for {len(priority_targets)} priority targets')
+        result = self._filter_observable_tonight(priority_targets, time_range)
+        logging.info(f'Checking observability for {len(non_priority_targets)} non-priority targets')
+        result += self._filter_observable_tonight(non_priority_targets, time_range)
+        logging.info(f'Found {len(result)} observable targets')
+        return result
+
+    def _filter_observable_tonight(self, targets, time_range):
+        result = []
+        priority_table = observability_table(self.constraints, self.location, targets, time_range=time_range)
+        observable_targets = priority_table[priority_table['fraction of time observable'] > 0.05]
+        logging.info(
+            f'There are {len(observable_targets)} targets observable tonight out of {len(targets)}')
+        for schedule_entry in observable_targets:
             result.append(schedule_entry['target name'])
         return result
-    
+
+    def photometric_filter_available(self, target):
+        logging.debug(
+            f'Checking if photometric filter available for {target["star_name"]} {target["filter"]} {target["filter"] == "V"}')
+        return target['filter'] in self.AVAILABLE_FILTERS
+
+    def is_in_magintude_range(self, target):
+        result = target['min_mag'] and target['min_mag'] < self.MIN_MAGNITUDE and target['max_mag'] and target[
+            'max_mag'] > self.MAX_MAGNITUDE
+        logging.debug(
+            f'Checking if in magnitude range {target["star_name"]} {target["min_mag"]} {target["max_mag"]} {result}')
+        return result
+
     def _find(self, star, all_targets):
         for tgt in all_targets:
             if tgt['star_name'] == star:
@@ -144,6 +207,7 @@ class AavsoEkosScheduleGenerator:
         :param observable
         :return:
         '''
+        logging.info(f'Building EKOS Schedule for {len(observable)} targets')
         config = configparser.ConfigParser()
         basedir = os.path.dirname(os.path.realpath(__file__))
         config.read(basedir + '/ops.cfg')
@@ -156,45 +220,34 @@ class AavsoEkosScheduleGenerator:
             job['name'] = row['star_name']
             job['ra'] = str(coord.ra.hour)
             job['dec'] = str(coord.dec.deg)
-            recent_mag = self.webops_client.get_most_recent_measurement(
+            recent_mag = self.vsx_client.get_most_recent_measurement(
                 row['star_name'], 'V')
             if recent_mag is not None:
                 if recent_mag > 18:
-                    print(f'Skipping star as too faine. Mag: {recent_mag}')
+                    logging.warning(f'Skipping star {row["star_name"]} as too faint. Mag: {recent_mag}')
                 else:
-                    job['sequence'] = self.determine_capture_sequence(recent_mag)
-                    print('Using Sequence {} for {} mag {}'.format(
+                    job['sequence'] = determine_capture_sequence(recent_mag)
+                    logging.info('Using Sequence {} for {} mag {}'.format(
                         job['sequence'], job['name'], recent_mag))
                     job['priority'] = 3
                     jobs.append(job)
             else:
-                print('Unable to estimate recent mangnitude. Skipping')
+                logging.warning(f'Unable to estimate recent mangnitude for {row["star_name"]}. Skipping')
 
         schedule_template = Template(filename=os.path.join(os.path.dirname(
             __file__), config.get('EKOS_SCHEDULING', 'schedule_template')))
         contextDict = {'jobs': jobs}
         with open(config.get('EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl", "w") as text_file:
             text_file.write(schedule_template.render(**contextDict))
-        print('Generated Schedule File of {} jobs to {}'.format(len(jobs), config.get(
+        logging.info('Generated Schedule File of {} jobs to {}'.format(len(jobs), config.get(
             'EKOS_SCHEDULING', 'target_directory') + "AAVSO-Schedule.esl"))
-
-    def determine_capture_sequence(self, mag):
-        print(f'Determining best sequence for mag {mag}')
-        if mag > 15.0:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x300PV.esq'
-        if mag > 13.5:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x240PV.esq'
-        if mag > 12.5:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/4x120PV.esq'
-        if mag > 11.0:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x60PV.esq'
-        else:
-            return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x20PV.esq'
 
 
 if __name__ == '__main__':
+    setup_logging()
     generator = AavsoEkosScheduleGenerator()
-    aavso_targets = generator.load_aavso_data()
-    observable = generator.get_observable_stars(aavso_targets)
-    generator.build_ekos_schedule_xml_from_table(aavso_targets, observable)
-
+    aavso_targets = generator.load_aavso_targets()
+    observable_tonight = generator.get_observable_stars(aavso_targets)
+    logging.info(f'Observable tonight: {",".join(observable_tonight)}')
+    # generator.download_aavso_data(observable_tonight)
+    generator.build_ekos_schedule_xml_from_table(aavso_targets, observable_tonight)
