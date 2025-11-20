@@ -192,8 +192,6 @@ class AavsoEkosScheduleGenerator:
         return target['filter'] in self.AVAILABLE_FILTERS
 
     def is_in_magnitude_range(self, target):
-        if 'ASASSN-20pv' in target['star_name']:
-            logging.info("found")
         magnitude_overlap = self.calculate_magnitude_overlap(target)
         target_overlap_threshold = 0.8
         if target['priority']:
