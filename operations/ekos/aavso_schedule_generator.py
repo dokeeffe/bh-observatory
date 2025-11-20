@@ -164,16 +164,16 @@ class AavsoEkosScheduleGenerator:
                     logging.debug(f'Adding {target["star_name"]} to non-priority targets')
                     non_priority_targets.append(ft)
             else:
-                logging.info(
+                logging.debug(
                     f'Skipping {target["star_name"]} {target["filter"]} filter. is_in_mag_range {is_in_mag_range}')
         logging.info(
-            f'Filtered {len(aavso_targets)} targets to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets')
+            f'Filtered {len(aavso_targets)} targets to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets based on filter and mag limits')
 
         logging.info(f'Checking observability for {len(priority_targets)} priority targets')
         result = self._filter_observable_tonight(priority_targets, time_range)
         logging.info(f'Checking observability for {len(non_priority_targets)} non-priority targets')
         result += self._filter_observable_tonight(non_priority_targets, time_range)
-        logging.info(f'Found {len(result)} observable targets')
+        logging.info(f'  *** Found {len(result)} observable targets in total which are observable tonight ***')
         return result
 
     def _filter_observable_tonight(self, targets, time_range):
@@ -253,7 +253,7 @@ class AavsoEkosScheduleGenerator:
         :param observable
         :return:
         '''
-        logging.info(f'Building EKOS Schedule for {len(observable)} targets')
+        logging.info(f'Building EKOS Schedule for {len(observable)} targets. Determining optimal sequence files for targets')
         config = configparser.ConfigParser()
         basedir = os.path.dirname(os.path.realpath(__file__))
         config.read(basedir + '/ops.cfg')
