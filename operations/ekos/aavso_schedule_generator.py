@@ -165,7 +165,7 @@ class AavsoEkosScheduleGenerator:
                     non_priority_targets.append(ft)
             else:
                 logging.info(
-                    f'Skipping {target["star_name"]} {target["filter"]} filter. is_in_mag_range {is_in_mag_range}'
+                    f'Skipping {target["star_name"]} {target["filter"]} filter. is_in_mag_range {is_in_mag_range}')
         logging.info(
             f'Filtered {len(aavso_targets)} targets to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets')
 
