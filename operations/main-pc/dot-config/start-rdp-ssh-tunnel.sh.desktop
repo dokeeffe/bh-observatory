@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/dokeeffe/code/github/bh-observatory/operations/jumphost-access/start-rdp-ssh-tunnel.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_IE]=Start RDP Tunnel
+Name=Start RDP Tunnel
+Comment[en_IE]=Tunnel RDP traffic through linode
+Comment=Tunnel RDP traffic through linode
