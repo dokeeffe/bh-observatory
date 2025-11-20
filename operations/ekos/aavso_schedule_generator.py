@@ -104,8 +104,8 @@ class AavsoEkosScheduleGenerator:
     """
     A tool to generate EKOS schedules from AAVSO's target list
     """
-    MAX_MAGNITUDE = 9.0
-    MIN_MAGNITUDE = 17
+    BRIGHTEST_MAGNITUDE = 9.0
+    DIMMEST_MAGNITUDE = 17
     DEFAULT_LONGITUDE = -8.2
     DEFAULT_LATITUDE = 52.2
     DEFAULT_ELEVATION = 100
@@ -138,7 +138,7 @@ class AavsoEkosScheduleGenerator:
         resp = requests.get("https://targettool.aavso.org/TargetTool/api/v1/targets", auth=(self.api_key, "api_token"),
                             params={'obs_section': ['Alerts / Campaigns']})
         result = resp.json()['targets']
-        logging.info(f'Loaded {len(result)} targets')
+        logging.info(f'Loaded {len(result)} targets from AAVSO target tool')
         return result
 
     def get_observable_stars(self, all_targets):
@@ -151,7 +151,7 @@ class AavsoEkosScheduleGenerator:
         priority_targets = []
         non_priority_targets = []
         for target in aavso_targets:
-            if self.photometric_filter_available(target) and self.is_in_magintude_range(target):
+            if self.photometric_filter_available(target) and self.is_in_magnitude_range(target):
                 coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.deg, u.deg))
                 ft = FixedTarget(name=target["star_name"], coord=coordinates)
                 if target["priority"]:
@@ -164,7 +164,7 @@ class AavsoEkosScheduleGenerator:
                 logging.debug(
                     f'Skipping {target["star_name"]} {target["priority"]} {target["min_mag"]} {target["max_mag"]} {target["filter"]}')
         logging.info(
-            f'Filtered {len(aavso_targets)} stars to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets')
+            f'Filtered {len(aavso_targets)} targets to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets')
 
         logging.info(f'Checking observability for {len(priority_targets)} priority targets')
         result = self._filter_observable_tonight(priority_targets, time_range)
@@ -188,12 +188,53 @@ class AavsoEkosScheduleGenerator:
             f'Checking if photometric filter available for {target["star_name"]} {target["filter"]} {target["filter"] == "V"}')
         return target['filter'] in self.AVAILABLE_FILTERS
 
-    def is_in_magintude_range(self, target):
-        result = target['min_mag'] and target['min_mag'] < self.MIN_MAGNITUDE and target['max_mag'] and target[
-            'max_mag'] > self.MAX_MAGNITUDE
+    def is_in_magnitude_range(self, target):
+        magnitude_overlap = self.calculate_magnitude_overlap(target)
+        target_overlap_threshold = 0.8
+        if target['priority']:
+            target_overlap_threshold = 0.4
         logging.debug(
-            f'Checking if in magnitude range {target["star_name"]} {target["min_mag"]} {target["max_mag"]} {result}')
-        return result
+            f'{target["star_name"]} {target["min_mag"]} {target["max_mag"]} overlaps telescope range by {magnitude_overlap*100}%')
+        return magnitude_overlap > target_overlap_threshold
+
+    def calculate_magnitude_overlap(self, target):
+        """
+        Calculate the percentage of target magnitude range that overlaps
+        with telescope capabilities.
+
+        Returns: float between 0.0 and 1.0 (or 0.0 if no overlap)
+        """
+        # Extract target magnitude range
+        target_min = target.get('min_mag')
+        target_max = target.get('max_mag')
+
+        # If either value is missing, return 0
+        if target_min is None or target_max is None:
+            return 0.0
+
+        # Calculate overlap boundaries
+        # The overlap starts at the brighter (smaller) of the two bright limits
+        overlap_bright = max(self.BRIGHTEST_MAGNITUDE, target_max)
+        # The overlap ends at the dimmer (larger) of the two dim limits
+        overlap_dim = min(self.DIMMEST_MAGNITUDE, target_min)
+
+        # Check if there's any overlap (remember: smaller mag = brighter)
+        if overlap_bright >= overlap_dim:
+            # No overlap
+            return 0.0
+
+        # Calculate the overlap range
+        overlap_range = overlap_dim - overlap_bright
+
+        # Calculate the total target range
+        target_range = target_min - target_max
+
+        # Avoid division by zero
+        if target_range == 0:
+            return 1.0 if overlap_range > 0 else 0.0
+
+        # Return percentage overlap
+        return overlap_range / target_range
 
     def _find(self, star, all_targets):
         for tgt in all_targets:
