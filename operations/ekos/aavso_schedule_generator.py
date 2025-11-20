@@ -51,10 +51,12 @@ class VsxClient:
             """
         today = Time.now().jd
         from_date = (Time.now() - timedelta(days=previous_days)).jd
-        vsx_url = f'https://www.aavso.org/vsx/index.php?view=api.object&ident={urllib.parse.quote(star_name)}&data&csv&minfields&fromjd={from_date}&tojd={today}'
+        vsx_url = f'https://www.aavso.org/vsx/index.php?view=api.object&ident={urllib.parse.quote(star_name)}&data&csv&minfields'
         logging.debug(f'Loading vsx {vsx_url}')
-        resp = urllib.request.urlopen(vsx_url)
-        data = self._parse_vsx_xml(resp.read().decode('utf-8'))
+        resp = requests.get(vsx_url)
+        resp.raise_for_status()  # Raises exception for bad status codes
+        content = resp.text  # or resp.content for bytes
+        data = self._parse_vsx_xml(content)
         for phot in data['csv_data']:
             if phot['band'] == band:
                 logging.debug(f'Found V band measurement for {star_name} {phot["mag"]}')
@@ -151,7 +153,8 @@ class AavsoEkosScheduleGenerator:
         priority_targets = []
         non_priority_targets = []
         for target in aavso_targets:
-            if self.photometric_filter_available(target) and self.is_in_magnitude_range(target):
+            is_in_mag_range = self.is_in_magnitude_range(target)
+            if self.photometric_filter_available(target) and is_in_mag_range:
                 coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.deg, u.deg))
                 ft = FixedTarget(name=target["star_name"], coord=coordinates)
                 if target["priority"]:
@@ -161,8 +164,8 @@ class AavsoEkosScheduleGenerator:
                     logging.debug(f'Adding {target["star_name"]} to non-priority targets')
                     non_priority_targets.append(ft)
             else:
-                logging.debug(
-                    f'Skipping {target["star_name"]} {target["priority"]} {target["min_mag"]} {target["max_mag"]} {target["filter"]}')
+                logging.info(
+                    f'Skipping {target["star_name"]} {target["filter"]} filter. is_in_mag_range {is_in_mag_range}'
         logging.info(
             f'Filtered {len(aavso_targets)} targets to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets')
 
@@ -189,6 +192,8 @@ class AavsoEkosScheduleGenerator:
         return target['filter'] in self.AVAILABLE_FILTERS
 
     def is_in_magnitude_range(self, target):
+        if 'ASASSN-20pv' in target['star_name']:
+            logging.info("found")
         magnitude_overlap = self.calculate_magnitude_overlap(target)
         target_overlap_threshold = 0.8
         if target['priority']:
