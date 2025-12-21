@@ -3,6 +3,7 @@
 import configparser
 import csv
 import io
+import re
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -19,18 +20,19 @@ from astroplan import Observer, FixedTarget, observability_table
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
+from dateutil.relativedelta import relativedelta
 from mako.template import Template
-from datetime import datetime
+from datetime import datetime, timezone
 from datetime import timedelta
 from astropy.utils.iers import conf
 
 conf.auto_max_age = None
 
 
-def setup_logging():
+def setup_logging(level):
     """Configure logging with appropriate format and level."""
     logging.basicConfig(
-        level=logging.INFO,
+        level=level,
         format='%(asctime)s - %(levelname)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
@@ -115,6 +117,7 @@ class AavsoEkosScheduleGenerator:
     MIN_TARGET_ALTITUDE_DEG = 35
     GUESS_SEQUENCE_FOR_UNKNOWN_MAG = False
     API_KEY = os.environ['AAVSO_API_KEY']
+    EXCLUDE_LIST = ['ASAS J060415+1245.9']
 
     def __init__(self, lat=DEFAULT_LATITUDE, lon=DEFAULT_LONGITUDE, elevation=DEFAULT_ELEVATION,
                  min_target_altitude_deg=MIN_TARGET_ALTITUDE_DEG, api_key=API_KEY):
@@ -143,29 +146,36 @@ class AavsoEkosScheduleGenerator:
         logging.info(f'Loaded {len(result)} targets from AAVSO target tool')
         return result
 
-    def get_observable_stars(self, all_targets):
+    def get_observable_stars(self, all_targets, months_old_data_threshold=2):
         time = Time.now()
         sunset = self.location.twilight_evening_astronomical(time, which='nearest')
         sunrise = self.location.twilight_morning_astronomical(time, which='next')
         time_range = Time([sunset, sunrise])
 
-        aavso_targets = sorted(all_targets, key=lambda x: x['star_name'])
+        # aavso_targets = sorted(all_targets, key=lambda x: x['star_name'])
+        aavso_targets = sorted(
+            [target for target in all_targets if target['star_name'] not in self.EXCLUDE_LIST],
+            key=lambda x: x['star_name']
+        )
         priority_targets = []
         non_priority_targets = []
         for target in aavso_targets:
             is_in_mag_range = self.is_in_magnitude_range(target)
-            if self.photometric_filter_available(target) and is_in_mag_range:
+            alert_notice = self._extract_alert_notice(target)
+            months_since_last_data = self._months_since_last_data(target)
+            if (self.photometric_filter_available(target) and is_in_mag_range
+                    and months_since_last_data <= months_old_data_threshold):
                 coordinates = SkyCoord(target["ra"], target["dec"], unit=(u.deg, u.deg))
                 ft = FixedTarget(name=target["star_name"], coord=coordinates)
                 if target["priority"]:
-                    logging.debug(f'Adding {target["star_name"]} to priority targets')
+                    logging.info(f'Adding {target["star_name"]} alert notice {alert_notice} (has {months_since_last_data} mth old data) to priority targets')
                     priority_targets.append(ft)
                 else:
-                    logging.debug(f'Adding {target["star_name"]} to non-priority targets')
+                    logging.info(f'Adding {target["star_name"]} alert notice {alert_notice} (has {months_since_last_data} mth old data) to non-priority targets')
                     non_priority_targets.append(ft)
             else:
                 logging.debug(
-                    f'Skipping {target["star_name"]} {target["filter"]} filter. is_in_mag_range {is_in_mag_range}')
+                    f'Skipping {target["star_name"]} {target["filter"]} filter. Last data {months_since_last_data} months ago, is_in_mag_range {is_in_mag_range}')
         logging.info(
             f'Filtered {len(aavso_targets)} targets to {len(priority_targets)} priority targets and {len(non_priority_targets)} non-priority targets based on filter and mag limits')
 
@@ -175,6 +185,23 @@ class AavsoEkosScheduleGenerator:
         result += self._filter_observable_tonight(non_priority_targets, time_range)
         logging.info(f'  *** Found {len(result)} observable targets in total which are observable tonight ***')
         return result
+
+    def _extract_alert_notice(self, target):
+        """Extract Alert Notice number from text, return None if not found."""
+        text = target['other_info']
+        match = re.search(r'Alert Notice (\d+)', text)
+        return int(match.group(1)) if match else None
+
+    def _months_since_last_data(self, target) -> int | None:
+        if target['last_data_point'] is None:
+            return 9999999
+        last_data = datetime.fromtimestamp(target['last_data_point'], tz=timezone.utc)
+        now = datetime.now(timezone.utc)
+        months_diff = (now.year - last_data.year) * 12 + (now.month - last_data.month)
+        # Adjust if the day hasn't been reached yet in the current month
+        if now.day < last_data.day:
+            months_diff -= 1
+        return months_diff
 
     def _filter_observable_tonight(self, targets, time_range):
         result = []
@@ -288,10 +315,10 @@ class AavsoEkosScheduleGenerator:
 
 
 if __name__ == '__main__':
-    setup_logging()
+    setup_logging(logging.INFO)
     generator = AavsoEkosScheduleGenerator()
-    aavso_targets = generator.load_aavso_targets()
-    observable_tonight = generator.get_observable_stars(aavso_targets)
+    targets = generator.load_aavso_targets()
+    observable_tonight = generator.get_observable_stars(targets)
     logging.info(f'Observable tonight: {",".join(observable_tonight)}')
-    # generator.download_aavso_data(observable_tonight)
-    generator.build_ekos_schedule_xml_from_table(aavso_targets, observable_tonight)
+
+    generator.build_ekos_schedule_xml_from_table(targets, observable_tonight)
