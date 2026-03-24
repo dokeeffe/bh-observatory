@@ -85,13 +85,13 @@ def main():
     # Get INDI properties
     text_output = get_indi_properties()
     if not text_output:
-        return
+        text_output = ""
     
     # Parse and convert to JSON
     json_data = parse_indi_text(text_output)
     if not json_data:
         print("No data parsed")
-        return
+        json_data = {}
     
     # Save to file
     output_file = '/tmp/indi_properties.json'
