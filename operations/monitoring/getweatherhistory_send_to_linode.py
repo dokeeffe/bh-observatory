@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
+import gzip
 import os
+import shutil
 import urllib.request
 
 import boto3
 
 OUTPUT_FILE = '/tmp/weather-history.json'
+GZIP_FILE = '/tmp/weather-history.json.gz'
 R2_BUCKET = 'telemetry'
 R2_OBJECT_KEY = 'weather-history.json'
 WEATHER_URL = 'http://192.168.1.227:8080/weather/history'
@@ -32,9 +35,21 @@ def get_r2_client():
 
 
 def upload_file(local_path=OUTPUT_FILE, bucket_name=R2_BUCKET, object_key=R2_OBJECT_KEY):
-    """Upload the downloaded weather history JSON to the configured R2 bucket."""
+    """Gzip and upload the weather history JSON to the configured R2 bucket."""
     try:
-        get_r2_client().upload_file(local_path, bucket_name, object_key)
+        with open(local_path, 'rb') as source:
+            with gzip.open(GZIP_FILE, 'wb') as compressed:
+                shutil.copyfileobj(source, compressed)
+
+        get_r2_client().upload_file(
+            GZIP_FILE,
+            bucket_name,
+            object_key,
+            ExtraArgs={
+                'ContentType': 'application/json',
+                'ContentEncoding': 'gzip',
+            },
+        )
         return True
     except Exception as exc:
         print(f'Failed to upload weather history to R2: {exc}')
