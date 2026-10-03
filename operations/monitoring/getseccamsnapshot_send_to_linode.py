@@ -1,3 +1,11 @@
+#! /usr/bin/env python
+import time,os
+from subprocess import call
+import urllib.request
+
+urllib.request.urlretrieve('http://192.168.1.227:8080/weather/history', '/tmp/weather-history.json')
+call(['scp', '/tmp/weather-history.json', 'dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.'])
+pi@roof:~/code/bh-observatory $ cat operations/monitoring/getseccamsnapshot_send_to_linode.py
 #!/usr/bin/env python3
 import requests, shutil, datetime
 import subprocess
@@ -28,3 +36,4 @@ take_snapshot(get_cam_ip('Observatory'), 'obs1', 'Doohan21*')
 call(['scp', '/tmp/snapshot-obs1.jpg', 'dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.'])
 take_snapshot(get_cam_ip('obs2'), 'obs2', 'zxcvbn3')
 call(['scp', '/tmp/snapshot-obs2.jpg', 'dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.'])
+

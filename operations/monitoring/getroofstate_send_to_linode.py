@@ -21,7 +21,7 @@ with open(REMOTE_FILE, 'r') as f:
 if os.path.exists(CURRENT_FILE):
     with open(CURRENT_FILE, 'r') as f:
         old_data = json.load(f)
-
+    
     # If state changed, update the timestamp
     if old_data.get('state') != new_data.get('state'):
         new_data['last_changed'] = datetime.now().strftime('%Y-%m-%d %H:%M')
@@ -38,4 +38,3 @@ with open(CURRENT_FILE, 'w') as f:
 
 # Upload to website
 call(['scp', CURRENT_FILE, 'dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.'])
-
