@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # Replace 'dokeeffe' with your actual username if different
 KSTARS_PID=$(pgrep -u dokeeffe kstars | head -1)
 
