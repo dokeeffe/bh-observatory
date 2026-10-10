@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # Replace 'dokeeffe' with your actual username if different
 KSTARS_PID=$(pgrep -u dokeeffe kstars | head -1)
 
@@ -18,5 +16,5 @@ if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
 fi
 
 # Grab ekos data and scp to host
-/usr/bin/qdbus org.kde.kstars /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.jsonJobs > /tmp/ekos.json && scp /tmp/ekos.json dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.
-/usr/bin/qdbus org.kde.kstars /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.logText > /tmp/ekos_log.txt && scp /tmp/ekos_log.txt dokeeffe@52-8.xyz:/var/www/html/images/telemetry/.
+/usr/bin/qdbus org.kde.kstars /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.jsonJobs > /tmp/ekos.json 
+/usr/bin/qdbus org.kde.kstars /KStars/Ekos/Scheduler org.kde.kstars.Ekos.Scheduler.logText > /tmp/ekos_log.txt
