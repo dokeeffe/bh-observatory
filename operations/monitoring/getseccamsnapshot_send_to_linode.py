@@ -62,13 +62,10 @@ def take_snapshot(cam_ip_address, name, ath):
 
 
 def main():
-    take_snapshot(get_cam_ip('Observatory'), 'obs1', 'Doohan21*')
+    take_snapshot(get_cam_ip('Observatory'), 'Observatory', 'Doohan21*')
     obs1_uploaded = upload_file('/tmp/snapshot-obs1.jpg', 'snapshot-obs1.jpg')
 
-    take_snapshot(get_cam_ip('obs2'), 'obs2', 'zxcvbn3')
-    obs2_uploaded = upload_file('/tmp/snapshot-obs2.jpg', 'snapshot-obs2.jpg')
-
-    return 0 if obs1_uploaded and obs2_uploaded else 1
+    return 0 if obs1_uploaded else 1
 
 
 if __name__ == '__main__':
