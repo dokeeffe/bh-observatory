@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 R2_BUCKET = 'telemetry'
-R2_OBJECT_KEY = 'images/latest-fits.jpg'
+R2_OBJECT_KEY = 'latest-fits.jpg'
 
 
 def get_recent_image():
