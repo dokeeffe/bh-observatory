@@ -1,0 +1,134 @@
+{
+    "current_index": -1,
+    "items": [
+        {
+            "created_time": "2026-10-19T00:59:41",
+            "id": "a2bae77e-e03e-4eb1-aa1e-124254ce23ef",
+            "progress": 0,
+            "status": 0,
+            "task": {
+                "actions": [
+                    {
+                        "device": "iOptron CEM120",
+                        "element": "PARK",
+                        "failure_action": 0,
+                        "property": "TELESCOPE_PARK",
+                        "retries": 2,
+                        "timeout": 60,
+                        "type": "SET",
+                        "value": true,
+                        "wait_for_completion": true
+                    },
+                    {
+                        "condition": 0,
+                        "device": "iOptron CEM120",
+                        "element": "STATE",
+                        "failure_action": 0,
+                        "margin": 0,
+                        "property": "TELESCOPE_PARK",
+                        "property_type": 4,
+                        "retries": 2,
+                        "target": "OK",
+                        "timeout": 60,
+                        "type": "EVALUATE"
+                    }
+                ],
+                "category": "Mount",
+                "device": "iOptron CEM120",
+                "name": "Park Mount - iOptron CEM120",
+                "parameters": {
+                    "wait_timeout": 60
+                },
+                "status": 0,
+                "template_id": "mount_park"
+            }
+        },
+        {
+            "created_time": "2026-10-19T01:00:04",
+            "id": "fe9a2379-4397-4130-b391-cb1316443a5f",
+            "progress": 0,
+            "status": 0,
+            "task": {
+                "actions": [
+                    {
+                        "device": "Dome Scripting Gateway",
+                        "element": "PARK",
+                        "failure_action": 0,
+                        "property": "DOME_PARK",
+                        "retries": 2,
+                        "timeout": 120,
+                        "type": "SET",
+                        "value": true,
+                        "wait_for_completion": true
+                    },
+                    {
+                        "condition": 0,
+                        "device": "Dome Scripting Gateway",
+                        "element": "STATE",
+                        "failure_action": 0,
+                        "margin": 0,
+                        "property": "DOME_PARK",
+                        "property_type": 4,
+                        "retries": 1,
+                        "target": "OK",
+                        "timeout": 120,
+                        "type": "EVALUATE"
+                    }
+                ],
+                "category": "Dome",
+                "device": "Dome Scripting Gateway",
+                "name": "Park Dome - Dome Scripting Gateway",
+                "parameters": {
+                    "wait_timeout": 120
+                },
+                "status": 0,
+                "template_id": "dome_park"
+            }
+        },
+        {
+            "created_time": "2026-10-19T00:13:19",
+            "id": "f41d1da4-631a-458d-ab32-8b12621c18eb",
+            "progress": 0,
+            "status": 0,
+            "task": {
+                "actions": [
+                    {
+                        "device": "Atik 383L",
+                        "element": "COOLER_OFF",
+                        "failure_action": 1,
+                        "property": "CCD_COOLER",
+                        "retries": 2,
+                        "timeout": 30,
+                        "type": "SET",
+                        "value": true,
+                        "wait_for_completion": true
+                    },
+                    {
+                        "condition": 4,
+                        "device": "Atik 383L",
+                        "element": "CCD_TEMPERATURE_VALUE",
+                        "failure_action": 0,
+                        "margin": 0,
+                        "property": "CCD_TEMPERATURE",
+                        "property_type": 0,
+                        "retries": 0,
+                        "target": 20,
+                        "timeout": 600,
+                        "type": "EVALUATE"
+                    }
+                ],
+                "category": "Camera",
+                "device": "Atik 383L",
+                "name": "Warm Camera (Passive) - Atik 383L",
+                "parameters": {
+                    "max_wait_time": 600,
+                    "target_temperature": 20
+                },
+                "status": 0,
+                "template_id": "camera_warm_passive"
+            }
+        }
+    ],
+    "state": 3,
+    "version": "1.0"
+}

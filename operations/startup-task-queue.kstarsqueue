@@ -1,0 +1,95 @@
+{
+    "current_index": 1,
+    "items": [
+        {
+            "created_time": "2026-10-19T00:05:18",
+            "end_time": "2026-10-19T00:07:02",
+            "id": "35b7d01a-be3a-4907-a4b9-78e0ecb3e50a",
+            "progress": 100,
+            "start_time": "2026-10-19T00:06:43",
+            "status": 3,
+            "task": {
+                "actions": [
+                    {
+                        "device": "Dome Scripting Gateway",
+                        "element": "UNPARK",
+                        "failure_action": 0,
+                        "property": "DOME_PARK",
+                        "retries": 2,
+                        "timeout": 120,
+                        "type": "SET",
+                        "value": true,
+                        "wait_for_completion": true
+                    },
+                    {
+                        "condition": 0,
+                        "device": "Dome Scripting Gateway",
+                        "element": "STATE",
+                        "failure_action": 0,
+                        "margin": 0,
+                        "property": "DOME_PARK",
+                        "property_type": 4,
+                        "retries": 1,
+                        "target": "OK",
+                        "timeout": 120,
+                        "type": "EVALUATE"
+                    }
+                ],
+                "category": "Dome",
+                "device": "Dome Scripting Gateway",
+                "name": "Unpark Dome - Dome Scripting Gateway",
+                "parameters": {
+                    "wait_timeout": 120
+                },
+                "status": 0,
+                "template_id": "dome_unpark"
+            }
+        },
+        {
+            "created_time": "2026-10-19T00:05:18",
+            "end_time": "2026-10-19T00:07:02",
+            "id": "a96cb02b-5ae7-4e4f-86f8-f4f8d2cab478",
+            "progress": 100,
+            "start_time": "2026-10-19T00:07:02",
+            "status": 3,
+            "task": {
+                "actions": [
+                    {
+                        "device": "iOptron CEM120",
+                        "element": "UNPARK",
+                        "failure_action": 0,
+                        "property": "TELESCOPE_PARK",
+                        "retries": 2,
+                        "timeout": 60,
+                        "type": "SET",
+                        "value": true,
+                        "wait_for_completion": true
+                    },
+                    {
+                        "condition": 0,
+                        "device": "iOptron CEM120",
+                        "element": "STATE",
+                        "failure_action": 0,
+                        "margin": 0,
+                        "property": "TELESCOPE_PARK",
+                        "property_type": 4,
+                        "retries": 2,
+                        "target": "OK",
+                        "timeout": 60,
+                        "type": "EVALUATE"
+                    }
+                ],
+                "category": "Mount",
+                "device": "iOptron CEM120",
+                "name": "Unpark Mount - iOptron CEM120",
+                "parameters": {
+                    "wait_timeout": 60
+                },
+                "status": 0,
+                "template_id": "mount_unpark"
+            }
+        }
+    ],
+    "state": 3,
+    "version": "1.0"
+}
