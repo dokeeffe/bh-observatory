@@ -42,20 +42,36 @@ def setup_logging(level):
     )
 
 
+def _log_http_error(context: str, error: requests.HTTPError) -> None:
+    response = error.response
+    body = response.text if response is not None else ''
+    truncated = len(body) > 1000
+    body = body[:1000]
+    if truncated:
+        body += '...'
+    logging.error(f'{context} failed: {error}; response body: {(body or "<empty>")!r}')
+
+
 # ---------------------------------------------------------------------------
 # VSX client
 # ---------------------------------------------------------------------------
 
 class VsxClient:
 
+    def __init__(self, api_key: str):
+        self.api_key = api_key
+
     def lookup_star(self, star_name: str) -> dict | None:
         """Return basic star info (name, ra, dec, var_type) from VSX, or None on failure."""
         url = f'https://www.aavso.org/vsx/index.php?view=api.object&ident={urllib.parse.quote(star_name)}&data&csv&minfields'
         logging.debug(f'VSX lookup: {url}')
         try:
-            resp = requests.get(url, timeout=15)
+            resp = requests.get(url, auth=(self.api_key, 'api_token'), timeout=15)
             resp.raise_for_status()
             return self._parse_vsx_xml(resp.text)
+        except requests.HTTPError as e:
+            _log_http_error(f'VSX lookup for "{star_name}"', e)
+            return None
         except Exception as e:
             logging.error(f'VSX lookup failed for "{star_name}": {e}')
             return None
@@ -128,20 +144,24 @@ class AavsoEkosScheduleGenerator:
             AirmassConstraint(5),
             AtNightConstraint.twilight_nautical(),
         ]
-        self.vsx_client = VsxClient()
         self.api_key = os.environ['AAVSO_API_KEY']
+        self.vsx_client = VsxClient(self.api_key)
 
     # ------------------------------------------------------------------ #
     # Data loading
     # ------------------------------------------------------------------ #
 
     def load_aavso_targets(self) -> list[dict]:
-        resp = requests.get(
-            'https://targettool.aavso.org/TargetTool/api/v1/targets',
-            auth=(self.api_key, 'api_token'),
-            params={'obs_section': ['Alerts / Campaigns']},
-        )
-        resp.raise_for_status()
+        try:
+            resp = requests.get(
+                'https://targettool.aavso.org/TargetTool/api/v1/targets',
+                auth=(self.api_key, 'api_token'),
+                params={'obs_section': ['Alerts / Campaigns']},
+            )
+            resp.raise_for_status()
+        except requests.HTTPError as e:
+            _log_http_error('AAVSO Target Tool request', e)
+            raise
         targets = resp.json()['targets']
         logging.info(f'Loaded {len(targets)} targets from AAVSO Target Tool')
         return targets
