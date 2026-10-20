@@ -62,7 +62,7 @@ class AavsoClient:
             'Accept': 'Application/json',
         }
         self._photometry_lock = threading.Lock()
-        self._last_photometry_request = None
+        self._last_photometry_request_completed = None
 
     def lookup_star(self, star_name: str) -> dict | None:
         """Return basic star info from the AAVSO API, or None on failure."""
@@ -121,15 +121,16 @@ class AavsoClient:
 
     def _get_photometry_json(self, url: str, params: dict, context: str) -> dict | None:
         with self._photometry_lock:
-            now = time.monotonic()
-            if self._last_photometry_request is not None:
-                elapsed = now - self._last_photometry_request
+            if self._last_photometry_request_completed is not None:
+                elapsed = time.monotonic() - self._last_photometry_request_completed
                 wait_seconds = self.PHOTOMETRY_REQUEST_INTERVAL_SECONDS - elapsed
                 if wait_seconds > 0:
                     logging.debug(f'Throttling AAVSO photometry request for {wait_seconds:.1f}s')
                     time.sleep(wait_seconds)
-            self._last_photometry_request = time.monotonic()
-            return self._get_json(url, params, context)
+            try:
+                return self._get_json(url, params, context)
+            finally:
+                self._last_photometry_request_completed = time.monotonic()
 
     def _get_json(self, url: str, params: dict, context: str) -> dict | None:
         logging.debug(f'{context}: {url} params={params}')
