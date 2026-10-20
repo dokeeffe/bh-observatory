@@ -11,12 +11,9 @@ Usage:
     python aavso_interactive_scheduler.py
 """
 
-import configparser
-import csv
-import io
 import re
-import urllib.parse
-import xml.etree.ElementTree as ET
+import threading
+import time
 
 import requests
 import os
@@ -53,54 +50,99 @@ def _log_http_error(context: str, error: requests.HTTPError) -> None:
 
 
 # ---------------------------------------------------------------------------
-# VSX client
+# AAVSO API client
 # ---------------------------------------------------------------------------
 
-class VsxClient:
+class AavsoClient:
+    PHOTOMETRY_REQUEST_INTERVAL_SECONDS = 10
 
     def __init__(self, api_key: str):
-        self.api_key = api_key
+        self.headers = {
+            'Authorization': f'Token {api_key}',
+            'Accept': 'Application/json',
+        }
+        self._photometry_lock = threading.Lock()
+        self._last_photometry_request = None
 
     def lookup_star(self, star_name: str) -> dict | None:
-        """Return basic star info (name, ra, dec, var_type) from VSX, or None on failure."""
-        url = f'https://www.aavso.org/vsx/index.php?view=api.object&ident={urllib.parse.quote(star_name)}&data&csv&minfields'
-        logging.debug(f'VSX lookup: {url}')
-        try:
-            resp = requests.get(url, auth=(self.api_key, 'api_token'), timeout=15)
-            resp.raise_for_status()
-            return self._parse_vsx_xml(resp.text)
-        except requests.HTTPError as e:
-            _log_http_error(f'VSX lookup for "{star_name}"', e)
-            return None
-        except Exception as e:
-            logging.error(f'VSX lookup failed for "{star_name}": {e}')
-            return None
+        """Return basic star info from the AAVSO API, or None on failure."""
+        url = 'https://apps.aavso.org/v2/api/stars/search'
+        return self._get_json(url, {'name': star_name}, f'AAVSO star lookup for "{star_name}"')
 
     def get_most_recent_measurement(self, star_name: str, band: str) -> float | None:
-        """Return the most recent magnitude for star_name in the given band, or None."""
-        data = self.lookup_star(star_name)
+        """Return the most recent magnitude for star_name in the given band."""
+        band_codes = {'V': '2', 'B': '3', 'R': '4'}
+        try:
+            band_code = band_codes[band.upper()]
+        except KeyError:
+            raise ValueError(f'Unsupported AAVSO photometry band: {band!r}') from None
+
+        url = 'https://apps.aavso.org/v2/api/observations/photometry'
+        params = {
+            'target': star_name,
+            'band': band_code,
+            'start_date': (Time.now() - 30 * u.day).jd,
+        }
+        context = f'AAVSO photometry lookup for "{star_name}" ({band})'
+        data = self._get_photometry_json(
+            url,
+            params,
+            context,
+        )
         if data is None:
             return None
-        for phot in data.get('csv_data', []):
-            if phot.get('band') == band:
-                logging.debug(f'Most recent {band} mag for {star_name}: {phot["mag"]}')
-                return float(phot['mag'])
-        logging.warning(f'No {band} band measurement found for {star_name}')
-        return None
 
-    def _parse_vsx_xml(self, xml_string: str) -> dict:
-        root = ET.fromstring(xml_string)
-        result = {
-            'name':     root.find('Name').text,
-            'auid':     root.find('AUID').text,
-            'ra':       float(root.find('RA2000').text),
-            'dec':      float(root.find('Declination2000').text),
-            'var_type': root.find('VariabilityType').text,
-        }
-        cdata = root.find('Data').text
-        csv_reader = csv.DictReader(io.StringIO(cdata))
-        result['csv_data'] = list(csv_reader)
-        return result
+        results = data.get('results', [])
+        if not results:
+            logging.info(
+                f'No {band} band measurement for {star_name} in the last 30 days; '
+                'retrying with a 12-month cutoff'
+            )
+            params['start_date'] = (Time.now() - 365 * u.day).jd
+            data = self._get_photometry_json(url, params, context)
+            if data is None:
+                return None
+            results = data.get('results', [])
+
+        if not results:
+            logging.warning(f'No {band} band measurement found for {star_name}')
+            return None
+
+        try:
+            magnitude = float(results[0]['magnitude'])
+        except (KeyError, TypeError, ValueError) as error:
+            logging.error(
+                f'Invalid magnitude in AAVSO photometry response for '
+                f'"{star_name}" ({band}): {error}'
+            )
+            return None
+        logging.debug(f'Most recent {band} mag for {star_name}: {magnitude}')
+        return magnitude
+
+    def _get_photometry_json(self, url: str, params: dict, context: str) -> dict | None:
+        with self._photometry_lock:
+            now = time.monotonic()
+            if self._last_photometry_request is not None:
+                elapsed = now - self._last_photometry_request
+                wait_seconds = self.PHOTOMETRY_REQUEST_INTERVAL_SECONDS - elapsed
+                if wait_seconds > 0:
+                    logging.debug(f'Throttling AAVSO photometry request for {wait_seconds:.1f}s')
+                    time.sleep(wait_seconds)
+            self._last_photometry_request = time.monotonic()
+            return self._get_json(url, params, context)
+
+    def _get_json(self, url: str, params: dict, context: str) -> dict | None:
+        logging.debug(f'{context}: {url} params={params}')
+        try:
+            response = requests.get(url, headers=self.headers, params=params, timeout=15)
+            response.raise_for_status()
+            return response.json()
+        except requests.HTTPError as error:
+            _log_http_error(context, error)
+            return None
+        except requests.RequestException as error:
+            logging.error(f'{context} failed: {error}')
+            return None
 
 
 # ---------------------------------------------------------------------------
@@ -145,7 +187,8 @@ class AavsoEkosScheduleGenerator:
             AtNightConstraint.twilight_nautical(),
         ]
         self.api_key = os.environ['AAVSO_API_KEY']
-        self.vsx_client = VsxClient(self.api_key)
+        self.target_tool_api_key = os.environ['AAVSO_TARGET_TOOL_API_KEY']
+        self.aavso_client = AavsoClient(self.api_key)
 
     # ------------------------------------------------------------------ #
     # Data loading
@@ -155,7 +198,7 @@ class AavsoEkosScheduleGenerator:
         try:
             resp = requests.get(
                 'https://targettool.aavso.org/TargetTool/api/v1/targets',
-                auth=(self.api_key, 'api_token'),
+                auth=(self.target_tool_api_key, 'api_token'),
                 params={'obs_section': ['Alerts / Campaigns']},
             )
             resp.raise_for_status()
@@ -168,12 +211,12 @@ class AavsoEkosScheduleGenerator:
 
     def build_manual_target(self, star_name: str) -> dict | None:
         """
-        Look up a star in VSX by name and return a target dict compatible with
+        Look up a star by name and return a target dict compatible with
         the rest of the pipeline.  Returns None if the star cannot be found.
         """
-        info = self.vsx_client.lookup_star(star_name)
+        info = self.aavso_client.lookup_star(star_name)
         if info is None:
-            logging.error(f'Could not find "{star_name}" in VSX — skipping')
+            logging.error(f'Could not find "{star_name}" in AAVSO — skipping')
             return None
         target = {
             'star_name':      info['name'],
@@ -304,10 +347,8 @@ class AavsoEkosScheduleGenerator:
         return None
 
     def build_ekos_schedule(self, all_targets: list[dict], observable: list[str]):
-        logging.info(f'Building EKOS schedule for {len(observable)} targets')
-        config = configparser.ConfigParser()
+        logging.info(f'Building EKOS schedule for {len(observable)} targets. This will take some time due to AAVSO API rate limits...')
         basedir = os.path.dirname(os.path.realpath(__file__))
-        config.read(os.path.join(basedir, 'ops.cfg'))
 
         jobs = []
         for star in observable:
@@ -316,7 +357,7 @@ class AavsoEkosScheduleGenerator:
                 logging.warning(f'Could not find target data for {star} — skipping')
                 continue
             coord = SkyCoord(row['ra'], row['dec'], unit=(u.deg, u.deg))
-            recent_mag = self.vsx_client.get_most_recent_measurement(star, 'V')
+            recent_mag = self.aavso_client.get_most_recent_measurement(star, 'V')
             if recent_mag is None:
                 if row.get('_manual'):
                     recent_mag = _prompt_manual_magnitude(star)
@@ -336,10 +377,9 @@ class AavsoEkosScheduleGenerator:
             logging.info(f'{star}: mag={recent_mag:.1f} → {os.path.basename(job["sequence"])}')
             jobs.append(job)
 
-        template_path = os.path.join(basedir,
-                                     config.get('EKOS_SCHEDULING', 'schedule_template'))
+        template_path = os.path.join(basedir,'templates/schedule-template2.esl')
         schedule_template = Template(filename=template_path)
-        output_path = config.get('EKOS_SCHEDULING', 'target_directory') + 'AAVSO-Schedule.esl'
+        output_path = 'home/dokeeffe/pCloudDrive/EkosSchedules/AAVSO-Schedule.esl'
         with open(output_path, 'w') as f:
             f.write(schedule_template.render(jobs=jobs))
         logging.info(f'Wrote {len(jobs)}-job schedule to {output_path}')
@@ -350,8 +390,8 @@ class AavsoEkosScheduleGenerator:
 # ---------------------------------------------------------------------------
 
 def _prompt_manual_magnitude(star_name: str) -> float | None:
-    """Ask the user to supply a V magnitude for a star when VSX has no recent data."""
-    print(f'\n  No recent V magnitude found in VSX for "{star_name}".')
+    """Ask the user to supply a V magnitude for a star when AAVSO has no recent data."""
+    print(f'\n  No recent V magnitude found in AAVSO for "{star_name}".')
     while True:
         answer = input(f'  Enter V magnitude manually (or press Enter to skip): ').strip()
         if answer == '':
@@ -413,7 +453,7 @@ def main():
     if add_manual:
         star_names = collect_manual_stars()
         if star_names:
-            print(f'\nLooking up {len(star_names)} star(s) in VSX...')
+            print(f'\nLooking up {len(star_names)} star(s) in AAVSO...')
             for name in star_names:
                 target = generator.build_manual_target(name)
                 if target is not None:
