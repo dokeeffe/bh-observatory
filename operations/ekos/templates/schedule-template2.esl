@@ -37,9 +37,9 @@
         <delay>0</delay>
     </ErrorHandlingStrategy>
     <StartupProcedure enabled='true'>
-        <PostStartupQueue>/home/dokeeffe/code/bh-observatory/operations/startup-task-queue.kstarsqueue</PostStartupQueue>
+        <PostStartupQueue>/home/dokeeffe/code/bh-observatory/operations/ekos/startup-task-queue.kstarsqueue</PostStartupQueue>
     </StartupProcedure>
     <ShutdownProcedure enabled='true'>
-        <PreShutdownQueue>/home/dokeeffe/code/bh-observatory/operations/shutdown-task-queue.kstarsqueue</PreShutdownQueue>
+        <PreShutdownQueue>/home/dokeeffe/code/bh-observatory/operations/ekos/shutdown-task-queue.kstarsqueue</PreShutdownQueue>
     </ShutdownProcedure>
 </SchedulerList>
