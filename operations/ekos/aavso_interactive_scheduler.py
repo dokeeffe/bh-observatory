@@ -155,9 +155,9 @@ def determine_capture_sequence(mag: float) -> str:
     if mag > 13.5:
         return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x240PV.esq'
     if mag > 12.5:
-        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/4x120PV.esq'
+        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x120PV.esq'
     if mag > 11.0:
-        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x60PV.esq'
+        return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/3x60PV.esq'
     return '/home/dokeeffe/pCloudDrive/EkosSequences/imaging/photometry/5x20PV.esq'
 
 
@@ -379,7 +379,7 @@ class AavsoEkosScheduleGenerator:
 
         template_path = os.path.join(basedir,'templates/schedule-template2.esl')
         schedule_template = Template(filename=template_path)
-        output_path = 'home/dokeeffe/pCloudDrive/EkosSchedules/AAVSO-Schedule.esl'
+        output_path = '/home/dokeeffe/pCloudDrive/EkosSchedules/AAVSO-Schedule.esl'
         with open(output_path, 'w') as f:
             f.write(schedule_template.render(jobs=jobs))
         logging.info(f'Wrote {len(jobs)}-job schedule to {output_path}')
