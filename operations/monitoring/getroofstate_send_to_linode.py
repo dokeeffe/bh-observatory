@@ -64,6 +64,8 @@ def main():
     else:
         new_data['last_changed'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
+    new_data['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+
     with open(CURRENT_FILE, 'w', encoding='utf-8') as handle:
         json.dump(new_data, handle)
         handle.write('\n')
