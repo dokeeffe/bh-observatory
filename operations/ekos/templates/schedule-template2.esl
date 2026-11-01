@@ -17,7 +17,7 @@
             <Condition>ASAP</Condition>
         </StartupCondition>
         <Constraints>
-            <Constraint value='0'>MinimumAltitude</Constraint>
+            <Constraint value='30'>MinimumAltitude</Constraint>
             <Constraint>EnforceTwilight</Constraint>
             <Constraint>EnforceArtificialHorizon</Constraint>
         </Constraints>
