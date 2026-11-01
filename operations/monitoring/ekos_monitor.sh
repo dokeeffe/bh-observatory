@@ -10,29 +10,52 @@ if [ -z "$KSTARS_PID" ]; then
     exit 1
 fi
 
-export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS "/proc/$KSTARS_PID/environ" | cut -d= -f2-)
+export DBUS_SESSION_BUS_ADDRESS=$(
+    tr '\0' '\n' < "/proc/$KSTARS_PID/environ" |
+        sed -n 's/^DBUS_SESSION_BUS_ADDRESS=//p'
+)
 
 if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
     echo "Could not find DBus session address" >> /tmp/ekos-cron.log
     exit 1
 fi
 
-fetch_dbus_string() {
-    /usr/bin/gdbus call \
-        --session \
-        --dest org.kde.kstars \
-        --object-path /KStars/Ekos/Scheduler \
-        --method "org.kde.kstars.Ekos.Scheduler.$1" |
+fetch_dbus_property() {
+    local output
+    output=$(
+        /usr/bin/gdbus call \
+            --session \
+            --dest org.kde.kstars \
+            --object-path /KStars/Ekos/Scheduler \
+            --method org.freedesktop.DBus.Properties.Get \
+            org.kde.kstars.Ekos.Scheduler "$1"
+    ) || return 1
+
+    printf '%s\n' "$output" |
         /usr/bin/python3 -c '
 import ast
 import sys
 
-result = ast.literal_eval(sys.stdin.read())
-if not isinstance(result, tuple) or len(result) != 1 or not isinstance(result[0], str):
-    raise SystemExit("Unexpected DBus return value")
-sys.stdout.write(result[0])
-sys.stdout.write("\n")
-'
+output = sys.stdin.read().strip()
+if not output.startswith("(<") or not output.endswith(">,)"):
+    raise SystemExit("Unexpected DBus property response")
+
+try:
+    value = ast.literal_eval(output[2:-3])
+except (SyntaxError, ValueError) as error:
+    raise SystemExit(f"Could not parse DBus property response: {error}")
+
+expected_type = sys.argv[1]
+if expected_type == "string" and isinstance(value, str):
+    sys.stdout.write(value)
+    sys.stdout.write("\n")
+elif expected_type == "string-list" and isinstance(value, list) and all(
+    isinstance(line, str) for line in value
+):
+    sys.stdout.writelines(f"{line}\n" for line in value)
+else:
+    raise SystemExit("Unexpected DBus property type")
+' "$2"
 }
 
 # Grab ekos data and save
@@ -43,12 +66,12 @@ LOG_TMP=$(mktemp /tmp/ekos_log.txt.XXXXXX) || {
 }
 trap 'rm -f "$JSON_TMP" "$LOG_TMP"' EXIT
 
-if ! fetch_dbus_string jsonJobs > "$JSON_TMP"; then
+if ! fetch_dbus_property jsonJobs string > "$JSON_TMP"; then
     echo "Failed to fetch Ekos scheduler jobs over DBus" >> /tmp/ekos-cron.log
     exit 1
 fi
 
-if ! fetch_dbus_string logText > "$LOG_TMP"; then
+if ! fetch_dbus_property logText string-list > "$LOG_TMP"; then
     echo "Failed to fetch Ekos scheduler log over DBus" >> /tmp/ekos-cron.log
     exit 1
 fi
