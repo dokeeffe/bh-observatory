@@ -40,6 +40,6 @@
         <PreStartupQueue>/home/dokeeffe/code/bh-observatory/operations/ekos/startup-task-queue.kstarsqueue</PreStartupQueue>
     </StartupProcedure>
     <ShutdownProcedure enabled='true'>
-        <PreShutdownQueue>/home/dokeeffe/code/bh-observatory/operations/ekos/shutdown-task-queue.kstarsqueue</PreShutdownQueue>
+        <PostShutdownQueue>/home/dokeeffe/code/bh-observatory/operations/ekos/shutdown-task-queue.kstarsqueue</PostShutdownQueue>
     </ShutdownProcedure>
 </SchedulerList>
