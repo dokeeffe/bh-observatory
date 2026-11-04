@@ -151,6 +151,10 @@ class PowerApp(App):
         align: left middle;
     }
 
+    .outlet-row.selected {
+        border: round $accent;
+    }
+
     .outlet-name {
         width: 1fr;
         content-align: left middle;
@@ -182,13 +186,23 @@ class PowerApp(App):
     }
     """
     BINDINGS = [
+        ("up", "previous_outlet", "Previous outlet"),
+        ("down", "next_outlet", "Next outlet"),
+        ("left", "turn_selected_off", "Off"),
+        ("right", "turn_selected_on", "On"),
+        ("enter", "toggle_selected", "Toggle"),
+        ("space", "toggle_selected", "Toggle"),
         ("r", "refresh", "Refresh"),
         ("q", "quit", "Quit"),
     ]
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Static("Discovering Kasa switches...", id="intro")
+        yield Static(
+            "Controls: ↑/↓ select outlet · ← turn off · → turn on · "
+            "Enter/Space toggle · click a button · R refresh · Q quit",
+            id="intro",
+        )
         yield VerticalScroll(id="outlets")
         yield Static("", id="status")
         yield Footer()
@@ -196,12 +210,14 @@ class PowerApp(App):
     async def on_mount(self) -> None:
         self.outlets = []
         self._busy = False
+        self.selected_index = 0
         self.set_interval(5, self._start_periodic_refresh)
         await self._discover()
 
     async def _discover(self) -> None:
         self._set_status("Discovering switches...")
         self.outlets, errors = await load_outlets()
+        self.selected_index = 0
         container = self.query_one("#outlets", VerticalScroll)
         await container.remove_children()
         if self.outlets:
@@ -219,11 +235,14 @@ class PowerApp(App):
             Button("⏻ Toggle", id=f"toggle-{index}", variant="primary"),
             Button("🟢 On", id=f"on-{index}", variant="success"),
             Button("🔴 Off", id=f"off-{index}", variant="error"),
+            id=f"outlet-{index}",
             classes="outlet-row",
         )
 
     def _render_states(self) -> None:
         for index, outlet in enumerate(self.outlets):
+            row = self.query_one(f"#outlet-{index}", Horizontal)
+            row.set_class(index == self.selected_index, "selected")
             state = self.query_one(f"#state-{index}", Static)
             if outlet.is_on:
                 state.update("🟢 ON")
@@ -257,6 +276,30 @@ class PowerApp(App):
     async def action_refresh(self) -> None:
         await self.refresh_outlets()
 
+    def _move_selection(self, amount) -> None:
+        if not self.outlets:
+            return
+        self.selected_index = (self.selected_index + amount) % len(self.outlets)
+        self._render_states()
+        self.query_one(f"#outlet-{self.selected_index}", Horizontal).scroll_visible()
+
+    def action_previous_outlet(self) -> None:
+        self._move_selection(-1)
+
+    def action_next_outlet(self) -> None:
+        self._move_selection(1)
+
+    async def action_turn_selected_off(self) -> None:
+        await self._set_outlet_state(self.selected_index, False)
+
+    async def action_turn_selected_on(self) -> None:
+        await self._set_outlet_state(self.selected_index, True)
+
+    async def action_toggle_selected(self) -> None:
+        if self.outlets:
+            outlet = self.outlets[self.selected_index]
+            await self._set_outlet_state(self.selected_index, not outlet.is_on)
+
     async def on_button_pressed(self, event: Button.Pressed) -> None:
         button_id = event.button.id or ""
         try:
@@ -267,11 +310,14 @@ class PowerApp(App):
         if action not in {"toggle", "on", "off"} or self._busy:
             return
 
+        self.selected_index = index
+        turn_on = not self.outlets[index].is_on if action == "toggle" else action == "on"
+        await self._set_outlet_state(index, turn_on)
+
+    async def _set_outlet_state(self, index, turn_on) -> None:
+        if self._busy or not self.outlets:
+            return
         outlet = self.outlets[index]
-        turn_on = (
-            not outlet.is_on if action == "toggle"
-            else action == "on"
-        )
         if not turn_on and outlet.alias.casefold() in DANGEROUS_OFF:
             confirmed = await self.push_screen_wait(ConfirmPowerOff(outlet.alias))
             if not confirmed:
