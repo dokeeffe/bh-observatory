@@ -12,42 +12,37 @@ from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import ModalScreen
 from textual.widgets import Button, Footer, Header, Input, Label, Static
 
-# Legacy-protocol devices: no credentials needed.
-HOSTS = [
-    "192.168.1.23",   # KP303 strip
-    "192.168.1.254",  # HS100
-    "192.168.1.8",    # KP105
-]
-
 # Outlets (by alias) that need a confirmation before being switched OFF.
 # Matching is case-insensitive.
 DANGEROUS_OFF = {"main pc"}
 
 
-async def connect(host):
+async def update_device(device):
     try:
-        dev = await asyncio.wait_for(Discover.discover_single(host), timeout=10)
-        await dev.update()
-        return dev, None
+        await device.update()
+        return None
     except Exception as e:  # noqa: BLE001
-        return None, f"Could not reach {host}: {e}"
+        return f"Could not update {device.alias}: {e}"
 
 
 async def load_outlets():
-    """Return discovered outlets and any connection errors."""
-    results = await asyncio.gather(*(connect(host) for host in HOSTS))
+    """Discover all Kasa devices and return their switchable outlets."""
+    try:
+        devices = await Discover.discover(discovery_timeout=10)
+    except Exception as e:  # noqa: BLE001
+        return [], [f"Discovery failed: {e}"]
+
+    ordered_devices = sorted(devices.values(), key=lambda device: device.host)
+    update_errors = await asyncio.gather(
+        *(update_device(device) for device in ordered_devices)
+    )
     outlets = []
-    errors = []
-    for dev, error in results:
-        if error:
-            errors.append(error)
-        if dev is None:
-            continue
+    for dev in ordered_devices:
         if dev.children:
             outlets.extend(dev.children)
         else:
             outlets.append(dev)
-    return outlets, errors
+    return outlets, [error for error in update_errors if error]
 
 
 async def set_state(outlet, turn_on):
@@ -200,7 +195,7 @@ class PowerApp(App):
         yield Header()
         yield Static(
             "Controls: ↑/↓ select outlet · ← turn off · → turn on · "
-            "Enter/Space toggle · click a button · R refresh · Q quit",
+                "Enter/Space toggle · click a button · R rescan · Q quit",
             id="intro",
         )
         yield VerticalScroll(id="outlets")
@@ -212,11 +207,16 @@ class PowerApp(App):
         self._busy = False
         self.selected_index = 0
         self.set_interval(5, self._start_periodic_refresh)
+        self.set_interval(30, self._start_periodic_discovery)
         await self._discover()
 
     async def _discover(self) -> None:
-        self._set_status("Discovering switches...")
-        self.outlets, errors = await load_outlets()
+        await self._load_devices()
+
+    async def _load_devices(self) -> None:
+        self._set_status("Discovering Kasa switches on the network...")
+        outlets, errors = await load_outlets()
+        self.outlets = outlets
         self.selected_index = 0
         container = self.query_one("#outlets", VerticalScroll)
         await container.remove_children()
@@ -226,7 +226,12 @@ class PowerApp(App):
         else:
             await container.mount(Static("No Kasa switches found.", classes="empty"))
         self._render_states()
-        self._set_status("; ".join(errors) if errors else "Ready")
+        if errors:
+            self._set_status("; ".join(errors))
+        elif self.outlets:
+            self._set_status(f"Found {len(self.outlets)} switch outlet(s)")
+        else:
+            self._set_status("No Kasa switches found")
 
     def _make_row(self, index, outlet) -> Horizontal:
         return Horizontal(
@@ -262,6 +267,23 @@ class PowerApp(App):
                 exclusive=True,
             )
 
+    def _start_periodic_discovery(self) -> None:
+        if not self._busy:
+            self.run_worker(
+                self.discover_outlets(),
+                group="device-discovery",
+                exclusive=True,
+            )
+
+    async def discover_outlets(self) -> None:
+        if self._busy:
+            return
+        self._busy = True
+        try:
+            await self._load_devices()
+        finally:
+            self._busy = False
+
     async def refresh_outlets(self) -> None:
         if self._busy or not self.outlets:
             return
@@ -274,7 +296,7 @@ class PowerApp(App):
             self._busy = False
 
     async def action_refresh(self) -> None:
-        await self.refresh_outlets()
+        await self.discover_outlets()
 
     def _move_selection(self, amount) -> None:
         if not self.outlets:
