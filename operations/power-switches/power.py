@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Interactive CLI to switch TP-Link Kasa plugs / strip outlets on and off.
+"""Interactive Textual UI to control TP-Link Kasa plugs and strip outlets.
 
-Requires: pip install python-kasa
+Requires: pip install python-kasa textual
 """
 import asyncio
 import sys
 
 from kasa import Discover
+from textual.app import App, ComposeResult
+from textual.containers import Horizontal, Vertical, VerticalScroll
+from textual.screen import ModalScreen
+from textual.widgets import Button, Footer, Header, Input, Label, Static
 
 # Legacy-protocol devices: no credentials needed.
 HOSTS = [
@@ -24,45 +28,26 @@ async def connect(host):
     try:
         dev = await asyncio.wait_for(Discover.discover_single(host), timeout=10)
         await dev.update()
-        return dev
+        return dev, None
     except Exception as e:  # noqa: BLE001
-        print(f"  ! Could not reach {host}: {e}")
-        return None
+        return None, f"Could not reach {host}: {e}"
 
 
 async def load_outlets():
-    """Return a flat list of switchable things: strip children and single plugs."""
-    devices = await asyncio.gather(*(connect(h) for h in HOSTS))
+    """Return discovered outlets and any connection errors."""
+    results = await asyncio.gather(*(connect(host) for host in HOSTS))
     outlets = []
-    for dev in devices:
+    errors = []
+    for dev, error in results:
+        if error:
+            errors.append(error)
         if dev is None:
             continue
         if dev.children:
-            for child in dev.children:
-                outlets.append(child)
+            outlets.extend(dev.children)
         else:
             outlets.append(dev)
-    return outlets
-
-
-def show(outlets):
-    print()
-    for i, o in enumerate(outlets, 1):
-        state = "ON " if o.is_on else "OFF"
-        print(f"  {i}. [{state}] {o.alias}")
-    print()
-    print("  Enter a number to toggle, 'on N' / 'off N' to set explicitly,")
-    print("  'r' to refresh, 'q' to quit.")
-
-
-def confirm_power_off(alias):
-    print()
-    print("  " + "!" * 60)
-    print(f"  WARNING: '{alias}' is probably the machine running this script.")
-    print("  Switching it OFF will cut power to it immediately (hard power-off).")
-    print("  " + "!" * 60)
-    answer = input(f"  Type the outlet name ({alias}) to confirm: ").strip()
-    return answer.lower() == alias.lower()
+    return outlets, errors
 
 
 async def set_state(outlet, turn_on):
@@ -71,76 +56,242 @@ async def set_state(outlet, turn_on):
     else:
         await outlet.turn_off()
     await outlet.update()
-    print(f"  -> {outlet.alias} is now {'ON' if outlet.is_on else 'OFF'}")
 
 
 async def refresh(outlets):
-    # Updating the parent refreshes its children; update each unique parent once.
+    """Update each device once; refreshing a strip also updates its outlets."""
     seen = set()
-    for o in outlets:
-        target = getattr(o, "parent", None) or o
+    errors = []
+    for outlet in outlets:
+        target = getattr(outlet, "parent", None) or outlet
         if id(target) in seen:
             continue
         seen.add(id(target))
         try:
             await target.update()
         except Exception as e:  # noqa: BLE001
-            print(f"  ! Refresh failed for {target.alias}: {e}")
+            errors.append(f"Refresh failed for {target.alias}: {e}")
+    return errors
 
 
-async def main():
-    print("Discovering devices...")
-    outlets = await load_outlets()
-    if not outlets:
-        print("No devices found.")
-        return 1
+class ConfirmPowerOff(ModalScreen[bool]):
+    """Require the user to type an outlet name before powering it off."""
 
-    loop = asyncio.get_running_loop()
+    CSS = """
+    ConfirmPowerOff {
+        align: center middle;
+    }
 
-    while True:
-        show(outlets)
-        raw = (await loop.run_in_executor(None, input, "> ")).strip().lower()
-        if not raw:
-            continue
-        if raw in ("q", "quit", "exit"):
-            return 0
-        if raw in ("r", "refresh"):
-            await refresh(outlets)
-            continue
+    #confirm-dialog {
+        width: 68;
+        height: auto;
+        padding: 1 2;
+        border: round $warning;
+        background: $surface;
+    }
 
-        parts = raw.split()
-        explicit = None
-        if parts[0] in ("on", "off") and len(parts) == 2:
-            explicit = parts[0] == "on"
-            idx_str = parts[1]
-        elif len(parts) == 1:
-            idx_str = parts[0]
+    #confirm-dialog Input {
+        margin: 1 0;
+    }
+
+    #confirm-buttons {
+        align-horizontal: right;
+        height: auto;
+    }
+    """
+
+    def __init__(self, alias):
+        super().__init__()
+        self.alias = alias
+
+    def compose(self) -> ComposeResult:
+        with Vertical(id="confirm-dialog"):
+            yield Label(f"⚠ '{self.alias}' may be the machine running this script.")
+            yield Label("Turning it off will immediately cut its power.")
+            yield Label(f"Type {self.alias!r} to confirm:")
+            yield Input(placeholder=self.alias, id="confirmation")
+            with Horizontal(id="confirm-buttons"):
+                yield Button("Cancel", id="cancel")
+                yield Button("Power off", variant="error", id="confirm")
+
+    def on_mount(self) -> None:
+        self.query_one("#confirmation", Input).focus()
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "confirm":
+            value = self.query_one("#confirmation", Input).value
+            self.dismiss(value.casefold() == self.alias.casefold())
         else:
-            print("  ? Didn't understand that.")
-            continue
+            self.dismiss(False)
 
-        if not idx_str.isdigit() or not (1 <= int(idx_str) <= len(outlets)):
-            print("  ? Pick a number from the list.")
-            continue
 
-        outlet = outlets[int(idx_str) - 1]
-        turn_on = (not outlet.is_on) if explicit is None else explicit
+class PowerApp(App):
+    TITLE = "Kasa Power Switches"
+    CSS = """
+    Screen {
+        background: $background;
+    }
 
-        if not turn_on and outlet.alias.lower() in DANGEROUS_OFF:
-            ok = await loop.run_in_executor(None, confirm_power_off, outlet.alias)
-            if not ok:
-                print("  Cancelled.")
-                continue
+    #intro {
+        padding: 1 2 0 2;
+        color: $text-muted;
+    }
 
+    #outlets {
+        height: 1fr;
+        padding: 0 1;
+    }
+
+    .outlet-row {
+        height: 5;
+        padding: 1 2;
+        margin: 0 0 1 0;
+        border: round $primary-darken-2;
+        background: $surface;
+        align: left middle;
+    }
+
+    .outlet-name {
+        width: 1fr;
+        content-align: left middle;
+        text-style: bold;
+    }
+
+    .state {
+        width: 12;
+        content-align: center middle;
+        text-style: bold;
+    }
+
+    .state.on {
+        color: $success;
+    }
+
+    .state.off {
+        color: $error;
+    }
+
+    .outlet-row Button {
+        margin-left: 1;
+    }
+
+    #status {
+        height: 2;
+        padding: 0 2;
+        color: $text-muted;
+    }
+    """
+    BINDINGS = [
+        ("r", "refresh", "Refresh"),
+        ("q", "quit", "Quit"),
+    ]
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Static("Discovering Kasa switches...", id="intro")
+        yield VerticalScroll(id="outlets")
+        yield Static("", id="status")
+        yield Footer()
+
+    async def on_mount(self) -> None:
+        self.outlets = []
+        self._busy = False
+        self.set_interval(5, self._start_periodic_refresh)
+        await self._discover()
+
+    async def _discover(self) -> None:
+        self._set_status("Discovering switches...")
+        self.outlets, errors = await load_outlets()
+        container = self.query_one("#outlets", VerticalScroll)
+        await container.remove_children()
+        if self.outlets:
+            for index, outlet in enumerate(self.outlets):
+                await container.mount(self._make_row(index, outlet))
+        else:
+            await container.mount(Static("No Kasa switches found.", classes="empty"))
+        self._render_states()
+        self._set_status("; ".join(errors) if errors else "Ready")
+
+    def _make_row(self, index, outlet) -> Horizontal:
+        return Horizontal(
+            Label(outlet.alias, classes="outlet-name"),
+            Static("", id=f"state-{index}", classes="state"),
+            Button("⏻ Toggle", id=f"toggle-{index}", variant="primary"),
+            Button("🟢 On", id=f"on-{index}", variant="success"),
+            Button("🔴 Off", id=f"off-{index}", variant="error"),
+            classes="outlet-row",
+        )
+
+    def _render_states(self) -> None:
+        for index, outlet in enumerate(self.outlets):
+            state = self.query_one(f"#state-{index}", Static)
+            if outlet.is_on:
+                state.update("🟢 ON")
+                state.set_classes("state on")
+            else:
+                state.update("🔴 OFF")
+                state.set_classes("state off")
+
+    def _set_status(self, message) -> None:
+        self.query_one("#status", Static).update(message)
+
+    def _start_periodic_refresh(self) -> None:
+        if self.outlets and not self._busy:
+            self.run_worker(
+                self.refresh_outlets(),
+                group="device-refresh",
+                exclusive=True,
+            )
+
+    async def refresh_outlets(self) -> None:
+        if self._busy or not self.outlets:
+            return
+        self._busy = True
+        try:
+            errors = await refresh(self.outlets)
+            self._render_states()
+            self._set_status("; ".join(errors) if errors else "State refreshed")
+        finally:
+            self._busy = False
+
+    async def action_refresh(self) -> None:
+        await self.refresh_outlets()
+
+    async def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id or ""
+        try:
+            action, index_text = button_id.rsplit("-", 1)
+            index = int(index_text)
+        except ValueError:
+            return
+        if action not in {"toggle", "on", "off"} or self._busy:
+            return
+
+        outlet = self.outlets[index]
+        turn_on = (
+            not outlet.is_on if action == "toggle"
+            else action == "on"
+        )
+        if not turn_on and outlet.alias.casefold() in DANGEROUS_OFF:
+            confirmed = await self.push_screen_wait(ConfirmPowerOff(outlet.alias))
+            if not confirmed:
+                self._set_status("Power-off cancelled")
+                return
+
+        self._busy = True
+        self._set_status(f"Switching {outlet.alias} {'on' if turn_on else 'off'}...")
         try:
             await set_state(outlet, turn_on)
+            self._render_states()
+            self._set_status(f"{outlet.alias} is {'ON' if outlet.is_on else 'OFF'}")
         except Exception as e:  # noqa: BLE001
-            print(f"  ! Failed: {e}")
+            self._set_status(f"Failed to switch {outlet.alias}: {e}")
+        finally:
+            self._busy = False
 
 
 if __name__ == "__main__":
     try:
-        sys.exit(asyncio.run(main()))
+        PowerApp().run()
     except (KeyboardInterrupt, EOFError):
-        print()
-
+        sys.exit(0)
